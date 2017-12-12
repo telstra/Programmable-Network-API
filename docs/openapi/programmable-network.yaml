@@ -13,7 +13,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.1.1
+  version: 2.1.3
   contact:
     name: Telstra Corporation
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -190,7 +190,6 @@ components:
           description: "no longer used"
           type: string
           example: null
-  # is this still used?
         guid_topology_id:
           type: string
           example: null
@@ -797,6 +796,30 @@ paths:
                       endpointuuid:
                         type: string
                         example: "c6b5c04f-c968-432e-a70f-b929437ea6e4"
+  '/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+    post:
+      summary: Assign a Topology Tag to an Endpoint
+      tags:
+        - endpoints
+        - topologies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                topology_tag:
+                  type: string
+                  example: "38d17228-0179-491f-9e84-36ddd078b8e6"
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/success-fragment'
 
 
   /1.0.0/inventory/link:
@@ -1413,6 +1436,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/topology'
+    put:
+      summary: Update a topology tag's name and/or description
+      tags:
+        - topologies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "Production WAN Updated Name"
+                description:
+                  type: string
+                  example: "Updated topology for WAN"
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/topology'
+    delete:
+      summary: Delete a topology tag
+      tags:
+        - topologies
+      responses:
+        '204':
+          description: No Content
   '/ttms/1.0.0/topology_tag/{topotaguuid}/objects/':
     parameters:
       - $ref: '#/components/parameters/topotaguuid'
