@@ -190,7 +190,6 @@ components:
           description: "no longer used"
           type: string
           example: null
-  # is this still used?
         guid_topology_id:
           type: string
           example: null
