@@ -53,3 +53,15 @@ The OpenAPI 2.0 (Swagger) specification is also available [here](https://dev.tel
 ## Key Concepts
 See [Key Concepts](https://dev.telstra.com/content/key-concepts-tpn) for details on Key Concepts for the Programmable Network.
 <!-- TODO: maybe put an overview diagram here? -->
+
+## SDKs
+- [Programmable Network - Ruby SDK](https://github.com/telstra/Programmable-Network-SDK-ruby)
+- [Programmable Network - Perl SDK](https://github.com/telstra/Programmable-Network-SDK-perl)
+- [Programmable Network - Bash SDK](https://github.com/telstra/Programmable-Network-SDK-bash)
+- [Programmable Network - Java SDK](https://github.com/telstra/Programmable-Network-SDK-java)
+- [Programmable Network - Node SDK](https://github.com/telstra/Programmable-Network-SDK-node)
+- [Programmable Network - PHP SDK](https://github.com/telstra/Programmable-Network-SDK-PHP)
+- [Programmable Network - Python SDK](https://github.com/telstra/Programmable-Network-SDK-python)
+- [Programmable Network - .Net2 SDK](https://github.com/telstra/Programmable-Network-SDK-dotnet)
+- [Programmable Network - Go SDK](https://github.com/telstra/Programmable-Network-SDK-go)
+
