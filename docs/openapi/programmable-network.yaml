@@ -1440,9 +1440,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  $ref: '#/components/schemas/image'
+                $ref: '#/components/schemas/image'
   /1.0.0/marketplace/image/my_images/:
     get:
       summary: List images in "My Images"
