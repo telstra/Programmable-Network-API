@@ -15,8 +15,10 @@ info:
     To register, please contact your account representative.
   version: 2.2.1
   contact:
-    name: Telstra Corporation
+    name: Telstra Corporation - Programmable Network API Documentation
     url: 'https://dev.telstra.com/content/programmable-network-api'
+  contact:
+    name: Telstra Corporation - Programmable Network API Support
     email: pnapi-support@team.telstra.com
 servers:
   - url: 'https://penapi.pacnetconnect.com'
