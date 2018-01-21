@@ -13,7 +13,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.1.3
+  version: 2.2.0
   contact:
     name: Telstra Corporation
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -320,6 +320,138 @@ components:
           $ref: '#/components/schemas/contract-start-time'
         contract-end-time:
           $ref: '#/components/schemas/contract-end-time'
+    image:
+      type: object
+      properties:
+        brief_description:
+          type: string
+          example: "Quagga for general use"
+        buyers:
+          type: string
+        classifications:
+          type: array
+          items:
+            type: object
+            properties:
+              description:
+                type: string
+                example: "Router"
+              id:
+                type: integer
+                example: 4
+              name:
+                type: string
+                example: "Router"
+        comments:
+          type: string
+        create_at:
+          type: integer
+          example: 1456314043
+        creator:
+          type: string
+          example: "1f10c671-cd71-4467-b605-d150113629b9"
+        description:
+          type: string
+          example: "Quagga router image with version 0.99.22.1"
+        eos:
+          type: string
+        flavors:
+          type: array
+          items:
+            $ref: '#/components/schemas/flavor'
+        flavors_price:
+          type: string
+        glance_comments:
+          type: string
+        glance_image:
+          type: object
+          properties:
+            create_at:
+              type: string
+            id:
+              type: integer
+              example: 7
+            name:
+              type: string
+              example: "quagga-0.99.22.1"
+            owner:
+              type: string
+              example: "9222433f-727d-4679-b807-3ce39b9f8ef2"
+            status:
+              type: string
+        glance_name:
+          type: string
+          example: "c9b2444c-239a-475b-af54-db9deccefca3"
+        glance_properties:
+          type: string
+        id:
+          type: integer
+          example: 6
+        image_format:
+          type: string
+          example: "qcow2"
+        license_required:
+          type: boolean
+        logo:
+          type: string
+          example: "https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"
+        max_ports:
+          type: integer
+          example: 8
+        md5:
+          type: string
+        min_ports:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "CSR1000v"
+        os_version:
+          type: string
+          example: "Ubuntu 16.04"
+        owner:
+          type: string
+          example: "d486321a-9a91-4879-8d7c-2fcf4506e33e"
+        product:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 7
+        publish_date:
+          type: string
+        restrict_vnc_console:
+          type: boolean
+        status:
+          type: string
+          example: "Published"
+        support_hot_plug:
+          type: boolean
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/vnf-tag'
+        upload_at:
+          type: integer
+          example: 1456315518
+        vendor_name:
+          type: string
+          example: "Cisco"
+        zero_day_config_spec:
+          type: string
+    meta:
+      type: object
+      properties:
+        limit:
+          type: integer
+        next:
+          type: integer
+        offset:
+          type: integer
+        previous:
+          type: integer
+        total_count:
+          type: integer
     flavor:
       type: object
       properties:
@@ -439,7 +571,7 @@ components:
       name: imageid
       description: Identifier representing a specific VNF image
       schema:
-        type: string
+        type: integer
       required: true
     vnfuuid:
       in: path
@@ -617,31 +749,34 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    cityname:
-                      type: string
-                      example: "Melbourne"
-                    countryname:
-                      type: string
-                      example: "Australia"
-                    datacentername:
-                      type: string
-                      example: "Melbourne (NextDC)"
-                    datacentercode:
-                      type: string
-                      example: "amls"
-                    datacenteruuid:
-                      type: string
-                      example: "61f6522f-83e4-4c71-b638-63808240ef88"
-                    interfacetypes:
-                      type: array
-                      items:
-                        type: string
-                    operatorname:
-                      type: string
+                type: object
+                properties:
+                  datacenters:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        cityname:
+                          type: string
+                          example: "Melbourne"
+                        countryname:
+                          type: string
+                          example: "Australia"
+                        datacentername:
+                          type: string
+                          example: "Melbourne (NextDC)"
+                        datacentercode:
+                          type: string
+                          example: "amls"
+                        datacenteruuid:
+                          type: string
+                          example: "61f6522f-83e4-4c71-b638-63808240ef88"
+                        interfacetypes:
+                          type: array
+                          items:
+                            type: string
+                        operatorname:
+                          type: string
         '400':
           $ref: '#/components/responses/invalidrequest'
         '401':
@@ -713,7 +848,7 @@ paths:
                             $ref: '#/components/schemas/endpoint-port'
   /1.0.0/inventory/vnfendpoint:
     post:
-      summary: Create VNF Endpoint
+      summary: Instantiate Virtual Network Function
       tags:
         - endpoints
         - vnfs
@@ -800,7 +935,7 @@ paths:
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
     post:
-      summary: Assign a Topology Tag to an Endpoint
+      summary: Assign an Endpoint to a Topology
       tags:
         - endpoints
         - topologies
@@ -820,8 +955,44 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/success-fragment'
+  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}':
+    parameters:
+      - $ref: '#/components/parameters/topotaguuid'
+      - $ref: '#/components/parameters/endpointuuid'
+    delete:
+      summary: Remove Endpoint from a Topology
+      tags:
+        - endpoints
+        - topologies
+      responses:
+        '204':
+          description: No Content
 
-
+  '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+    put:
+      summary: Update Endpoint name
+      tags:
+        - endpoints
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "My Endpoint"
+      responses:
+        '200':
+         description: Success
+          content:
+           application/json:
+              schema:
+                $ref: '#/components/schemas/success-fragment'
+        '400':
+          $ref: '#/components/responses/invalidrequest'
   /1.0.0/inventory/link:
     post:
       summary: Create Link and initial Contract
@@ -1250,140 +1421,166 @@ paths:
                 type: object
                 properties:
                   meta:
-                    type: object
-                    properties:
-                      limit:
-                        type: integer
-                      next:
-                        type: integer
-                      offset:
-                        type: integer
-                      previous:
-                        type: integer
-                      total_count:
-                        type: integer
+                    $ref: '#/components/schemas/meta'
                   objects:
                     type: array
                     items:
-                      type: object
-                      properties:
-                        brief_description:
-                          type: string
-                          example: "Quagga for general use"
-                        buyers:
-                          type: string
-                        classifications:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              description:
-                                type: string
-                                example: "Router"
-                              id:
-                                type: integer
-                                example: 4
-                              name:
-                                type: string
-                                example: "Router"
-                        comments:
-                          type: string
-                        create_at:
-                          type: integer
-                          example: 1456314043
-                        creator:
-                          type: string
-                          example: "1f10c671-cd71-4467-b605-d150113629b9"
-                        description:
-                          type: string
-                          example: "Quagga router image with version 0.99.22.1"
-                        eos:
-                          type: string
-                        flavors:
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/flavor'
-                        flavors_price:
-                          type: string
-                        glance_comments:
-                          type: string
-                        glance_image:
-                          type: object
-                          properties:
-                            create_at:
-                              type: string
-                            id:
-                              type: integer
-                              example: 7
-                            name:
-                              type: string
-                              example: "quagga-0.99.22.1"
-                            owner:
-                              type: string
-                              example: "9222433f-727d-4679-b807-3ce39b9f8ef2"
-                            status:
-                              type: string
-                        glance_name:
-                          type: string
-                          example: "c9b2444c-239a-475b-af54-db9deccefca3"
-                        glance_properties:
-                          type: string
-                        id:
-                          type: integer
-                          example: 6
-                        image_format:
-                          type: string
-                          example: "qcow2"
-                        license_required:
-                          type: boolean
-                        logo:
-                          type: string
-                          example: "https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"
-                        max_ports:
-                          type: integer
-                          example: 8
-                        md5:
-                          type: string
-                        min_ports:
-                          type: integer
-                          example: 1
-                        name:
-                          type: string
-                          example: "CSR1000v"
-                        os_version:
-                          type: string
-                          example: "Ubuntu 16.04"
-                        owner:
-                          type: string
-                          example: "d486321a-9a91-4879-8d7c-2fcf4506e33e"
-                        product:
-                          type: object
-                          properties:
-                            id:
-                              type: integer
-                              example: 7
-                        publish_date:
-                          type: string
-                        restrict_vnc_console:
-                          type: boolean
-                        status:
-                          type: string
-                          example: "Published"
-                        support_hot_plug:
-                          type: boolean
-                        tags:
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/vnf-tag'
-                        upload_at:
-                          type: integer
-                          example: 1456315518
-                        vendor_name:
-                          type: string
-                          example: "Cisco"
-                        zero_day_config_spec:
-                          type: string
-
+                      $ref: '#/components/schemas/image'
+  '/1.0.0/marketplace/image/{imageid}/':
+    parameters:
+      - $ref: '#/components/parameters/imageid'
+    get:
+      summary: Get information about the specified image
+      description: Note that trailing / is required
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  $ref: '#/components/schemas/image'
+  /1.0.0/marketplace/image/my_images/:
+    get:
+      summary: List images in "My Images"
+      description: Note that trailing / is required
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    $ref: '#/components/schemas/meta'
+                  objects:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/image'
+  '/1.0.0/marketplace/image/{imageid}/add_to_my_images/':
+    parameters:
+      - $ref: '#/components/parameters/imageid'
+    post:
+      summary: Add specified image to "My Images"
+      description: 'Note that trailing / is required, body must be {}'
+      tags:
+        - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+        '404':
+          description: The image specified does not exist
+          $ref: '#/components/responses/objectnotfound'
+/1.0.0/marketplace/image/<id>/remove_from_my_images/:
+    post:
+      summary: Remove specified image from "My Images"
+      description: 'Note that trailing / is required, body must be {}'
+      tags:
+        - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "success"
+        '404':
+          description: The image specified does not exist
+          $ref: '#/components/responses/objectnotfound'
+        '422':
+          description: Image is not in 'my images'
+          $ref: '#/components/responses/validationerror'
+  '/vnfds/1.0.0/vnf/{vnfuuid}/suspend':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    post:
+      summary: Suspend the specified VNF
+      description: 'Note that body must be {}'
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+  '/vnfds/1.0.0/vnf/{vnfuuid}/resume':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    post:
+      summary: Resume the specified VNF
+      description: 'Note that body must be {}'
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+  '/vnfds/1.0.0/vnf/{vnfuuid}/reboot':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    post:
+      summary: Reboot the specified VNF
+      description: reboot_type is 'warm' or 'cold'
+      tags:
+        - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reboot_type:
+                  type: string
+                  example: "warm"
+      responses:
+        '200':
+          description: Success
+        '400':
+          $ref: '#/components/responses/invalidrequest'
+  '/vnfds/1.0.0/vnf/{vnfuuid}/':
+    parameters:
+     - $ref: '#/components/parameters/vnfuuid'
+    get:
+      summary: Get status information about the specified VNF
+      description: Possible return values: "ACTIVE", "BUILD", "SHUTOFF", "VERIFY_RESIZE", "PAUSED", "SUSPENDED", "RESCUE", "ERROR", "DELETED", "SOFT_DELETED", "SHELVED", "SHELVED_OFFLOADED"
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "ACTIVE"
 
   /ttms/1.0.0/topology_tag:
     get:
@@ -1517,6 +1714,45 @@ paths:
                   topology_tag:
                     type: string
                     example: "7a09af3d-d4e5-4538-a1e6-9f83d751e163"
+  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}':
+    parameters:
+      - $ref: '#/components/parameters/topotaguuid'
+    get:
+      summary: List Endpoints for Topology
+      description: >-
+        List all Endpoints associated with the topology tag.
+      tags:
+        - endpoints
+        - topologies
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  endpoints:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        endpoint_uuid:
+                          type: string
+                          example: "c36a6a66-6b1c-47c4-866e-6e4657388557"
+                        vports:
+                          type: array
+                          items:
+                            type: string
+                            example: "82626f13-af0b-4fb2-9b36-68176602dc4f"
+                  sharedvports:
+                    type: array
+                    items:
+                      type: string
+                      example: "a51c471c-36d7-44cc-914e-60886f0f810a"
+                  'topology-id':
+                    type: string
+                    example: "2ecaa946-848f-4f57-a000-bc15e64bd141"
   /1.0.0/auth/generatetoken:
     post:
       summary: Create an authentication token
