@@ -13,7 +13,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.2.0
+  version: 2.2.1
   contact:
     name: Telstra Corporation
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -987,10 +987,10 @@ paths:
       responses:
         '200':
          description: Success
-          content:
+         content:
            application/json:
-              schema:
-                $ref: '#/components/schemas/success-fragment'
+             schema:
+               $ref: '#/components/schemas/success-fragment'
         '400':
           $ref: '#/components/responses/invalidrequest'
   /1.0.0/inventory/link:
@@ -1440,9 +1440,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  $ref: '#/components/schemas/image'
+                $ref: '#/components/schemas/image'
   /1.0.0/marketplace/image/my_images/:
     get:
       summary: List images in "My Images"
@@ -1490,7 +1488,7 @@ paths:
         '404':
           description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
-/1.0.0/marketplace/image/<id>/remove_from_my_images/:
+  /1.0.0/marketplace/image/<id>/remove_from_my_images/:
     post:
       summary: Remove specified image from "My Images"
       description: 'Note that trailing / is required, body must be {}'
@@ -1567,7 +1565,7 @@ paths:
      - $ref: '#/components/parameters/vnfuuid'
     get:
       summary: Get status information about the specified VNF
-      description: Possible return values: "ACTIVE", "BUILD", "SHUTOFF", "VERIFY_RESIZE", "PAUSED", "SUSPENDED", "RESCUE", "ERROR", "DELETED", "SOFT_DELETED", "SHELVED", "SHELVED_OFFLOADED"
+      description: 'Possible return values: "ACTIVE", "BUILD", "SHUTOFF", "VERIFY_RESIZE", "PAUSED", "SUSPENDED", "RESCUE", "ERROR", "DELETED", "SOFT_DELETED", "SHELVED", "SHELVED_OFFLOADED"'
       tags:
         - vnfs
       responses:
