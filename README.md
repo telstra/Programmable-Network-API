@@ -1,5 +1,5 @@
 <!-- Title: "Programmble Network API" -->
-[![Build Status](https://travis-ci.org/telstra/Programmable-Network-API?branch=master)](https://travis-ci.org/telstra/Programmable-Network-API)
+[![Build Status](https://travis-ci.org/telstra/Programmable-Network-API.svg?branch=master)](https://travis-ci.org/telstra/Programmable-Network-API)
 
 
 <table style="border:none;box-shadow:none;padding:0 0 0 0;margin:0">
