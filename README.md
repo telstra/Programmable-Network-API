@@ -39,16 +39,11 @@
 | Firewall | Use a firewall Virtual Network Function from the [Marketplace](https://dev.telstra.com/content/key-concepts-tpn#virtual-network-functions-marketplace) to secure traffic between different endpoints (e.g. Corporate IPVPN and a Cloud Provider) |
 | Inter-Company Exchange | Use the [Global Exchange](https://dev.telstra.com/content/key-concepts-tpn#global-exchange) feature to create connections to other Programmable Network customers |
 
-<!--
-| [Cloud Connectivity](https://dev.telstra.com/content/examples-tpn#cloudconnectivity) | Connect to Cloud Providers, such as Amazon AWS, Microsoft Azure, IBM BlueMix (SoftLayer), Google Compute Platform, etc. |
-| [Firewall](https://dev.telstra.com/content/examples-tpn#firewall) | Use a firewall Virtual Network Function from the [Marketplace](https://dev.telstra.com/content/key-concepts-tpn#virtual-network-functions-marketplace) to secure traffic between different endpoints (e.g. Corporate IPVPN and a Cloud Provider) |
-| [Inter-Company Exchange](https://dev.telstra.com/content/examples-tpn#intercompanyexchange) | Use the [Global Exchange](https://dev.telstra.com/content/key-concepts-tpn#global-exchange) feature to create connections to other Programmable Network customers | -->
-
 ## Getting Started
 
 Start with the [Getting Started](https://dev.telstra.com/content/getting-started-tpn) Guide.
 
-The OpenAPI 2.0 (Swagger) specification is also available [here](https://dev.telstra.com/content/openapi-30-specification-tpn).
+The OpenAPI 3.0 (Swagger) specification is also available [here](https://dev.telstra.com/content/openapi-30-specification-tpn).
 
 ## Key Concepts
 See [Key Concepts](https://dev.telstra.com/content/key-concepts-tpn) for details on Key Concepts for the Programmable Network.
@@ -64,4 +59,3 @@ See [Key Concepts](https://dev.telstra.com/content/key-concepts-tpn) for details
 - [Programmable Network - Python SDK](https://github.com/telstra/Programmable-Network-SDK-python)
 - [Programmable Network - .Net2 SDK](https://github.com/telstra/Programmable-Network-SDK-dotnet)
 - [Programmable Network - Go SDK](https://github.com/telstra/Programmable-Network-SDK-go)
-
