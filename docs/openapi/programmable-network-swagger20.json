@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "version": "2.2.2",
+    "version": "2.3.0",
     "title": "Telstra Programmable Network API",
     "description": "Telstra Programmable Network is a self-provisioning platform that allows its users to create on-demand connectivity services between multiple end-points and add various network functions to those services. Programmable Network enables to connectivity to a global ecosystem of networking services as well as public and private cloud services. Once you are connected to the platform on one or more POPs (points of presence), you can start creating those services based on the use case that you want to accomplish. The Programmable Network API is available to all customers who have registered to use the Programmable Network.\nTo register, please contact your account representative.",
     "license": {
@@ -11,6 +11,15 @@
   },
   "host": "penapi.pacnetconnect.com",
   "basePath": "/",
+  "securityDefinitions": {
+    "auth": {
+      "type": "oauth2",
+      "flow": "password",
+      "tokenUrl": "https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken",
+      "scopes": {},
+      "x-skip-client-authentication": false
+    }
+  },
   "schemes": [
     "https"
   ],

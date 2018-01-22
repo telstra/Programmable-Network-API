@@ -13,7 +13,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.2.2
+  version: 2.3.0
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -740,7 +740,7 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
 security:
-  - oAuth: []
+  - oAuth2: []
 paths:
   /1.0.0/inventory/datacenters:
     get:
