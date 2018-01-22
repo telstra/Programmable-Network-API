@@ -15,7 +15,7 @@ info:
     To register, please contact your account representative.
   version: 2.2.1
   contact:
-    name: Telstra Corporation
+    name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
     email: pnapi-support@team.telstra.com
 servers:
@@ -254,7 +254,8 @@ components:
       maximum: 10000
     renewal-option:
       type: integer
-      description: "Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"
+      description: >-
+        "Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"
       example: 0
     linkid:
       type: string
@@ -394,7 +395,8 @@ components:
           type: boolean
         logo:
           type: string
-          example: "https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"
+          example: >-
+            "https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"
         max_ports:
           type: integer
           example: 8
@@ -576,7 +578,8 @@ components:
     vnfuuid:
       in: path
       name: vnfuuid
-      description: Unique identifier representing a specific virtual network function
+      description: >-
+        Unique identifier representing a specific virtual network function
       schema:
         type: string
       required: true
@@ -641,7 +644,8 @@ components:
     service_uuid:
       in: path
       name: service_uuid
-      description: Unique identifier representing a specific IPVPN or Next IP service (?)
+      description: >-
+        Unique identifier representing a specific IPVPN or Next IP service (?)
       schema:
         type: string
       required: true
@@ -846,6 +850,9 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/endpoint-port'
+
+
+
   /1.0.0/inventory/vnfendpoint:
     post:
       summary: Instantiate Virtual Network Function
@@ -986,11 +993,11 @@ paths:
                   example: "My Endpoint"
       responses:
         '200':
-         description: Success
-         content:
-           application/json:
-             schema:
-               $ref: '#/components/schemas/success-fragment'
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/success-fragment'
         '400':
           $ref: '#/components/responses/invalidrequest'
   /1.0.0/inventory/link:
@@ -1009,7 +1016,8 @@ paths:
                   example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
                 description:
                   type: string
-                  example: "Replication link between Equinix Sydney and Melbourne NextDC"
+                  example: >-
+                    "Replication link between Equinix SYD and NextDC MEL"
                 connections:
                   $ref: '#/components/schemas/connections'
                 tag:
@@ -1045,7 +1053,9 @@ paths:
                         properties:
                           description:
                             type: string
-                            example: "Replication link between Equinix Sydney and Melbourne NextDC"
+                            example: >-
+                              Replication link between Equinix SYD and
+                              NextDC MEL
                           duration:
                             $ref: '#/components/schemas/duration.mins'
                           bandwidth:
@@ -1112,7 +1122,8 @@ paths:
                 properties:
                   description:
                     type: string
-                    example: "Replication link between Equinix Sydney and Melbourne NextDC"
+                    example: >-
+                      "Replication link between Equinix SYD and NextDC MEL"
                   latency:
                     $ref: '#/components/schemas/latency'
                   linkid:
@@ -1156,7 +1167,8 @@ paths:
                     properties:
                       description:
                         type: string
-                        example: "Replication link between Equinix Sydney and Melbourne NextDC"
+                        example: >-
+                          "Replication link between Equinix SYD and NextDC MEL"
                       duration:
                         $ref: '#/components/schemas/duration.mins'
                       bandwidth:
@@ -1386,12 +1398,12 @@ paths:
             application/json:
               schema:
                 allOf:
-                - $ref: '#/components/schemas/success-fragment'
-                - type: object
-                  properties:
-                    vportuuid:
-                      type: string
-                      example: "251a54f9-f534-4d92-86b9-77e73bd4ede4"
+                  - $ref: '#/components/schemas/success-fragment'
+                  - type: object
+                    properties:
+                      vportuuid:
+                        type: string
+                        example: "251a54f9-f534-4d92-86b9-77e73bd4ede4"
   '/1.0.0/inventory/vport/{vportuuid}':
     parameters:
       - $ref: '#/components/parameters/vportuuid'
@@ -1516,6 +1528,8 @@ paths:
         '422':
           description: Image is not in 'my images'
           $ref: '#/components/responses/validationerror'
+
+
   '/vnfds/1.0.0/vnf/{vnfuuid}/suspend':
     parameters:
       - $ref: '#/components/parameters/vnfuuid'
@@ -1562,10 +1576,23 @@ paths:
           $ref: '#/components/responses/invalidrequest'
   '/vnfds/1.0.0/vnf/{vnfuuid}/':
     parameters:
-     - $ref: '#/components/parameters/vnfuuid'
+      - $ref: '#/components/parameters/vnfuuid'
     get:
       summary: Get status information about the specified VNF
-      description: 'Possible return values: "ACTIVE", "BUILD", "SHUTOFF", "VERIFY_RESIZE", "PAUSED", "SUSPENDED", "RESCUE", "ERROR", "DELETED", "SOFT_DELETED", "SHELVED", "SHELVED_OFFLOADED"'
+      description: >-
+        'Possible return values:
+          ACTIVE,
+          BUILD,
+          SHUTOFF,
+          VERIFY_RESIZE,
+          PAUSED,
+          SUSPENDED,
+          RESCUE,
+          ERROR,
+          DELETED,
+          SOFT_DELETED,
+          SHELVED,
+          SHELVED_OFFLOADED'
       tags:
         - vnfs
       responses:
@@ -1892,7 +1919,7 @@ paths:
                   customeraccountid:
                     type: string
                     example: "71234010"
-        '401': # should be 403 Forbidden
+        '401':   # should be 403 Forbidden
           $ref: '#/components/responses/forbidden'
   '/1.0.0/account/{customeruuid}/user':
     parameters:
