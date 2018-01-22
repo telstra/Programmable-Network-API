@@ -1,0 +1,8 @@
+---
+
+extends: default
+rules:
+  document-start: disable
+  document-end: disable
+
+# vim: et:ai:ts=2:sw=2
