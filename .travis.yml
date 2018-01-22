@@ -1,0 +1,19 @@
+language: python
+
+python:
+   - "3.5"
+
+install:
+   - pip install yamllint
+
+before_script:
+   - curl -L "https://storage.googleapis.com/google-code-archive-downloads/v2/code.google.com/shunit2/shunit2-2.1.6.tgz" | tar zx
+
+script:
+     # Get proper branch name based on http://graysonkoonce.com/getting-the-current-branch-name-during-a-pull-request-in-travis-ci/
+   - export PR=https://api.github.com/repos/$TRAVIS_REPO_SLUG/pulls/$TRAVIS_PULL_REQUEST
+   - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo `curl -s $PR | jq -r .head.ref`; fi)
+# All variables ready - run the test script
+#   - bash openapi_validation_test.sh
+   - yamllint --version
+   - cd docs/openapi; yamllint -c yamllint-config.yml programmable-network.yaml
