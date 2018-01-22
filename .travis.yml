@@ -15,4 +15,5 @@ script:
    - export BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo `curl -s $PR | jq -r .head.ref`; fi)
 # All variables ready - run the test script
 #   - bash openapi_validation_test.sh
+   - yamllint --version
    - cd docs/openapi; yamllint -c yamllint-config.yml programmable-network.yaml
