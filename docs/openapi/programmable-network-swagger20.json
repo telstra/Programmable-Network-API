@@ -1,0 +1,4022 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "2.2.2",
+    "title": "Telstra Programmable Network API",
+    "description": "Telstra Programmable Network is a self-provisioning platform that allows its users to create on-demand connectivity services between multiple end-points and add various network functions to those services. Programmable Network enables to connectivity to a global ecosystem of networking services as well as public and private cloud services. Once you are connected to the platform on one or more POPs (points of presence), you can start creating those services based on the use case that you want to accomplish. The Programmable Network API is available to all customers who have registered to use the Programmable Network.\nTo register, please contact your account representative.",
+    "license": {
+      "name": "MIT",
+      "url": "http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT"
+    }
+  },
+  "host": "penapi.pacnetconnect.com",
+  "basePath": "/",
+  "schemes": [
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/1.0.0/inventory/datacenters": {
+      "get": {
+        "description": "Get list of all the data centers",
+        "summary": "Get list of all the data centers",
+        "tags": [
+          "datacentres"
+        ],
+        "operationId": "100InventoryDatacentersGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "array of data center objects",
+            "schema": {
+              "$ref": "#/definitions/100InventoryDatacentersResponse"
+            },
+            "examples": {}
+          },
+          "400": {
+            "description": "Request is not correctly formatted",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "401": {
+            "description": "Missing Token",
+            "schema": {
+              "$ref": "#/definitions/100InventoryDatacenters401Error"
+            }
+          },
+          "403": {
+            "description": "Authorization Failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "404": {
+            "description": "Specified object cannot be found",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "405": {
+            "description": "Method Not Allowed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "409": {
+            "description": "Status onflict",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Request is invalid",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "default": {
+            "description": "Backend Error",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/1.0.0/inventory/datacenters"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Get list of all the data centers",
+            "x-testDescription": "Get list of all the data centers"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/endpoints/customeruuid/{customeruuid}": {
+      "get": {
+        "description": "Get list of endpoints for a customer",
+        "summary": "Get list of endpoints for a customer",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "100InventoryEndpointsCustomeruuidByCustomeruuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customeruuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific customer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryEndpointsCustomeruuidResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/endpoint/{endpointuuid}": {
+      "get": {
+        "description": "Get information about the specified endpoint",
+        "summary": "Get information about the specified endpoint",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "100InventoryEndpointByEndpointuuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "endpointuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific endpoint"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryEndpointResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/vnfendpoint": {
+      "post": {
+        "description": "Instantiate Virtual Network Function",
+        "summary": "Instantiate Virtual Network Function",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "100InventoryVnfendpointPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryVnfendpointRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryVnfendpointResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/inventory/vnfendpoint"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Instantiate Virtual Network Function",
+            "x-testDescription": "Instantiate Virtual Network Function"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/regularendpoint": {
+      "post": {
+        "description": "Create Physical (Port) Endpoint",
+        "summary": "Create Physical (Port) Endpoint",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "100InventoryRegularendpointPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryRegularendpointRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryRegularendpointResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/inventory/regularendpoint"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Create Physical (Port) Endpoint",
+            "x-testDescription": "Create Physical (Port) Endpoint"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag": {
+      "post": {
+        "description": "Assign an Endpoint to a Topology",
+        "summary": "Assign an Endpoint to a Topology",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "Eis100EndpointsAssignTopologyTagByEndpointuuidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "endpointuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific endpoint"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Eis100EndpointsAssignTopologyTagRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/SuccessFragment"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}": {
+      "delete": {
+        "description": "Remove Endpoint from a Topology",
+        "summary": "Remove Endpoint from a Topology",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "Eis100EndpointsTopologyTagUuidEndpointByTopotaguuidAndEndpointuuidDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          },
+          {
+            "name": "endpointuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific endpoint"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}": {
+      "put": {
+        "description": "Update Endpoint name",
+        "summary": "Update Endpoint name",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "Eis100EndpointEndpointuuidByEndpointuuidPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "endpointuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific endpoint"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Eis100EndpointEndpointuuidRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/SuccessFragment"
+            },
+            "examples": {}
+          },
+          "400": {
+            "description": "Request is not correctly formatted",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/link": {
+      "post": {
+        "description": "Create Link and initial Contract",
+        "summary": "Create Link and initial Contract",
+        "tags": [
+          "links"
+        ],
+        "operationId": "100InventoryLinkPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinkRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinkResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/inventory/link"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Create Link and initial Contract",
+            "x-testDescription": "Create Link and initial Contract"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/links/customer/{customeruuid}": {
+      "get": {
+        "description": "Get active Links",
+        "summary": "Get active Links",
+        "tags": [
+          "links"
+        ],
+        "operationId": "100InventoryLinksCustomerByCustomeruuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customeruuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific customer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Link"
+              }
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/links/history/{linkid}": {
+      "get": {
+        "description": "Get Link history",
+        "summary": "Get Link history",
+        "tags": [
+          "links"
+        ],
+        "operationId": "100InventoryLinksHistoryByLinkidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksHistoryResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/links/{linkid}/contract/{contractid}": {
+      "get": {
+        "description": "Get active Contract by ContractID",
+        "summary": "Get active Contract by ContractID",
+        "tags": [
+          "contracts"
+        ],
+        "operationId": "100InventoryLinksContractByLinkidAndContractidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific link"
+          },
+          {
+            "name": "contractid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific contract"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksContractResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "put": {
+        "description": "Update active Contract by ContractID",
+        "summary": "Update active Contract by ContractID",
+        "tags": [
+          "contracts"
+        ],
+        "operationId": "100InventoryLinksContractByLinkidAndContractidPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific link"
+          },
+          {
+            "name": "contractid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific contract"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksContractRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksContractResponse37"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/links/{linkid}": {
+      "get": {
+        "description": "Get details of specified link",
+        "summary": "Get details of specified link",
+        "tags": [
+          "links"
+        ],
+        "operationId": "100InventoryLinksByLinkidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/links/{linkid}/contract": {
+      "post": {
+        "description": "Create new Contract on specified link",
+        "summary": "Create new Contract on specified link",
+        "tags": [
+          "contracts"
+        ],
+        "operationId": "100InventoryLinksContractByLinkidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "linkid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific link"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksContractRequest41"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryLinksContractResponse42"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/vnf/vport": {
+      "post": {
+        "description": "Create VNF VPort",
+        "summary": "Create VNF VPort",
+        "tags": [
+          "vports"
+        ],
+        "operationId": "100InventoryVnfVportPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryVnfVportRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryVnfVportResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/inventory/vnf/vport"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Create VNF VPort",
+            "x-testDescription": "Create VNF VPort"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/regularvport": {
+      "post": {
+        "description": "Create VPort representing a VLAN on a Physical Ethernet Port",
+        "summary": "Create VPort for physical endpoint",
+        "tags": [
+          "vports"
+        ],
+        "operationId": "100InventoryRegularvportPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/100InventoryRegularvportRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100InventoryRegularvportResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/inventory/regularvport"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Create VPort for physical endpoint",
+            "x-testDescription": "Create VPort representing a VLAN on a Physical Ethernet Port"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/inventory/vport/{vportuuid}": {
+      "get": {
+        "description": "Get information about the specified VPort",
+        "summary": "Get information about the specified VPort",
+        "tags": [
+          "vports"
+        ],
+        "operationId": "100InventoryVportByVportuuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vportuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific virtual port"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/EndpointPort"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/marketplace/image": {
+      "get": {
+        "description": "List images in the Marketplace",
+        "summary": "List images in the Marketplace",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "100MarketplaceImageGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100MarketplaceImageResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/1.0.0/marketplace/image"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test List images in the Marketplace",
+            "x-testDescription": "List images in the Marketplace"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/marketplace/image/{imageid}/": {
+      "get": {
+        "description": "Note that trailing / is required",
+        "summary": "Get information about the specified image",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "100MarketplaceImageByImageidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "imageid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "Identifier representing a specific VNF image"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Image"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/marketplace/image/my_images/": {
+      "get": {
+        "description": "Note that trailing / is required",
+        "summary": "List images in \"My Images\"",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "100MarketplaceImageMyImagesGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100MarketplaceImageMyImagesResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/1.0.0/marketplace/image/my_images/"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test List images in \"My Images\"",
+            "x-testDescription": "Note that trailing / is required"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/marketplace/image/{imageid}/add_to_my_images/": {
+      "post": {
+        "description": "Note that trailing / is required, body must be {}",
+        "summary": "Add specified image to \"My Images\"",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "100MarketplaceImageAddToMyImagesByImageidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "imageid",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32",
+            "exclusiveMaximum": false,
+            "exclusiveMinimum": false,
+            "description": "Identifier representing a specific VNF image"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100MarketplaceImageAddToMyImagesResponse"
+            },
+            "examples": {}
+          },
+          "404": {
+            "description": "The image specified does not exist",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/marketplace/image/<id>/remove_from_my_images/": {
+      "post": {
+        "description": "Note that trailing / is required, body must be {}",
+        "summary": "Remove specified image from \"My Images\"",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "100MarketplaceImageIdRemoveFromMyImagesPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "type": "object"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100MarketplaceImageIdRemoveFromMyImagesResponse"
+            },
+            "examples": {}
+          },
+          "404": {
+            "description": "The image specified does not exist",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          },
+          "422": {
+            "description": "Image is not in 'my images'",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/1.0.0/marketplace/image/<id>/remove_from_my_images/"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Remove specified image from \"My Images\"",
+            "x-testDescription": "Note that trailing / is required, body must be {}"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/vnfds/1.0.0/vnf/{vnfuuid}/suspend": {
+      "post": {
+        "description": "Note that body must be {}",
+        "summary": "Suspend the specified VNF",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "Vnfds100VnfSuspendByVnfuuidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vnfuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific virtual network function"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/vnfds/1.0.0/vnf/{vnfuuid}/resume": {
+      "post": {
+        "description": "Note that body must be {}",
+        "summary": "Resume the specified VNF",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "Vnfds100VnfResumeByVnfuuidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vnfuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific virtual network function"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/vnfds/1.0.0/vnf/{vnfuuid}/reboot": {
+      "post": {
+        "description": "reboot_type is 'warm' or 'cold'",
+        "summary": "Reboot the specified VNF",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "Vnfds100VnfRebootByVnfuuidPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vnfuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific virtual network function"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Vnfds100VnfRebootRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "400": {
+            "description": "Request is not correctly formatted",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/vnfds/1.0.0/vnf/{vnfuuid}/": {
+      "get": {
+        "description": "'Possible return values:\n  ACTIVE,\n  BUILD,\n  SHUTOFF,\n  VERIFY_RESIZE,\n  PAUSED,\n  SUSPENDED,\n  RESCUE,\n  ERROR,\n  DELETED,\n  SOFT_DELETED,\n  SHELVED,\n  SHELVED_OFFLOADED'",
+        "summary": "Get status information about the specified VNF",
+        "tags": [
+          "vnfs"
+        ],
+        "operationId": "Vnfds100VnfByVnfuuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "vnfuuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific virtual network function"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Vnfds100VnfResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/ttms/1.0.0/topology_tag": {
+      "get": {
+        "description": "List all topology tags",
+        "summary": "List all topology tags",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Topology"
+              }
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/ttms/1.0.0/topology_tag"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test List all topology tags",
+            "x-testDescription": "List all topology tags"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "post": {
+        "description": "Create a named topology tag",
+        "summary": "Create a named topology tag",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagPost",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Ttms100TopologyTagRequest"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created",
+            "schema": {
+              "$ref": "#/definitions/Topology"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "POST",
+              "uri": "/ttms/1.0.0/topology_tag"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Create a named topology tag",
+            "x-testDescription": "Create a named topology tag"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/ttms/1.0.0/topology_tag/{topotaguuid}/": {
+      "get": {
+        "description": "Get information about the specified topology tag",
+        "summary": "Get information about the specified topology tag",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagByTopotaguuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Topology"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "put": {
+        "description": "Update a topology tag's name and/or description",
+        "summary": "Update a topology tag's name and/or description",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagByTopotaguuidPut",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": false,
+            "description": "",
+            "schema": {
+              "$ref": "#/definitions/Ttms100TopologyTagRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Topology"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      },
+      "delete": {
+        "description": "Delete a topology tag",
+        "summary": "Delete a topology tag",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagByTopotaguuidDelete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/ttms/1.0.0/topology_tag/{topotaguuid}/objects/": {
+      "get": {
+        "description": "List all objects (Endpoints, Links, VPorts, etc.) associated with the topology tag.",
+        "summary": "List objects for Topology",
+        "tags": [
+          "topologies"
+        ],
+        "operationId": "Ttms100TopologyTagObjectsByTopotaguuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Ttms100TopologyTagObjectsResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}": {
+      "get": {
+        "description": "List all Endpoints associated with the topology tag.",
+        "summary": "List Endpoints for Topology",
+        "tags": [
+          "endpoints"
+        ],
+        "operationId": "Eis100EndpointsTopologyTagUuidByTopotaguuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "topotaguuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific topology tag"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/Eis100EndpointsTopologyTagUuidResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/auth/generatetoken": {
+      "post": {
+        "description": "Create an authentication token",
+        "summary": "Create an authentication token",
+        "tags": [
+          "authentication"
+        ],
+        "operationId": "100AuthGeneratetokenPost",
+        "produces": [
+          "application/json"
+        ],
+        "consumes": [
+          "application/x-www-form-urlencoded"
+        ],
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "username",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "type": "string",
+            "description": ""
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A JSON hash containing the bearer token",
+            "schema": {
+              "$ref": "#/definitions/100AuthGeneratetokenResponse"
+            },
+            "examples": {}
+          },
+          "412": {
+            "description": "Provided authorization grant is invalid",
+            "schema": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/auth/validatetoken": {
+      "get": {
+        "description": "Validate the authentication token and get information about the user (roles, permissions, etc.)",
+        "summary": "Validate authentication token",
+        "tags": [
+          "authentication"
+        ],
+        "operationId": "100AuthValidatetokenGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100AuthValidatetokenResponse"
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [
+          {
+            "request": {
+              "method": "GET",
+              "uri": "/1.0.0/auth/validatetoken"
+            },
+            "expectedResponse": {
+              "x-allowExtraHeaders": true,
+              "x-bodyMatchMode": "NONE",
+              "x-arrayOrderedMatching": false,
+              "x-arrayCheckCount": false,
+              "x-matchResponseSchema": true,
+              "headers": {}
+            },
+            "x-testShouldPass": true,
+            "x-testEnabled": true,
+            "x-testName": "Test Validate authentication token",
+            "x-testDescription": "Validate the authentication token and get information about the user (roles, permissions, etc.)"
+          }
+        ],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/account/{customeruuid}": {
+      "get": {
+        "description": "Get the account information for the specified customer",
+        "summary": "Get account information details",
+        "tags": [
+          "customers"
+        ],
+        "operationId": "100AccountByCustomeruuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customeruuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific customer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/100AccountResponse"
+            },
+            "examples": {}
+          },
+          "401": {
+            "description": "Authorization Failed",
+            "schema": {
+              "$ref": "#/definitions/Error"
+            }
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    },
+    "/1.0.0/account/{customeruuid}/user": {
+      "get": {
+        "description": "List all users associated with the specified customer",
+        "summary": "List users",
+        "tags": [
+          "customers"
+        ],
+        "operationId": "100AccountUserByCustomeruuidGet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "customeruuid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Unique identifier representing a specific customer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/User"
+              }
+            },
+            "examples": {}
+          }
+        },
+        "security": [],
+        "x-unitTests": [],
+        "x-operation-settings": {
+          "CollectParameters": false,
+          "AllowDynamicQueryParameters": false,
+          "AllowDynamicFormParameters": false,
+          "IsMultiContentStreaming": false
+        }
+      }
+    }
+  },
+  "definitions": {
+    "100InventoryDatacentersResponse": {
+      "title": "100 Inventory Datacenters Response",
+      "type": "object",
+      "properties": {
+        "datacenters": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Datacenter"
+          }
+        }
+      }
+    },
+    "Datacenter": {
+      "title": "Datacenter",
+      "type": "object",
+      "properties": {
+        "cityname": {
+          "description": "",
+          "example": "Melbourne",
+          "type": "string"
+        },
+        "countryname": {
+          "description": "",
+          "example": "Australia",
+          "type": "string"
+        },
+        "datacentername": {
+          "description": "",
+          "example": "Melbourne (NextDC)",
+          "type": "string"
+        },
+        "datacentercode": {
+          "description": "",
+          "example": "amls",
+          "type": "string"
+        },
+        "datacenteruuid": {
+          "description": "",
+          "example": "61f6522f-83e4-4c71-b638-63808240ef88",
+          "type": "string"
+        },
+        "interfacetypes": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "operatorname": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    },
+    "Error": {
+      "title": "Error",
+      "type": "object",
+      "properties": {
+        "ns": {
+          "description": "",
+          "type": "string"
+        },
+        "error-code": {
+          "description": "",
+          "example": 1010099,
+          "type": "integer",
+          "format": "int32"
+        },
+        "error-message": {
+          "description": "",
+          "type": "string"
+        },
+        "error-auxiliary": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryDatacenters401Error": {
+      "title": "100 Inventory Datacenters 401 Error",
+      "type": "object",
+      "properties": {
+        "error": {
+          "description": "",
+          "example": "error",
+          "type": "string"
+        },
+        "error-code": {
+          "description": "",
+          "example": 1060052,
+          "type": "integer",
+          "format": "int32"
+        },
+        "error_description": {
+          "description": "",
+          "example": "Payload required.",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryEndpointsCustomeruuidResponse": {
+      "title": "100 Inventory Endpoints Customeruuid Response",
+      "type": "object",
+      "properties": {
+        "endpointlist": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Endpointlist"
+          }
+        }
+      }
+    },
+    "Endpointlist": {
+      "title": "Endpointlist",
+      "type": "object",
+      "properties": {
+        "datacenteruuid": {
+          "description": "",
+          "example": "7d89a3e0-ea82-4970-82f3-359d15d364b2",
+          "type": "string"
+        },
+        "endpointuuid": {
+          "description": "",
+          "example": "ebe5a688-2a87-40ba-8303-049b1855271c",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryEndpointResponse": {
+      "title": "100 Inventory Endpoint Response",
+      "type": "object",
+      "properties": {
+        "datacenter": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Datacenter13"
+          }
+        }
+      }
+    },
+    "Datacenter13": {
+      "title": "Datacenter13",
+      "type": "object",
+      "properties": {
+        "datacenteruuid": {
+          "description": "",
+          "example": "fb089004-53c9-476e-b7b2-3cc91829e0d1",
+          "type": "string"
+        },
+        "port": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EndpointPort"
+          }
+        }
+      }
+    },
+    "EndpointPort": {
+      "title": "endpoint-port",
+      "type": "object",
+      "properties": {
+        "cabletype": {
+          "description": "",
+          "example": "SMF",
+          "type": "string"
+        },
+        "connectortype": {
+          "description": "",
+          "example": "LC",
+          "type": "string"
+        },
+        "cfa": {
+          "description": "",
+          "example": "10GBase-LR SMF/LC",
+          "type": "string"
+        },
+        "endpointuuid": {
+          "description": "",
+          "example": "8843fd24-4ef6-4a7d-8241-aed3778d6f07",
+          "type": "string"
+        },
+        "interfacespeed": {
+          "description": "",
+          "example": "100",
+          "type": "string"
+        },
+        "interfacetype": {
+          "description": "",
+          "example": "10GBase-LR",
+          "type": "string"
+        },
+        "vport": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Vport"
+          }
+        }
+      }
+    },
+    "Vport": {
+      "title": "vport",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "",
+          "example": "deployed",
+          "type": "string"
+        },
+        "bandwidth": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "interfacesequence": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "vporttype": {
+          "description": "",
+          "example": "vlan",
+          "type": "string"
+        },
+        "vportuuid": {
+          "description": "",
+          "example": "e62716f5-cc68-40e7-b97e-f1e3d1bda9a8",
+          "type": "string"
+        },
+        "vportvalue": {
+          "$ref": "#/definitions/Vportvalue"
+        }
+      }
+    },
+    "Vportvalue": {
+      "title": "Vportvalue",
+      "type": "object",
+      "properties": {
+        "vlan": {
+          "$ref": "#/definitions/Vlan"
+        }
+      }
+    },
+    "Vlan": {
+      "title": "vlan",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+          "example": "101",
+          "type": "string"
+        },
+        "mac": {
+          "description": "",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "mac"
+      ]
+    },
+    "100InventoryVnfendpointRequest": {
+      "title": "100 Inventory Vnfendpoint Request",
+      "type": "object",
+      "properties": {
+        "customeruuid": {
+          "description": "",
+          "example": "e66546d2-eb85-442f-a4d4-a4f6f4cee6bc",
+          "type": "string"
+        },
+        "imageuuid": {
+          "description": "",
+          "example": 21,
+          "type": "integer",
+          "format": "int32"
+        },
+        "flavoruuid": {
+          "description": "",
+          "example": 22,
+          "type": "integer",
+          "format": "int32"
+        },
+        "datacenteruuid": {
+          "description": "",
+          "example": "2e5ff2d1-da1b-4e5d-81a8-58f1780b1031",
+          "type": "string"
+        },
+        "config": {
+          "description": "Boot configuration for VNF, base64 encoded",
+          "type": "string"
+        },
+        "topology_tag_uuid": {
+          "description": "",
+          "example": "f6c14b31-f29f-4be2-919b-5b7f463e4a3c",
+          "type": "string"
+        }
+      },
+      "required": [
+        "customeruuid",
+        "imageuuid",
+        "flavoruuid",
+        "datacenteruuid",
+        "config"
+      ]
+    },
+    "100InventoryVnfendpointResponse": {
+      "title": "100 Inventory Vnfendpoint Response",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "customeruuid": {
+          "description": "",
+          "example": "9a6c0b09-6864-4f1b-bc03-842268ca1061",
+          "type": "string"
+        },
+        "vnfuuid": {
+          "description": "",
+          "example": "37449aab-0aa2-44ae-929b-7616549ee20e",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryRegularendpointRequest": {
+      "title": "100 Inventory Regularendpoint Request",
+      "type": "object",
+      "properties": {
+        "customeruuid": {
+          "description": "",
+          "example": "6a607f5f-25c9-45a1-a960-a34245509208",
+          "type": "string"
+        },
+        "datacenteruuid": {
+          "description": "",
+          "example": "dc8f4a57-4621-4b17-87bd-e5a7e508bf7a",
+          "type": "string"
+        },
+        "interfacetype": {
+          "description": "",
+          "example": "1000Base-TX",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryRegularendpointResponse": {
+      "title": "100 Inventory Regularendpoint Response",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "endpointuuid": {
+          "description": "",
+          "example": "c6b5c04f-c968-432e-a70f-b929437ea6e4",
+          "type": "string"
+        }
+      }
+    },
+    "Eis100EndpointsAssignTopologyTagRequest": {
+      "title": "Eis 100 Endpoints Assign Topology Tag Request",
+      "type": "object",
+      "properties": {
+        "topology_tag": {
+          "description": "",
+          "example": "38d17228-0179-491f-9e84-36ddd078b8e6",
+          "type": "string"
+        }
+      }
+    },
+    "SuccessFragment": {
+      "title": "success-fragment",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        }
+      }
+    },
+    "Eis100EndpointEndpointuuidRequest": {
+      "title": "Eis 100 Endpoint Endpointuuid Request",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "example": "My Endpoint",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryLinkRequest": {
+      "title": "100 Inventory Link Request",
+      "type": "object",
+      "properties": {
+        "billing-id": {
+          "description": "",
+          "example": "684903a3-78b0-4005-9bfe-eece54ad42f3",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "\"Replication link between Equinix SYD and NextDC MEL\"",
+          "type": "string"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in kB/s",
+          "example": 1000,
+          "type": "integer",
+          "minimum": 1000.0,
+          "maximum": 10000000.0,
+          "format": "int32"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "link-type": {
+          "description": "1=VLAN, 2=VNF",
+          "example": 1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "topology_tag_uuid": {
+          "description": "",
+          "example": "684903a3-78b0-4005-9bfe-eece54ad42f3",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryLinkResponse": {
+      "title": "100 Inventory Link Response",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/definitions/Params"
+        }
+      }
+    },
+    "Params": {
+      "title": "Params",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "Replication link between Equinix SYD and NextDC MEL",
+          "type": "string"
+        },
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in kB/s",
+          "example": 1000,
+          "type": "integer",
+          "minimum": 1000.0,
+          "maximum": 10000000.0,
+          "format": "int32"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contractid": {
+          "description": "Identifier of a contract",
+          "example": "f070660600c1c45f.2",
+          "type": "string"
+        },
+        "price": {
+          "description": "",
+          "example": 259,
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "topology_tag_uuid": {
+          "description": "",
+          "example": "4830beab-2950-47be-a5f9-e3cfeee0eed9",
+          "type": "string"
+        },
+        "billing-id": {
+          "description": "",
+          "example": "3ba35364-226f-405b-a162-0689ac239b18",
+          "type": "string"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "latency-sla": {
+          "description": "",
+          "type": "string"
+        },
+        "linkstatus": {
+          "description": "",
+          "example": 6,
+          "type": "integer",
+          "format": "int32"
+        },
+        "link-type": {
+          "description": "",
+          "example": "1",
+          "type": "string"
+        }
+      }
+    },
+    "Link": {
+      "title": "link",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "Main link from Melbourne to Sydney",
+          "type": "string"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contracts": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contract"
+          }
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "type": {
+          "description": "",
+          "example": "0",
+          "type": "string"
+        },
+        "linkStatus": {
+          "description": "",
+          "example": 1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "billing-id": {
+          "description": "",
+          "example": "b41c4ec8-1825-404b-b740-feaeba96681d",
+          "type": "string"
+        }
+      }
+    },
+    "Contract": {
+      "title": "contract",
+      "type": "object",
+      "properties": {
+        "contractid": {
+          "description": "Identifier of a contract",
+          "example": "f070660600c1c45f.2",
+          "type": "string"
+        },
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in kB/s",
+          "example": 1000,
+          "type": "integer",
+          "minimum": 1000.0,
+          "maximum": 10000000.0,
+          "format": "int32"
+        },
+        "price": {
+          "description": "",
+          "example": 259,
+          "type": "integer",
+          "format": "int32"
+        },
+        "contractStatus": {
+          "description": "",
+          "example": 8,
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "",
+          "example": 20431,
+          "type": "integer",
+          "format": "int32"
+        },
+        "deletedtimestamp": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "currencyCode": {
+          "description": "",
+          "example": "USD",
+          "type": "string"
+        },
+        "currencyID": {
+          "description": "",
+          "example": "1",
+          "type": "string"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "contract-start-time": {
+          "description": "",
+          "example": 1508589922000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "contract-end-time": {
+          "description": "",
+          "example": 1508593521000,
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "100InventoryLinksHistoryResponse": {
+      "title": "100 Inventory Links History Response",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "\"Replication link between Equinix SYD and NextDC MEL\"",
+          "type": "string"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contracts": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contract"
+          }
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "type": {
+          "description": "",
+          "example": "0",
+          "type": "string"
+        },
+        "linkStatus": {
+          "description": "",
+          "example": 1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "billing-id": {
+          "description": "",
+          "example": "9c1ffab1-d037-4cf7-a19d-d213a05f5e6a",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryLinksContractResponse": {
+      "title": "100 Inventory Links Contract Response",
+      "type": "object",
+      "properties": {
+        "params": {
+          "$ref": "#/definitions/Params35"
+        }
+      }
+    },
+    "Params35": {
+      "title": "Params35",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "\"Replication link between Equinix SYD and NextDC MEL\"",
+          "type": "string"
+        },
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in kB/s",
+          "example": 1000,
+          "type": "integer",
+          "minimum": 1000.0,
+          "maximum": 10000000.0,
+          "format": "int32"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contractid": {
+          "description": "Identifier of a contract",
+          "example": "f070660600c1c45f.2",
+          "type": "string"
+        },
+        "price": {
+          "description": "",
+          "example": 259,
+          "type": "integer",
+          "format": "int32"
+        },
+        "contractStatus": {
+          "description": "",
+          "example": 8,
+          "type": "integer",
+          "format": "int32"
+        },
+        "version": {
+          "description": "",
+          "example": 20431,
+          "type": "integer",
+          "format": "int32"
+        },
+        "deletedtimestamp": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "connection": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "type": {
+          "description": "",
+          "example": "0",
+          "type": "string"
+        },
+        "billing-id": {
+          "description": "",
+          "example": "3ba35364-226f-405b-a162-0689ac239b18",
+          "type": "string"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "contract-start-time": {
+          "description": "",
+          "example": 1508589922000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "contract-end-time": {
+          "description": "",
+          "example": 1508593521000,
+          "type": "integer",
+          "format": "int64"
+        }
+      }
+    },
+    "100InventoryLinksContractRequest": {
+      "title": "100 Inventory Links Contract Request",
+      "type": "object",
+      "properties": {
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "100InventoryLinksContractResponse37": {
+      "title": "100 Inventory Links Contract Response37",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/definitions/Params38"
+        }
+      }
+    },
+    "Params38": {
+      "title": "Params38",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contractid": {
+          "description": "Identifier of a contract",
+          "example": "f070660600c1c45f.2",
+          "type": "string"
+        },
+        "price": {
+          "description": "",
+          "example": 259,
+          "type": "integer",
+          "format": "int32"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "100InventoryLinksResponse": {
+      "title": "100 Inventory Links Response",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "MEL-SYD",
+          "type": "string"
+        },
+        "latency": {
+          "description": "Latency: 0=Low, 1=Standard, 2=Best Effort",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contracts": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Contract"
+          }
+        },
+        "tag": {
+          "description": "",
+          "example": "prod",
+          "type": "string"
+        },
+        "connections": {
+          "description": "",
+          "example": [
+            "5134d2ba-ce81-4b1c-9242-d2f30896c3a0",
+            "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
+          ],
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "type": {
+          "description": "",
+          "example": "0",
+          "type": "string"
+        },
+        "linkStatus": {
+          "description": "",
+          "example": 1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "topology_tag_uuid": {
+          "description": "",
+          "example": "5f02ee19-8de3-4a0d-8baf-823e4aa16780",
+          "type": "string"
+        },
+        "billing-id": {
+          "description": "",
+          "example": "d04544ba-6c9c-4e84-bd60-848e56a116c4",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryLinksContractRequest41": {
+      "title": "100 Inventory Links Contract Request41",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "Duration of contract in hours (not minutes)",
+          "example": 1,
+          "type": "integer",
+          "minimum": 1.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in MB/s (not kB/s)",
+          "example": 1,
+          "type": "integer",
+          "minimum": 1.0,
+          "maximum": 10000.0,
+          "format": "int32"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "100InventoryLinksContractResponse42": {
+      "title": "100 Inventory Links Contract Response42",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "params": {
+          "$ref": "#/definitions/Params43"
+        }
+      }
+    },
+    "Params43": {
+      "title": "Params43",
+      "type": "object",
+      "properties": {
+        "duration": {
+          "description": "Duration of contract in minutes",
+          "example": 3600,
+          "type": "integer",
+          "minimum": 3600.0,
+          "format": "int32"
+        },
+        "bandwidth": {
+          "description": "Bandwidth in kB/s",
+          "example": 1000,
+          "type": "integer",
+          "minimum": 1000.0,
+          "maximum": 10000000.0,
+          "format": "int32"
+        },
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "contractid": {
+          "description": "Identifier of a contract",
+          "example": "f070660600c1c45f.2",
+          "type": "string"
+        },
+        "currencyId": {
+          "description": "",
+          "example": "1",
+          "type": "string"
+        },
+        "price": {
+          "description": "",
+          "example": 259,
+          "type": "integer",
+          "format": "int32"
+        },
+        "renewal-option": {
+          "description": "\"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour\"",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "100InventoryVnfVportRequest": {
+      "title": "100 Inventory Vnf Vport Request",
+      "type": "object",
+      "properties": {
+        "customeruuid": {
+          "description": "",
+          "example": "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9",
+          "type": "string"
+        },
+        "vnfuuid": {
+          "description": "",
+          "example": "9da748fb-9044-4909-95c2-4245d7592bec",
+          "type": "string"
+        },
+        "management_port": {
+          "description": "",
+          "type": "boolean"
+        }
+      }
+    },
+    "100InventoryVnfVportResponse": {
+      "title": "100 Inventory Vnf Vport Response",
+      "type": "object",
+      "properties": {
+        "vnfuuid": {
+          "description": "vnfuuid which was passed in the request",
+          "example": "9da748fb-9044-4909-95c2-4245d7592bec",
+          "type": "string"
+        },
+        "vnportuuid": {
+          "description": "uuid of the newly-created vport",
+          "example": "1402ed53-4693-40e0-aa1e-5d5b85052f3d",
+          "type": "string"
+        }
+      }
+    },
+    "100InventoryRegularvportRequest": {
+      "title": "100 Inventory Regularvport Request",
+      "type": "object",
+      "properties": {
+        "vporttype": {
+          "description": "",
+          "example": "vlan",
+          "type": "string"
+        },
+        "endpointuuid": {
+          "description": "",
+          "example": "9a04a7ff-0a82-4259-9f2b-c384b6d720ab",
+          "type": "string"
+        },
+        "vportvalue": {
+          "$ref": "#/definitions/Vportvalue"
+        }
+      }
+    },
+    "100InventoryRegularvportResponse": {
+      "title": "100 Inventory Regularvport Response",
+      "type": "object",
+      "properties": {
+        "success-auxiliary": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        },
+        "success-code": {
+          "description": "",
+          "example": 20000,
+          "type": "integer",
+          "format": "int32"
+        },
+        "success-message": {
+          "description": "",
+          "example": "vport created successfully",
+          "type": "string"
+        },
+        "vportuuid": {
+          "description": "",
+          "example": "251a54f9-f534-4d92-86b9-77e73bd4ede4",
+          "type": "string"
+        }
+      }
+    },
+    "100MarketplaceImageResponse": {
+      "title": "100 Marketplace Image Response",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        },
+        "objects": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Image"
+          }
+        }
+      }
+    },
+    "Meta": {
+      "title": "meta",
+      "type": "object",
+      "properties": {
+        "limit": {
+          "description": "",
+          "type": "integer",
+          "format": "int32"
+        },
+        "next": {
+          "description": "",
+          "type": "integer",
+          "format": "int32"
+        },
+        "offset": {
+          "description": "",
+          "type": "integer",
+          "format": "int32"
+        },
+        "previous": {
+          "description": "",
+          "type": "integer",
+          "format": "int32"
+        },
+        "total_count": {
+          "description": "",
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Image": {
+      "title": "image",
+      "type": "object",
+      "properties": {
+        "brief_description": {
+          "description": "",
+          "example": "Quagga for general use",
+          "type": "string"
+        },
+        "buyers": {
+          "description": "",
+          "type": "string"
+        },
+        "classifications": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Classification"
+          }
+        },
+        "comments": {
+          "description": "",
+          "type": "string"
+        },
+        "create_at": {
+          "description": "",
+          "example": 1456314043,
+          "type": "integer",
+          "format": "int32"
+        },
+        "creator": {
+          "description": "",
+          "example": "1f10c671-cd71-4467-b605-d150113629b9",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "Quagga router image with version 0.99.22.1",
+          "type": "string"
+        },
+        "eos": {
+          "description": "",
+          "type": "string"
+        },
+        "flavors": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Flavor"
+          }
+        },
+        "flavors_price": {
+          "description": "",
+          "type": "string"
+        },
+        "glance_comments": {
+          "description": "",
+          "type": "string"
+        },
+        "glance_image": {
+          "$ref": "#/definitions/GlanceImage"
+        },
+        "glance_name": {
+          "description": "",
+          "example": "c9b2444c-239a-475b-af54-db9deccefca3",
+          "type": "string"
+        },
+        "glance_properties": {
+          "description": "",
+          "type": "string"
+        },
+        "id": {
+          "description": "",
+          "example": 6,
+          "type": "integer",
+          "format": "int32"
+        },
+        "image_format": {
+          "description": "",
+          "example": "qcow2",
+          "type": "string"
+        },
+        "license_required": {
+          "description": "",
+          "type": "boolean"
+        },
+        "logo": {
+          "description": "",
+          "example": "\"https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg\"",
+          "type": "string"
+        },
+        "max_ports": {
+          "description": "",
+          "example": 8,
+          "type": "integer",
+          "format": "int32"
+        },
+        "md5": {
+          "description": "",
+          "type": "string"
+        },
+        "min_ports": {
+          "description": "",
+          "example": 1,
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "",
+          "example": "CSR1000v",
+          "type": "string"
+        },
+        "os_version": {
+          "description": "",
+          "example": "Ubuntu 16.04",
+          "type": "string"
+        },
+        "owner": {
+          "description": "",
+          "example": "d486321a-9a91-4879-8d7c-2fcf4506e33e",
+          "type": "string"
+        },
+        "product": {
+          "$ref": "#/definitions/Product"
+        },
+        "publish_date": {
+          "description": "",
+          "type": "string"
+        },
+        "restrict_vnc_console": {
+          "description": "",
+          "type": "boolean"
+        },
+        "status": {
+          "description": "",
+          "example": "Published",
+          "type": "string"
+        },
+        "support_hot_plug": {
+          "description": "",
+          "type": "boolean"
+        },
+        "tags": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VnfTag"
+          }
+        },
+        "upload_at": {
+          "description": "",
+          "example": 1456315518,
+          "type": "integer",
+          "format": "int32"
+        },
+        "vendor_name": {
+          "description": "",
+          "example": "Cisco",
+          "type": "string"
+        },
+        "zero_day_config_spec": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    },
+    "Classification": {
+      "title": "Classification",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "Router",
+          "type": "string"
+        },
+        "id": {
+          "description": "",
+          "example": 4,
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "",
+          "example": "Router",
+          "type": "string"
+        }
+      }
+    },
+    "Flavor": {
+      "title": "flavor",
+      "type": "object",
+      "properties": {
+        "currency": {
+          "description": "",
+          "example": "USD",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "Flavor for CSP image",
+          "type": "string"
+        },
+        "disk": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "ephemeral": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "id": {
+          "description": "",
+          "example": 3,
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "",
+          "example": "Medium-CSP",
+          "type": "string"
+        },
+        "price": {
+          "description": "",
+          "example": 0.4,
+          "type": "number",
+          "format": "double"
+        },
+        "ram": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "specific_customer": {
+          "description": "",
+          "type": "string"
+        },
+        "swap": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        },
+        "vcpus": {
+          "description": "",
+          "example": 2,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "GlanceImage": {
+      "title": "GlanceImage",
+      "type": "object",
+      "properties": {
+        "create_at": {
+          "description": "",
+          "type": "string"
+        },
+        "id": {
+          "description": "",
+          "example": 7,
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "",
+          "example": "quagga-0.99.22.1",
+          "type": "string"
+        },
+        "owner": {
+          "description": "",
+          "example": "9222433f-727d-4679-b807-3ce39b9f8ef2",
+          "type": "string"
+        },
+        "status": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    },
+    "Product": {
+      "title": "Product",
+      "type": "object",
+      "properties": {
+        "id": {
+          "description": "",
+          "example": 7,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "VnfTag": {
+      "title": "vnf-tag",
+      "type": "object",
+      "properties": {
+        "description": {
+          "description": "",
+          "example": "UNIX",
+          "type": "string"
+        },
+        "id": {
+          "description": "",
+          "example": 2,
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "description": "",
+          "example": "UNIX",
+          "type": "string"
+        }
+      }
+    },
+    "100MarketplaceImageMyImagesResponse": {
+      "title": "100 Marketplace Image My Images Response",
+      "type": "object",
+      "properties": {
+        "meta": {
+          "$ref": "#/definitions/Meta"
+        },
+        "objects": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Image"
+          }
+        }
+      }
+    },
+    "100MarketplaceImageAddToMyImagesResponse": {
+      "title": "100 Marketplace Image Add To My Images Response",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        }
+      }
+    },
+    "100MarketplaceImageIdRemoveFromMyImagesResponse": {
+      "title": "100 Marketplace Image Id Remove From My Images Response",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "",
+          "example": "success",
+          "type": "string"
+        }
+      }
+    },
+    "Vnfds100VnfRebootRequest": {
+      "title": "Vnfds 100 Vnf Reboot Request",
+      "type": "object",
+      "properties": {
+        "reboot_type": {
+          "description": "",
+          "example": "warm",
+          "type": "string"
+        }
+      }
+    },
+    "Vnfds100VnfResponse": {
+      "title": "Vnfds 100 Vnf Response",
+      "type": "object",
+      "properties": {
+        "status": {
+          "description": "",
+          "example": "ACTIVE",
+          "type": "string"
+        }
+      }
+    },
+    "Topology": {
+      "title": "topology",
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "description": "",
+          "example": "2056dbc6-fcad-4374-9dda-3bde3507b3b3",
+          "type": "string"
+        },
+        "name": {
+          "description": "",
+          "example": "Production WAN",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "Main topology for WAN",
+          "type": "string"
+        },
+        "status": {
+          "description": "",
+          "example": "active",
+          "type": "string"
+        },
+        "customer_uuid": {
+          "description": "",
+          "example": "536b8cca-6594-46b9-8e62-1638e42deb6e",
+          "type": "string"
+        },
+        "nsd_uuid": {
+          "description": "no longer used",
+          "type": "string"
+        },
+        "guid_topology_id": {
+          "description": "",
+          "type": "string"
+        },
+        "created_by": {
+          "description": "",
+          "example": "7a53ecf9-644a-4c92-8c63-eabc1ffe131f",
+          "type": "string"
+        },
+        "creation_date": {
+          "description": "",
+          "example": 1508307028000,
+          "type": "integer",
+          "format": "int64"
+        },
+        "deletion_date": {
+          "description": "",
+          "example": 0,
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "Ttms100TopologyTagRequest": {
+      "title": "Ttms 100 Topology Tag Request",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "",
+          "example": "Production WAN",
+          "type": "string"
+        },
+        "description": {
+          "description": "",
+          "example": "Main topology for WAN",
+          "type": "string"
+        }
+      }
+    },
+    "Ttms100TopologyTagObjectsResponse": {
+      "title": "Ttms 100 Topology Tag Objects Response",
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Endpoint"
+          }
+        },
+        "links": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Link92"
+          }
+        },
+        "sharedvports": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "topology_tag": {
+          "description": "",
+          "example": "7a09af3d-d4e5-4538-a1e6-9f83d751e163",
+          "type": "string"
+        }
+      }
+    },
+    "Endpoint": {
+      "title": "Endpoint",
+      "type": "object",
+      "properties": {
+        "endpoint_uuid": {
+          "description": "",
+          "example": "88a86c13-9a71-4ea8-b4ed-f4d0d9ecb606",
+          "type": "string"
+        },
+        "vports": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Link92": {
+      "title": "Link92",
+      "type": "object",
+      "properties": {
+        "linkid": {
+          "description": "Identifier of a link",
+          "example": "f070660600c1c45f",
+          "type": "string"
+        },
+        "vport": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Eis100EndpointsTopologyTagUuidResponse": {
+      "title": "Eis 100 Endpoints Topology Tag Uuid Response",
+      "type": "object",
+      "properties": {
+        "endpoints": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Endpoint"
+          }
+        },
+        "sharedvports": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "topology-id": {
+          "description": "",
+          "example": "2ecaa946-848f-4f57-a000-bc15e64bd141",
+          "type": "string"
+        }
+      }
+    },
+    "100AuthGeneratetokenResponse": {
+      "title": "100 Auth Generatetoken Response",
+      "type": "object",
+      "properties": {
+        "token_type": {
+          "description": "",
+          "example": "bearer",
+          "type": "string"
+        },
+        "expires_in": {
+          "description": "",
+          "example": 6900,
+          "type": "integer",
+          "format": "int32"
+        },
+        "refresh_token": {
+          "description": "",
+          "example": "6fdad23ccbc1f8e415fc2cf8cd245dae",
+          "type": "string"
+        },
+        "access_token": {
+          "description": "",
+          "example": "a8856a1a4e25b23d86fa9ae2ffce3b63",
+          "type": "string"
+        }
+      }
+    },
+    "100AuthValidatetokenResponse": {
+      "title": "100 Auth Validatetoken Response",
+      "type": "object",
+      "properties": {
+        "company-name": {
+          "description": "",
+          "example": "Acme Corporation",
+          "type": "string"
+        },
+        "userid": {
+          "description": "",
+          "example": "321a5016-00a5-44ed-a749-4531ed89979a",
+          "type": "string"
+        },
+        "internalid": {
+          "description": "",
+          "example": 353,
+          "type": "integer",
+          "format": "int32"
+        },
+        "customerid": {
+          "description": "",
+          "example": "bae254c1-3d78-4d68-8948-8b929c48e576",
+          "type": "string"
+        },
+        "customer-account": {
+          "description": "",
+          "example": "70012345",
+          "type": "string"
+        },
+        "billings": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Billing"
+          }
+        },
+        "roles": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Role"
+          }
+        }
+      }
+    },
+    "Billing": {
+      "title": "billing",
+      "type": "object",
+      "properties": {
+        "billingid": {
+          "description": "",
+          "example": "dae2cb75-89f2-4b5b-be99-5cf3ae3faa20",
+          "type": "string"
+        },
+        "billing-account": {
+          "description": "",
+          "example": "60012345",
+          "type": "string"
+        }
+      }
+    },
+    "Role": {
+      "title": "role",
+      "type": "object",
+      "properties": {
+        "role-name": {
+          "description": "",
+          "example": "customer-admin",
+          "type": "string"
+        },
+        "permissions": {
+          "description": "",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "100AccountResponse": {
+      "title": "100 Account Response",
+      "type": "object",
+      "properties": {
+        "phone": {
+          "description": "",
+          "example": "7026661954",
+          "type": "string"
+        },
+        "city": {
+          "description": "",
+          "example": "Dallas",
+          "type": "string"
+        },
+        "fax": {
+          "description": "",
+          "type": "string"
+        },
+        "country": {
+          "description": "",
+          "example": "USA",
+          "type": "string"
+        },
+        "address": {
+          "description": "",
+          "example": "555 Paularino Avenue",
+          "type": "string"
+        },
+        "state": {
+          "description": "",
+          "example": "Texas",
+          "type": "string"
+        },
+        "website": {
+          "description": "",
+          "example": "http://dummy.com",
+          "type": "string"
+        },
+        "companyuuid": {
+          "description": "",
+          "example": "a6cef301-de34-4654-8933-ceafc7d2ae6e",
+          "type": "string"
+        },
+        "companyname": {
+          "description": "",
+          "example": "customer.pen.10",
+          "type": "string"
+        },
+        "postalcode": {
+          "description": "",
+          "example": "75024",
+          "type": "string"
+        },
+        "customertype": {
+          "description": "",
+          "type": "string"
+        },
+        "status": {
+          "description": "",
+          "example": "1",
+          "type": "string"
+        },
+        "customeraccountid": {
+          "description": "",
+          "example": "71234010",
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "title": "user",
+      "type": "object",
+      "properties": {
+        "useruuid": {
+          "description": "",
+          "example": "Ms",
+          "type": "string"
+        },
+        "status": {
+          "description": "",
+          "example": "1",
+          "type": "string"
+        },
+        "title": {
+          "description": "",
+          "example": "Ms",
+          "type": "string"
+        },
+        "usercountry": {
+          "description": "",
+          "example": "USA",
+          "type": "string"
+        },
+        "emailaddress": {
+          "description": "",
+          "example": "test@dummy.com",
+          "type": "string"
+        },
+        "jobtitle": {
+          "description": "",
+          "type": "string"
+        },
+        "firstname": {
+          "description": "",
+          "example": "Person",
+          "type": "string"
+        },
+        "middlename": {
+          "description": "",
+          "type": "string"
+        },
+        "lastname": {
+          "description": "",
+          "example": "Pacman",
+          "type": "string"
+        },
+        "phonenumber": {
+          "description": "",
+          "example": "7026661954",
+          "type": "string"
+        },
+        "phoneext": {
+          "description": "",
+          "type": "string"
+        },
+        "phonetype": {
+          "description": "",
+          "example": "mobile",
+          "type": "string"
+        }
+      },
+      "required": [
+        "useruuid",
+        "status"
+      ]
+    },
+    "Error102": {
+      "title": "Error102",
+      "type": "object",
+      "properties": {
+        "ns": {
+          "description": "",
+          "type": "string"
+        },
+        "error-code": {
+          "description": "",
+          "example": 1010099,
+          "type": "integer",
+          "format": "int32"
+        },
+        "error-message": {
+          "description": "",
+          "type": "string"
+        },
+        "error-auxiliary": {
+          "description": "",
+          "type": "string"
+        }
+      }
+    }
+  }
+}
