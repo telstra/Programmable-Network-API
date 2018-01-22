@@ -851,8 +851,6 @@ paths:
                           items:
                             $ref: '#/components/schemas/endpoint-port'
 
-
-
   /1.0.0/inventory/vnfendpoint:
     post:
       summary: Instantiate Virtual Network Function
@@ -1364,8 +1362,6 @@ paths:
                     description: uuid of the newly-created vport
                     type: string
                     example: "1402ed53-4693-40e0-aa1e-5d5b85052f3d"
-
-
 
   /1.0.0/inventory/regularvport:
     post:
