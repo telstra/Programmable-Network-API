@@ -1496,7 +1496,7 @@ paths:
         '404':
           description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
-  /1.0.0/marketplace/image/{id}/remove_from_my_images/:
+  '/1.0.0/marketplace/image/{imageid}/remove_from_my_images/':
     parameters:
       - $ref: '#/components/parameters/imageid'
     post:

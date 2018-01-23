@@ -1155,14 +1155,14 @@
         }
       }
     },
-    "/1.0.0/marketplace/image/{id}/remove_from_my_images/": {
+    "/1.0.0/marketplace/image/{imageid}/remove_from_my_images/": {
       "post": {
         "description": "Note that trailing / is required, body must be {}",
         "summary": "Remove specified image from \"My Images\"",
         "tags": [
           "vnfs"
         ],
-        "operationId": "100MarketplaceImageRemoveFromMyImagesByIdPost",
+        "operationId": "100MarketplaceImageRemoveFromMyImagesByImageidPost",
         "produces": [
           "application/json"
         ],
@@ -1176,13 +1176,6 @@
             "exclusiveMaximum": false,
             "exclusiveMinimum": false,
             "description": "Identifier representing a specific VNF image"
-          },
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": ""
           },
           {
             "name": "body",
