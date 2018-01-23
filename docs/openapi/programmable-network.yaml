@@ -13,7 +13,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.3.0
+  version: 2.3.1
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -1496,7 +1496,9 @@ paths:
         '404':
           description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
-  /1.0.0/marketplace/image/<id>/remove_from_my_images/:
+  /1.0.0/marketplace/image/{id}/remove_from_my_images/:
+    parameters:
+      - $ref: '#/components/parameters/imageid'
     post:
       summary: Remove specified image from "My Images"
       description: 'Note that trailing / is required, body must be {}'
