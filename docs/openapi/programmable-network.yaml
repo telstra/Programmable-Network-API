@@ -28,7 +28,7 @@ components:
       description: OAuth 2 with password grant flow
       flows:
         password:
-          tokenUrl: /1.0.0/auth/generatetoken
+          tokenUrl: https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken
           scopes: {}
   schemas:
     Error:
