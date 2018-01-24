@@ -1,4 +1,7 @@
 openapi: 3.0.0
+# This is an automatically-generated document. Please submit changes to
+# pnapi-support@team.telstra.com, or against the private repo, currently:
+# git.t-dev.corp.telstra.com:Rik.Harris/programmable-network
 info:
   title: Telstra Programmable Network API
   description: >-
@@ -13,7 +16,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.3.1
+  version: 2.3.2
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -850,6 +853,7 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/endpoint-port'
+  #
 
   /1.0.0/inventory/vnfendpoint:
     post:
