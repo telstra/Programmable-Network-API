@@ -1,5 +1,6 @@
 {
   "gitUserId": "Telstra",
   "gitRepoId": "Programmable-network-SDK-php",
-  "invokerPackage": "TelstraTPN"
+  "invokerPackage": "TelstraTPN",
+  "packagePath": ""
 }
