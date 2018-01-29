@@ -1,0 +1,9 @@
+{
+  "gitUserId": "Telstra",
+  "gitRepoId": "Programmable-network-SDK-java",
+  "packageName": "TelstraTPN",
+  "modelPackage": "TelstraTPN",
+  "apiPackage": "TelstraTPN",
+  "groupId": "IO.TelstraTPN",
+  "artifactId": "TelstraTPN"
+}
