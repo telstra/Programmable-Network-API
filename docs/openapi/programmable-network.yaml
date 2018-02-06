@@ -16,7 +16,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.3.2
+  version: 2.3.3
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -443,7 +443,35 @@ components:
           type: string
           example: "Cisco"
         zero_day_config_spec:
-          type: string
+          type: object
+          properties:
+            conf_type:
+              type: string
+              example: "custom"
+            count:
+              type: integer
+              example: 1
+            create_at:
+              type: integer
+              example: 1499941289
+            creator:
+              type: string
+              example: 918165
+            file_name:
+              type: string
+              example: "config.txt"
+            id:
+              type: integer
+              example: 123
+            name:
+              type: string
+              example: "config"
+            owner:
+              type: string
+              example: "8050e2c1-726d-4c50-ae1b-3a44dadaa68e"
+            updated_at:
+              type: integer
+              example: 1499941289
     meta:
       type: object
       properties:
@@ -853,7 +881,6 @@ paths:
                           type: array
                           items:
                             $ref: '#/components/schemas/endpoint-port'
-  #
 
   /1.0.0/inventory/vnfendpoint:
     post:
