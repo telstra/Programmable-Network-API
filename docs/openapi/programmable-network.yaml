@@ -107,11 +107,11 @@ components:
                 items:
                   type: string
               operatorname:
-                type: string      
+                type: string
     endpointone:
       type: object
       properties:
-        epoint:    
+        epoint:
           type: array
           items:
             type: object
@@ -947,7 +947,7 @@ components:
               billing-id:
                 type: string
                 example: "9c1ffab1-d037-4cf7-a19d-d213a05f5e6a"
-    invlinkscustomer:   
+    invlinkscustomer:
       description: Success
       content:
         application/json:
@@ -1029,18 +1029,18 @@ components:
           schema:
             $ref: '#/components/schemas/Error'
     getmarketplaceimg:
-        description: Success
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                meta:
-                  $ref: '#/components/schemas/meta'
-                objects:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/image'
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/meta'
+              objects:
+                type: array
+                items:
+                  $ref: '#/components/schemas/image'
     objectnotfound:
       description: Specified object cannot be found
       content:
@@ -1078,7 +1078,7 @@ paths:
         - datacentres
       responses:
         '200':
-          $ref: '#/components/responses/datacenterinventorygetresponse'         
+          $ref: '#/components/responses/datacenterinventorygetresponse'
         '400':
           $ref: '#/components/responses/invalidrequest'
         '401':
@@ -1197,7 +1197,7 @@ paths:
           content:
             application/json:
               schema:
-                  $ref: '#/components/schemas/success-fragment2'
+                $ref: '#/components/schemas/success-fragment2'
   '/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag':
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
