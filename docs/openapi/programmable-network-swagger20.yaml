@@ -1,296 +1,209 @@
 swagger: '2.0'
 info:
-  version: 2.3.2
-  title: Telstra Programmable Network API
-  description: |-
-    Telstra Programmable Network is a self-provisioning platform that allows its users to create on-demand connectivity services between multiple end-points and add various network functions to those services. Programmable Network enables to connectivity to a global ecosystem of networking services as well as public and private cloud services. Once you are connected to the platform on one or more POPs (points of presence), you can start creating those services based on the use case that you want to accomplish. The Programmable Network API is available to all customers who have registered to use the Programmable Network.
+  contact:
+    email: pnapi-support@team.telstra.com
+    name: Telstra Corporation - Programmable Network API
+    url: 'https://dev.telstra.com/content/programmable-network-api'
+  description: >-
+    Telstra Programmable Network is a self-provisioning platform that allows its
+    users to create on-demand connectivity services between multiple end-points
+    and add various network functions to those services. Programmable Network
+    enables to connectivity to a global ecosystem of networking services as well
+    as public and private cloud services. Once you are connected to the platform
+    on one or more POPs (points of presence), you can start creating those
+    services based on the use case that you want to accomplish. The Programmable
+    Network API is available to all customers who have registered to use the
+    Programmable Network.
+
     To register, please contact your account representative.
-  license:
-    name: MIT
-    url: 'http://github.com/gruntjs/grunt/blob/master/LICENSE-MIT'
+  title: Telstra Programmable Network API
+  version: 2.3.3
 host: penapi.pacnetconnect.com
 basePath: /
-securityDefinitions:
-  auth:
-    type: oauth2
-    flow: password
-    tokenUrl: 'https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken'
-    scopes:
-      oAuth2: oAuth2
-    x-skip-client-authentication: false
 schemes:
   - https
-consumes:
-  - application/json
-produces:
-  - application/json
 paths:
-  '/1.0.0/account/{customeruuid}/user':
-    get:
-      description: List all users associated with the specified customer
-      summary: accountcustomeruuiduserget
-      tags:
-        - customers
-      operationId: AccountUserByCustomeruuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: customeruuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific customer
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/User'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
   '/1.0.0/account/{customeruuid}':
     get:
-      description: Get the account information for the specified customer
-      summary: accountcustomeruuidget
-      tags:
-        - customers
-      operationId: AccountByCustomeruuidGet
-      produces:
-        - application/json
       parameters:
-        - name: customeruuid
+        - description: Unique identifier representing a specific customer
           in: path
+          name: customeruuid
           required: true
           type: string
-          description: Unique identifier representing a specific customer
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/AccountcustomeruuidgetResponse'
-          examples: {}
+            properties:
+              address:
+                example: 555 Paularino Avenue
+                type: string
+              city:
+                example: Dallas
+                type: string
+              companyname:
+                example: customer.pen.10
+                type: string
+              companyuuid:
+                example: a6cef301-de34-4654-8933-ceafc7d2ae6e
+                type: string
+              country:
+                example: USA
+                type: string
+              customeraccountid:
+                example: '71234010'
+                type: string
+              customertype:
+                example: ''
+                type: string
+              fax:
+                type: string
+              phone:
+                example: '7026661954'
+                type: string
+              postalcode:
+                example: '75024'
+                type: string
+              state:
+                example: Texas
+                type: string
+              status:
+                example: '1'
+                type: string
+              website:
+                example: 'http://dummy.com'
+                type: string
+            type: object
         '401':
           description: Authorization Failed
           schema:
             $ref: '#/definitions/Error'
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /ttms/1.0.0/topology_tag:
-    get:
-      description: List all topology tags
-      summary: ttmstopologytagget
       tags:
-        - topologies
-      operationId: Ttms100TopologyTagGet
-      produces:
-        - application/json
+        - customers
+      description: Get the account information for the specified customer
+      operationId: accountcustomeruuidget
+      summary: Get account information details
+  '/1.0.0/account/{customeruuid}/user':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific customer
+          in: path
+          name: customeruuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/user'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - customers
+        - users
+      description: List all users associated with the specified customer
+      operationId: accountcustomeruuiduserget
+      summary: List users
+  /1.0.0/auth/generatetoken:
+    post:
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+        - default: password
+          in: formData
+          name: grant_type
+          required: true
+          type: string
+        - in: formData
+          name: username
+          required: true
+          type: string
+        - in: formData
+          name: password
+          required: true
+          type: string
+      responses:
+        '200':
+          description: A JSON hash containing the bearer token
+          schema:
+            properties:
+              access_token:
+                example: a8856a1a4e25b23d86fa9ae2ffce3b63
+                type: string
+              expires_in:
+                example: 6900
+                type: integer
+              refresh_token:
+                example: 6fdad23ccbc1f8e415fc2cf8cd245dae
+                type: string
+              token_type:
+                example: bearer
+                type: string
+            type: object
+        '412':
+          description: Provided authorization grant is invalid
+      security: []
+      tags:
+        - authentication
+      operationId: authgeneratetokenpost
+      summary: Create an authentication token
+  /1.0.0/auth/validatetoken:
+    get:
       parameters: []
       responses:
         '200':
           description: Success
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Topology'
-          examples: {}
+            properties:
+              billings:
+                items:
+                  $ref: '#/definitions/billing'
+                type: array
+              company-name:
+                example: Acme Corporation
+                type: string
+              customer-account:
+                example: '70012345'
+                type: string
+              customerid:
+                example: bae254c1-3d78-4d68-8948-8b929c48e576
+                type: string
+              internalid:
+                example: 353
+                type: integer
+              roles:
+                items:
+                  $ref: '#/definitions/role'
+                type: array
+              userid:
+                example: 321a5016-00a5-44ed-a749-4531ed89979a
+                type: string
+            type: object
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-    post:
-      description: Create a named topology tag
-      summary: ttmstopologytagpost
       tags:
-        - topologies
-      operationId: Ttms100TopologyTagPost
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body72'
-      responses:
-        '201':
-          description: Created
-          schema:
-            $ref: '#/definitions/Topology'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/ttms/1.0.0/topology_tag/{topotaguuid}/objects/':
-    get:
-      description: 'List all objects (Endpoints, Links, VPorts, etc.) associated with the topology tag.'
-      summary: ttmstopologytagtopotaguuidobjectsget
-      tags:
-        - topologies
-      operationId: Ttms100TopologyTagObjectsByTopotaguuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/TtmstopologytagtopotaguuidobjectsgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/ttms/1.0.0/topology_tag/{topotaguuid}/':
-    get:
-      description: Get information about the specified topology tag
-      summary: ttmstopologytagtopotaguuidget
-      tags:
-        - topologies
-      operationId: Ttms100TopologyTagByTopotaguuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Topology'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-    put:
-      description: Update a topology tag's name and/or description
-      summary: ttmstopologytagtopotaguuidput
-      tags:
-        - topologies
-      operationId: Ttms100TopologyTagByTopotaguuidPut
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body72'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Topology'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-    delete:
-      description: Delete a topology tag
-      summary: ttmstopologytagtopotaguuiddelete
-      tags:
-        - topologies
-      operationId: Ttms100TopologyTagByTopotaguuidDelete
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body72'
-      responses:
-        '204':
-          description: No Content
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
+        - authentication
+      description: >-
+        Validate the authentication token and get information about the user
+        (roles, permissions, etc.)
+      operationId: authvalidatetokenget
+      summary: Validate authentication token
   /1.0.0/inventory/datacenters:
     get:
-      description: Get list of all the data centers
-      summary: inventorydatacentersget
-      tags:
-        - datacentres
-      operationId: InventoryDatacentersGet
-      produces:
-        - application/json
       parameters: []
       responses:
         '200':
           description: array of data center objects
           schema:
-            $ref: '#/definitions/InventorydatacentersgetResponse'
-          examples: {}
+            $ref: '#/definitions/datacenterget'
         '400':
           description: Request is not correctly formatted
           schema:
@@ -298,7 +211,17 @@ paths:
         '401':
           description: Missing Token
           schema:
-            $ref: '#/definitions/InventorydatacentersgetException'
+            properties:
+              error:
+                example: error
+                type: string
+              error-code:
+                example: 1060052
+                type: integer
+              error_description:
+                example: Payload required.
+                type: string
+            type: object
         '403':
           description: Authorization Failed
           schema:
@@ -319,112 +242,946 @@ paths:
           description: Request is invalid
           schema:
             $ref: '#/definitions/Error'
-        default:
+        '500':
           description: Backend Error
           schema:
             $ref: '#/definitions/Error'
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/vnfds/1.0.0/vnf/{vnfuuid}/suspend':
-    post:
-      description: 'Note that body must be {}'
-      summary: vnfdsvnfvnfuuidsuspendpost
       tags:
-        - vnfs
-      operationId: Vnfds100VnfSuspendByVnfuuidPost
-      produces:
-        - application/json
+        - datacentres
+      operationId: inventorydatacentersget
+      summary: Get list of all the data centers
+  '/1.0.0/inventory/endpoint/{endpointuuid}':
+    get:
       parameters:
-        - name: vnfuuid
+        - description: Unique identifier representing a specific endpoint
           in: path
+          name: endpointuuid
           required: true
           type: string
-          description: Unique identifier representing a specific virtual network function
       responses:
         '200':
           description: Success
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/vnfds/1.0.0/vnf/{vnfuuid}/resume':
-    post:
-      description: 'Note that body must be {}'
-      summary: vnfdsvnfvnfuuidresumepost
-      tags:
-        - vnfs
-      operationId: Vnfds100VnfResumeByVnfuuidPost
-      produces:
-        - application/json
-      parameters:
-        - name: vnfuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific virtual network function
-      responses:
-        '200':
-          description: Success
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/vnfds/1.0.0/vnf/{vnfuuid}/reboot':
-    post:
-      description: reboot_type is 'warm' or 'cold'
-      summary: vnfdsvnfvnfuuidrebootpost
-      tags:
-        - vnfs
-      operationId: Vnfds100VnfRebootByVnfuuidPost
-      produces:
-        - application/json
-      parameters:
-        - name: vnfuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific virtual network function
-        - name: body
-          in: body
-          required: false
-          description: ''
           schema:
-            $ref: '#/definitions/Body80'
+            $ref: '#/definitions/datacenterResponse'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+      operationId: inventoryendpointendpointuuidget
+      summary: Get information about the specified endpoint
+  '/1.0.0/inventory/endpoints/customeruuid/{customeruuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific customer
+          in: path
+          name: customeruuid
+          required: true
+          type: string
       responses:
         '200':
           description: Success
+          schema:
+            $ref: '#/definitions/endpointone'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+      operationId: inventoryendpointscustomeruuidcustomeruuidget
+      summary: Get list of endpoints for a customer
+  /1.0.0/inventory/link:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              bandwidth:
+                $ref: '#/definitions/bandwidth.kbs'
+              billing-id:
+                example: 684903a3-78b0-4005-9bfe-eece54ad42f3
+                type: string
+              connections:
+                $ref: '#/definitions/connections'
+              description:
+                example: '"Replication link between Equinix SYD and NextDC MEL"'
+                type: string
+              duration:
+                $ref: '#/definitions/duration.mins'
+              latency:
+                $ref: '#/definitions/latency'
+              link-type:
+                description: '1=VLAN, 2=VNF'
+                example: 1
+                type: integer
+              renewal-option:
+                $ref: '#/definitions/renewal-option'
+              tag:
+                example: prod
+                type: string
+              topology_tag_uuid:
+                example: 684903a3-78b0-4005-9bfe-eece54ad42f3
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            allOf:
+              - $ref: '#/definitions/success-fragment'
+              - $ref: '#/definitions/endpointuuidResponse'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - links
+      operationId: inventorylinkpost
+      summary: Create Link and initial Contract
+  '/1.0.0/inventory/links/customer/{customeruuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific customer
+          in: path
+          name: customeruuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/link'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - links
+      operationId: inventorylinkscustomercustomeruuidget
+      summary: Get active Links
+  '/1.0.0/inventory/links/history/{linkid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific link
+          in: path
+          name: linkid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              billing-id:
+                example: 9c1ffab1-d037-4cf7-a19d-d213a05f5e6a
+                type: string
+              connections:
+                $ref: '#/definitions/connections'
+              contracts:
+                items:
+                  $ref: '#/definitions/contract'
+                type: array
+              description:
+                example: '"Replication link between Equinix SYD and NextDC MEL"'
+                type: string
+              latency:
+                $ref: '#/definitions/latency'
+              linkStatus:
+                example: 1
+                type: integer
+              linkid:
+                $ref: '#/definitions/linkid'
+              tag:
+                example: prod
+                type: string
+              type:
+                example: '0'
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - links
+      operationId: inventorylinkshistorylinkidget
+      summary: Get Link history
+  '/1.0.0/inventory/links/{linkid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific link
+          in: path
+          name: linkid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              billing-id:
+                example: d04544ba-6c9c-4e84-bd60-848e56a116c4
+                type: string
+              connections:
+                $ref: '#/definitions/connections'
+              contracts:
+                items:
+                  $ref: '#/definitions/contract'
+                type: array
+              description:
+                example: MEL-SYD
+                type: string
+              latency:
+                $ref: '#/definitions/latency'
+              linkStatus:
+                example: 1
+                type: integer
+              linkid:
+                $ref: '#/definitions/linkid'
+              tag:
+                example: prod
+                type: string
+              topology_tag_uuid:
+                example: 5f02ee19-8de3-4a0d-8baf-823e4aa16780
+                type: string
+              type:
+                example: '0'
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - links
+      operationId: inventorylinkslinkidget
+      summary: Get details of specified link
+  '/1.0.0/inventory/links/{linkid}/contract':
+    post:
+      parameters:
+        - description: Unique identifier representing a specific link
+          in: path
+          name: linkid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              bandwidth:
+                $ref: '#/definitions/bandwidth.mbs'
+              duration:
+                $ref: '#/definitions/duration.hrs'
+              renewal-option:
+                $ref: '#/definitions/renewal-option'
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            allOf:
+              - $ref: '#/definitions/success-fragment'
+              - $ref: '#components/schemas/success-links'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - contracts
+      operationId: inventorylinkslinkidcontractpost
+      summary: Create new Contract on specified link
+  '/1.0.0/inventory/links/{linkid}/contract/{contractid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific link
+          in: path
+          name: linkid
+          required: true
+          type: string
+        - description: Unique identifier representing a specific contract
+          in: path
+          name: contractid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              renewal-option:
+                $ref: '#/definitions/renewal-option'
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/contractgetres'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - contracts
+      operationId: inventorylinksget
+      summary: Get active Contract by ContractID
+    put:
+      parameters:
+        - description: Unique identifier representing a specific link
+          in: path
+          name: linkid
+          required: true
+          type: string
+        - description: Unique identifier representing a specific contract
+          in: path
+          name: contractid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              renewal-option:
+                $ref: '#/definitions/renewal-option'
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            allOf:
+              - $ref: '#/definitions/success-fragment'
+              - $ref: '#/definitions/success-contractid'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - contracts
+      operationId: inventorylinksput
+      summary: Update active Contract by ContractID
+  /1.0.0/inventory/regularendpoint:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              customeruuid:
+                example: 6a607f5f-25c9-45a1-a960-a34245509208
+                type: string
+              datacenteruuid:
+                example: dc8f4a57-4621-4b17-87bd-e5a7e508bf7a
+                type: string
+              interfacetype:
+                example: 1000Base-TX
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/success-fragment2'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+      operationId: inventoryregularendpointpost
+      summary: Create Physical (Port) Endpoint
+  /1.0.0/inventory/regularvport:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              endpointuuid:
+                example: 9a04a7ff-0a82-4259-9f2b-c384b6d720ab
+                type: string
+              vporttype:
+                example: vlan
+                type: string
+              vportvalue:
+                $ref: '#/definitions/Vportvalue'
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            allOf:
+              - $ref: '#/definitions/success-fragment'
+              - properties:
+                  vportuuid:
+                    example: 251a54f9-f534-4d92-86b9-77e73bd4ede4
+                    type: string
+                type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vports
+        - endpoints
+      description: Create VPort representing a VLAN on a Physical Ethernet Port
+      operationId: inventoryregularvportpost
+      summary: Create VPort for physical endpoint
+  /1.0.0/inventory/vnf/vport:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              customeruuid:
+                example: e58af39b-4a89-43f2-b1ed-1816b6d1f8e9
+                type: string
+              management_port:
+                type: boolean
+              vnfuuid:
+                example: 9da748fb-9044-4909-95c2-4245d7592bec
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              vnfuuid:
+                description: vnfuuid which was passed in the request
+                example: 9da748fb-9044-4909-95c2-4245d7592bec
+                type: string
+              vnportuuid:
+                description: uuid of the newly-created vport
+                example: 1402ed53-4693-40e0-aa1e-5d5b85052f3d
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vports
+        - vnfs
+      operationId: inventoryvnfvportpost
+      summary: Create VNF VPort
+  /1.0.0/inventory/vnfendpoint:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              config:
+                description: 'Boot configuration for VNF, base64 encoded'
+                type: string
+              customeruuid:
+                example: e66546d2-eb85-442f-a4d4-a4f6f4cee6bc
+                type: string
+              datacenteruuid:
+                example: 2e5ff2d1-da1b-4e5d-81a8-58f1780b1031
+                type: string
+              flavoruuid:
+                example: 22
+                type: integer
+              imageuuid:
+                example: 21
+                type: integer
+              topology_tag_uuid:
+                example: f6c14b31-f29f-4be2-919b-5b7f463e4a3c
+                type: string
+            required:
+              - customeruuid
+              - imageuuid
+              - flavoruuid
+              - datacenteruuid
+              - config
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            allOf:
+              - $ref: '#/definitions/success-fragment'
+              - properties:
+                  customeruuid:
+                    example: 9a6c0b09-6864-4f1b-bc03-842268ca1061
+                    type: string
+                  vnfuuid:
+                    example: 37449aab-0aa2-44ae-929b-7616549ee20e
+                    type: string
+                type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+        - vnfs
+      operationId: inventoryvnfendpointpost
+      summary: Instantiate Virtual Network Function
+  '/1.0.0/inventory/vport/{vportuuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific virtual port
+          in: path
+          name: vportuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/endpoint-port'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vports
+      operationId: inventoryvportvportuuidget
+      summary: Get information about the specified VPort
+  /1.0.0/marketplace/image:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              meta:
+                $ref: '#/definitions/meta'
+              objects:
+                items:
+                  $ref: '#/definitions/image'
+                type: array
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      operationId: marketplaceimageget
+      summary: List images in the Marketplace
+  /1.0.0/marketplace/image/my_images/:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              meta:
+                $ref: '#/definitions/meta'
+              objects:
+                items:
+                  $ref: '#/definitions/image'
+                type: array
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: Note that trailing / is required
+      operationId: marketplaceimagemyimagesget
+      summary: List images in "My Images"
+  '/1.0.0/marketplace/image/{imageid}/':
+    get:
+      parameters:
+        - description: Identifier representing a specific VNF image
+          in: path
+          name: imageid
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/image'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: Note that trailing / is required
+      operationId: marketplaceimageimageidget
+      summary: Get information about the specified image
+  '/1.0.0/marketplace/image/{imageid}/add_to_my_images/':
+    post:
+      parameters:
+        - description: Identifier representing a specific VNF image
+          in: path
+          name: imageid
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              status:
+                example: success
+                type: string
+            type: object
+        '404':
+          description: Specified object cannot be found
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: 'Note that trailing / is required, body must be {}'
+      operationId: marketplaceimageimageidaddtomyimagespost
+      summary: Add specified image to "My Images"
+  '/1.0.0/marketplace/image/{imageid}/remove_from_my_images/':
+    post:
+      parameters:
+        - description: Identifier representing a specific VNF image
+          in: path
+          name: imageid
+          required: true
+          type: integer
+        - in: body
+          name: body
+          schema:
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              status:
+                example: success
+                type: string
+            type: object
+        '404':
+          description: Specified object cannot be found
+          schema:
+            $ref: '#/definitions/Error'
+        '422':
+          description: Request is invalid
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: 'Note that trailing / is required, body must be {}'
+      operationId: marketplaceimageimageidremovefrommyimagespost
+      summary: Remove specified image from "My Images"
+  '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
+    put:
+      parameters:
+        - description: Unique identifier representing a specific endpoint
+          in: path
+          name: endpointuuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              name:
+                example: My Endpoint
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/success-fragment'
         '400':
           description: Request is not correctly formatted
           schema:
             $ref: '#/definitions/Error'
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
+      tags:
+        - endpoints
+      operationId: eisendpointendpointuuidendpointuuidput
+      summary: Update Endpoint name
+  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              endpoints:
+                items:
+                  $ref: '#/definitions/Endpoint'
+                type: array
+              sharedvports:
+                items:
+                  example: a51c471c-36d7-44cc-914e-60886f0f810a
+                  type: string
+                type: array
+              topology-id:
+                example: 2ecaa946-848f-4f57-a000-bc15e64bd141
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+        - topologies
+      description: List all Endpoints associated with the topology tag.
+      operationId: eisendpointstopologytaguuidtopotaguuidget
+      summary: List Endpoints for Topology
+  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}':
+    delete:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+        - description: Unique identifier representing a specific endpoint
+          in: path
+          name: endpointuuid
+          required: true
+          type: string
+      responses:
+        '204':
+          description: No Content
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+        - topologies
+      operationId: eisendpointstopologytaguuiddelete
+      summary: Remove Endpoint from a Topology
+  '/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag':
+    post:
+      parameters:
+        - description: Unique identifier representing a specific endpoint
+          in: path
+          name: endpointuuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              topology_tag:
+                example: 38d17228-0179-491f-9e84-36ddd078b8e6
+                type: string
+            type: object
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/success-fragment'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+        - topologies
+      operationId: eisendpointsendpointuuidassigntopologytagpost
+      summary: Assign an Endpoint to a Topology
+  /ttms/1.0.0/topology_tag:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/topology'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      operationId: ttmstopologytagget
+      summary: List all topology tags
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              description:
+                example: Main topology for WAN
+                type: string
+              name:
+                example: Production WAN
+                type: string
+            type: object
+      responses:
+        '201':
+          description: Created
+          schema:
+            $ref: '#/definitions/topology'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      operationId: ttmstopologytagpost
+      summary: Create a named topology tag
+  '/ttms/1.0.0/topology_tag/{topotaguuid}/':
+    delete:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              description:
+                example: Updated topology for WAN
+                type: string
+              name:
+                example: Production WAN Updated Name
+                type: string
+            type: object
+      responses:
+        '204':
+          description: No Content
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      operationId: ttmstopologytagtopotaguuiddelete
+      summary: Delete a topology tag
+    get:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              description:
+                example: Updated topology for WAN
+                type: string
+              name:
+                example: Production WAN Updated Name
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/topology'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      operationId: ttmstopologytagtopotaguuidget
+      summary: Get information about the specified topology tag
+    put:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              description:
+                example: Updated topology for WAN
+                type: string
+              name:
+                example: Production WAN Updated Name
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/topology'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      operationId: ttmstopologytagtopotaguuidput
+      summary: Update a topology tag's name and/or description
+  '/ttms/1.0.0/topology_tag/{topotaguuid}/objects/':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific topology tag
+          in: path
+          name: topotaguuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              endpoints:
+                items:
+                  $ref: '#/definitions/Endpoint'
+                type: array
+              links:
+                items:
+                  $ref: '#/definitions/Links'
+                type: array
+              sharedvports:
+                items:
+                  example: 03b39458-8938-4ef1-a2c7-826b2566873e
+                  type: string
+                type: array
+              topology_tag:
+                example: 7a09af3d-d4e5-4538-a1e6-9f83d751e163
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - topologies
+      description: >-
+        List all objects (Endpoints, Links, VPorts, etc.) associated with the
+        topology tag.
+      operationId: ttmstopologytagtopotaguuidobjectsget
+      summary: List objects for Topology
   '/vnfds/1.0.0/vnf/{vnfuuid}/':
     get:
+      parameters:
+        - description: Unique identifier representing a specific virtual network function
+          in: path
+          name: vnfuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              status:
+                example: ACTIVE
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
       description: |-
         'Possible return values:
           ACTIVE,
@@ -439,2490 +1196,1126 @@ paths:
           SOFT_DELETED,
           SHELVED,
           SHELVED_OFFLOADED'
-      summary: vnfdsvnfvnfuuidget
-      tags:
-        - vnfs
-      operationId: Vnfds100VnfByVnfuuidGet
-      produces:
-        - application/json
+      operationId: vnfdsvnfvnfuuidget
+      summary: Get status information about the specified VNF
+  '/vnfds/1.0.0/vnf/{vnfuuid}/reboot':
+    post:
       parameters:
-        - name: vnfuuid
+        - description: Unique identifier representing a specific virtual network function
           in: path
+          name: vnfuuid
           required: true
           type: string
-          description: Unique identifier representing a specific virtual network function
-      responses:
-        '200':
-          description: Success
+        - in: body
+          name: body
           schema:
-            $ref: '#/definitions/VnfdsvnfvnfuuidgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/marketplace/image/{imageid}/remove_from_my_images/':
-    post:
-      description: 'Note that trailing / is required, body must be {}'
-      summary: marketplaceimageimageidremovefrommyimagespost
-      tags:
-        - vnfs
-      operationId: MarketplaceImageRemoveFromMyImagesByImageidPost
-      produces:
-        - application/json
-      parameters:
-        - name: imageid
-          in: path
-          required: true
-          type: integer
-          format: int32
-          exclusiveMaximum: false
-          exclusiveMinimum: false
-          description: Identifier representing a specific VNF image
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
+            properties:
+              reboot_type:
+                example: warm
+                type: string
             type: object
       responses:
         '200':
           description: Success
-          schema:
-            $ref: '#/definitions/MarketplaceimageimageidremovefrommyimagespostResponse'
-          examples: {}
-        '404':
-          description: Specified object cannot be found
-          schema:
-            $ref: '#/definitions/Error'
-        '422':
-          description: Request is invalid
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/marketplace/image/{imageid}/add_to_my_images/':
-    post:
-      description: 'Note that trailing / is required, body must be {}'
-      summary: marketplaceimageimageidaddtomyimagespost
-      tags:
-        - vnfs
-      operationId: MarketplaceImageAddToMyImagesByImageidPost
-      produces:
-        - application/json
-      parameters:
-        - name: imageid
-          in: path
-          required: true
-          type: integer
-          format: int32
-          exclusiveMaximum: false
-          exclusiveMinimum: false
-          description: Identifier representing a specific VNF image
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            type: object
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/MarketplaceimageimageidaddtomyimagespostResponse'
-          examples: {}
-        '404':
-          description: Specified object cannot be found
-          schema:
-            $ref: '#/definitions/Error'
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/marketplace/image/{imageid}/':
-    get:
-      description: Note that trailing / is required
-      summary: marketplaceimageimageidget
-      tags:
-        - vnfs
-      operationId: MarketplaceImageByImageidGet
-      produces:
-        - application/json
-      parameters:
-        - name: imageid
-          in: path
-          required: true
-          type: integer
-          format: int32
-          exclusiveMaximum: false
-          exclusiveMinimum: false
-          description: Identifier representing a specific VNF image
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Image'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/vport/{vportuuid}':
-    get:
-      description: Get information about the specified VPort
-      summary: inventoryvportvportuuidget
-      tags:
-        - vports
-      operationId: InventoryVportByVportuuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: vportuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific virtual port
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/EndpointPort'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/inventory/regularvport:
-    post:
-      description: Create VPort representing a VLAN on a Physical Ethernet Port
-      summary: inventoryregularvportpost
-      tags:
-        - vports
-      operationId: InventoryRegularvportPost
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body53'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventoryregularvportpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/marketplace/image/my_images/:
-    get:
-      description: Note that trailing / is required
-      summary: marketplaceimagemyimagesget
-      tags:
-        - vnfs
-      operationId: MarketplaceImageMyImagesGet
-      produces:
-        - application/json
-      parameters: []
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/MarketplaceimagemyimagesgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/links/{linkid}/contract/{contractid}':
-    get:
-      description: Get active Contract by ContractID
-      summary: inventorylinksget
-      tags:
-        - contracts
-      operationId: InventoryLinksContractByLinkidAndContractidGet
-      produces:
-        - application/json
-      parameters:
-        - name: linkid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific link
-        - name: contractid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific contract
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinksgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-    put:
-      description: Update active Contract by ContractID
-      summary: inventorylinksput
-      tags:
-        - contracts
-      operationId: InventoryLinksContractByLinkidAndContractidPut
-      produces:
-        - application/json
-      parameters:
-        - name: linkid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific link
-        - name: contractid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific contract
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body45'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinksputResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/marketplace/image:
-    get:
-      description: List images in the Marketplace
-      summary: marketplaceimageget
-      tags:
-        - vnfs
-      operationId: MarketplaceImageGet
-      produces:
-        - application/json
-      parameters: []
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/MarketplaceimagegetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/inventory/vnf/vport:
-    post:
-      description: Create VNF VPort
-      summary: inventoryvnfvportpost
-      tags:
-        - vports
-      operationId: InventoryVnfVportPost
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body56'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventoryvnfvportpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/links/{linkid}/contract':
-    post:
-      description: Create new Contract on specified link
-      summary: inventorylinkslinkidcontractpost
-      tags:
-        - contracts
-      operationId: InventoryLinksContractByLinkidPost
-      produces:
-        - application/json
-      parameters:
-        - name: linkid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific link
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body42'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinkslinkidcontractpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/links/{linkid}':
-    get:
-      description: Get details of specified link
-      summary: inventorylinkslinkidget
-      tags:
-        - links
-      operationId: InventoryLinksByLinkidGet
-      produces:
-        - application/json
-      parameters:
-        - name: linkid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific link
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinkslinkidgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/links/history/{linkid}':
-    get:
-      description: Get Link history
-      summary: inventorylinkshistorylinkidget
-      tags:
-        - links
-      operationId: InventoryLinksHistoryByLinkidGet
-      produces:
-        - application/json
-      parameters:
-        - name: linkid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific link
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinkshistorylinkidgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/links/customer/{customeruuid}':
-    get:
-      description: Get active Links
-      summary: inventorylinkscustomercustomeruuidget
-      tags:
-        - links
-      operationId: InventoryLinksCustomerByCustomeruuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: customeruuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific customer
-      responses:
-        '200':
-          description: Success
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/Link'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag':
-    post:
-      description: Assign an Endpoint to a Topology
-      summary: eisendpointsendpointuuidassigntopologytagpost
-      tags:
-        - endpoints
-      operationId: Eis100EndpointsAssignTopologyTagByEndpointuuidPost
-      produces:
-        - application/json
-      parameters:
-        - name: endpointuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific endpoint
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body71'
-      responses:
-        '201':
-          description: Created
-          schema:
-            $ref: '#/definitions/SuccessFragment'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}':
-    delete:
-      description: Remove Endpoint from a Topology
-      summary: eisendpointstopologytaguuiddelete
-      tags:
-        - endpoints
-      operationId: Eis100EndpointsTopologyTagUuidEndpointByTopotaguuidAndEndpointuuidDelete
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-        - name: endpointuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific endpoint
-      responses:
-        '204':
-          description: No Content
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}':
-    get:
-      description: List all Endpoints associated with the topology tag.
-      summary: eisendpointstopologytaguuidtopotaguuidget
-      tags:
-        - endpoints
-      operationId: Eis100EndpointsTopologyTagUuidByTopotaguuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: topotaguuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific topology tag
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/EisendpointstopologytaguuidtopotaguuidgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/inventory/link:
-    post:
-      description: Create Link and initial Contract
-      summary: inventorylinkpost
-      tags:
-        - links
-      operationId: InventoryLinkPost
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventorylinkpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/auth/validatetoken:
-    get:
-      description: 'Validate the authentication token and get information about the user (roles, permissions, etc.)'
-      summary: authvalidatetokenget
-      tags:
-        - authentication
-      operationId: AuthValidatetokenGet
-      produces:
-        - application/json
-      parameters: []
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/AuthvalidatetokengetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
-    put:
-      description: Update Endpoint name
-      summary: eisendpointendpointuuidendpointuuidput
-      tags:
-        - endpoints
-      operationId: Eis100EndpointEndpointuuidByEndpointuuidPut
-      produces:
-        - application/json
-      parameters:
-        - name: endpointuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific endpoint
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body67'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/SuccessFragment'
-          examples: {}
         '400':
           description: Request is not correctly formatted
           schema:
             $ref: '#/definitions/Error'
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/inventory/vnfendpoint:
+      tags:
+        - vnfs
+      description: reboot_type is 'warm' or 'cold'
+      operationId: vnfdsvnfvnfuuidrebootpost
+      summary: Reboot the specified VNF
+  '/vnfds/1.0.0/vnf/{vnfuuid}/resume':
     post:
-      description: Instantiate Virtual Network Function
-      summary: inventoryvnfendpointpost
-      tags:
-        - endpoints
-      operationId: InventoryVnfendpointPost
-      produces:
-        - application/json
       parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body58'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventoryvnfendpointpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/inventory/regularendpoint:
-    post:
-      description: Create Physical (Port) Endpoint
-      summary: inventoryregularendpointpost
-      tags:
-        - endpoints
-      operationId: InventoryRegularendpointPost
-      produces:
-        - application/json
-      parameters:
-        - name: body
-          in: body
-          required: false
-          description: ''
-          schema:
-            $ref: '#/definitions/Body51'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventoryregularendpointpostResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/endpoints/customeruuid/{customeruuid}':
-    get:
-      description: Get list of endpoints for a customer
-      summary: inventoryendpointscustomeruuidcustomeruuidget
-      tags:
-        - endpoints
-      operationId: InventoryEndpointsCustomeruuidByCustomeruuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: customeruuid
+        - description: Unique identifier representing a specific virtual network function
           in: path
+          name: vnfuuid
           required: true
           type: string
-          description: Unique identifier representing a specific customer
       responses:
         '200':
           description: Success
-          schema:
-            $ref: '#/definitions/InventoryendpointscustomeruuidcustomeruuidgetResponse'
-          examples: {}
       security:
-        - auth:
+        - oAuth2:
             - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  '/1.0.0/inventory/endpoint/{endpointuuid}':
-    get:
-      description: Get information about the specified endpoint
-      summary: inventoryendpointendpointuuidget
       tags:
-        - endpoints
-      operationId: InventoryEndpointByEndpointuuidGet
-      produces:
-        - application/json
-      parameters:
-        - name: endpointuuid
-          in: path
-          required: true
-          type: string
-          description: Unique identifier representing a specific endpoint
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/InventoryendpointendpointuuidgetResponse'
-          examples: {}
-      security:
-        - auth:
-            - oAuth2
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
-  /1.0.0/auth/generatetoken:
+        - vnfs
+      description: 'Note that body must be {}'
+      operationId: vnfdsvnfvnfuuidresumepost
+      summary: Resume the specified VNF
+  '/vnfds/1.0.0/vnf/{vnfuuid}/suspend':
     post:
-      description: Create an authentication token
-      summary: authgeneratetokenpost
-      tags:
-        - authentication
-      operationId: AuthGeneratetokenPost
-      produces:
-        - application/json
-      consumes:
-        - application/x-www-form-urlencoded
       parameters:
-        - name: grant_type
-          in: formData
+        - description: Unique identifier representing a specific virtual network function
+          in: path
+          name: vnfuuid
           required: true
           type: string
-          description: ''
-        - name: username
-          in: formData
-          required: true
-          type: string
-          description: ''
-        - name: password
-          in: formData
-          required: true
-          type: string
-          description: ''
       responses:
         '200':
-          description: A JSON hash containing the bearer token
-          schema:
-            $ref: '#/definitions/AuthgeneratetokenpostResponse'
-          examples: {}
-        '412':
-          description: Provided authorization grant is invalid
-          schema: {}
+          description: Success
       security:
-        - auth: []
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: 'Note that body must be {}'
+      operationId: vnfdsvnfvnfuuidsuspendpost
+      summary: Suspend the specified VNF
 definitions:
-  Vportvalue:
-    title: Vportvalue
-    type: object
-    properties:
-      vlan:
-        $ref: '#/definitions/Vlan'
-  TtmstopologytagtopotaguuidobjectsgetResponse:
-    title: ttmstopologytagtopotaguuidobjectsgetResponse
-    type: object
-    properties:
-      endpoints:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Endpoint'
-      links:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Link78'
-      sharedvports:
-        description: ''
-        type: array
-        items:
-          type: string
-      topology_tag:
-        description: ''
-        example: 7a09af3d-d4e5-4538-a1e6-9f83d751e163
-        type: string
-  EisendpointstopologytaguuidtopotaguuidgetResponse:
-    title: eisendpointstopologytaguuidtopotaguuidgetResponse
-    type: object
-    properties:
-      endpoints:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Endpoint'
-      sharedvports:
-        description: ''
-        type: array
-        items:
-          type: string
-      topology-id:
-        description: ''
-        example: 2ecaa946-848f-4f57-a000-bc15e64bd141
-        type: string
-  Body80:
-    title: body80
-    type: object
-    properties:
-      reboot_type:
-        description: ''
-        example: warm
-        type: string
-  Params47:
-    title: Params47
-    type: object
-    properties:
-      bandwidth:
-        description: Bandwidth in kB/s
-        example: 1000
-        type: integer
-        minimum: 1000
-        maximum: 10000000
-        format: int32
-      billing-id:
-        description: ''
-        example: 3ba35364-226f-405b-a162-0689ac239b18
-        type: string
-      connection:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      contract-end-time:
-        description: ''
-        example: 1508593521000
-        type: integer
-        format: int64
-      contract-start-time:
-        description: ''
-        example: 1508589922000
-        type: integer
-        format: int64
-      contractStatus:
-        description: ''
-        example: 8
-        type: integer
-        format: int32
-      contractid:
-        description: Identifier of a contract
-        example: f070660600c1c45f.2
-        type: string
-      deletedtimestamp:
-        description: ''
-        example: 0
-        type: integer
-        format: int32
-      description:
-        description: ''
-        example: '"Replication link between Equinix SYD and NextDC MEL"'
-        type: string
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      price:
-        description: ''
-        example: 259
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-      tag:
-        description: ''
-        example: prod
-        type: string
-      type:
-        description: ''
-        example: '0'
-        type: string
-      version:
-        description: ''
-        example: 20431
-        type: integer
-        format: int32
-  InventoryvnfendpointpostResponse:
-    title: inventoryvnfendpointpostResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
-        type: string
-      customeruuid:
-        description: ''
-        example: 9a6c0b09-6864-4f1b-bc03-842268ca1061
-        type: string
-      vnfuuid:
-        description: ''
-        example: 37449aab-0aa2-44ae-929b-7616549ee20e
-        type: string
-  Body58:
-    title: body58
-    type: object
-    properties:
-      config:
-        description: 'Boot configuration for VNF, base64 encoded'
-        type: string
-      customeruuid:
-        description: ''
-        example: e66546d2-eb85-442f-a4d4-a4f6f4cee6bc
-        type: string
-      datacenteruuid:
-        description: ''
-        example: 2e5ff2d1-da1b-4e5d-81a8-58f1780b1031
-        type: string
-      flavoruuid:
-        description: ''
-        example: 22
-        type: integer
-        format: int32
-      imageuuid:
-        description: ''
-        example: 21
-        type: integer
-        format: int32
-      topology_tag_uuid:
-        description: ''
-        example: f6c14b31-f29f-4be2-919b-5b7f463e4a3c
-        type: string
-    required:
-      - config
-      - customeruuid
-      - datacenteruuid
-      - flavoruuid
-      - imageuuid
-  VnfdsvnfvnfuuidgetResponse:
-    title: vnfdsvnfvnfuuidgetResponse
-    type: object
-    properties:
-      status:
-        description: ''
-        example: ACTIVE
-        type: string
-  Params:
-    title: Params
-    type: object
-    properties:
-      bandwidth:
-        description: Bandwidth in kB/s
-        example: 1000
-        type: integer
-        minimum: 1000
-        maximum: 10000000
-        format: int32
-      billing-id:
-        description: ''
-        example: 3ba35364-226f-405b-a162-0689ac239b18
-        type: string
-      connections:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      contractid:
-        description: Identifier of a contract
-        example: f070660600c1c45f.2
-        type: string
-      description:
-        description: ''
-        example: Replication link between Equinix SYD and NextDC MEL
-        type: string
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      latency-sla:
-        description: ''
-        type: string
-      link-type:
-        description: ''
-        example: '1'
-        type: string
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      linkstatus:
-        description: ''
-        example: 6
-        type: integer
-        format: int32
-      price:
-        description: ''
-        example: 259
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-      tag:
-        description: ''
-        example: prod
-        type: string
-      topology_tag_uuid:
-        description: ''
-        example: 4830beab-2950-47be-a5f9-e3cfeee0eed9
-        type: string
-  Image:
-    title: image
-    type: object
-    properties:
-      tags:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/VnfTag'
-      brief_description:
-        description: ''
-        example: Quagga for general use
-        type: string
-      buyers:
-        description: ''
-        type: string
-      classifications:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Classification'
-      comments:
-        description: ''
-        type: string
-      create_at:
-        description: ''
-        example: 1456314043
-        type: integer
-        format: int32
-      creator:
-        description: ''
-        example: 1f10c671-cd71-4467-b605-d150113629b9
-        type: string
-      description:
-        description: ''
-        example: Quagga router image with version 0.99.22.1
-        type: string
-      eos:
-        description: ''
-        type: string
-      flavors:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Flavor'
-      flavors_price:
-        description: ''
-        type: string
-      glance_comments:
-        description: ''
-        type: string
-      glance_image:
-        $ref: '#/definitions/GlanceImage'
-      glance_name:
-        description: ''
-        example: c9b2444c-239a-475b-af54-db9deccefca3
-        type: string
-      glance_properties:
-        description: ''
-        type: string
-      id:
-        description: ''
-        example: 6
-        type: integer
-        format: int32
-      image_format:
-        description: ''
-        example: qcow2
-        type: string
-      license_required:
-        description: ''
-        type: boolean
-      logo:
-        description: ''
-        example: '"https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"'
-        type: string
-      max_ports:
-        description: ''
-        example: 8
-        type: integer
-        format: int32
-      md5:
-        description: ''
-        type: string
-      min_ports:
-        description: ''
-        example: 1
-        type: integer
-        format: int32
-      name:
-        description: ''
-        example: CSR1000v
-        type: string
-      os_version:
-        description: ''
-        example: Ubuntu 16.04
-        type: string
-      owner:
-        description: ''
-        example: d486321a-9a91-4879-8d7c-2fcf4506e33e
-        type: string
-      product:
-        $ref: '#/definitions/Product'
-      publish_date:
-        description: ''
-        type: string
-      restrict_vnc_console:
-        description: ''
-        type: boolean
-      status:
-        description: ''
-        example: Published
-        type: string
-      support_hot_plug:
-        description: ''
-        type: boolean
-      upload_at:
-        description: ''
-        example: 1456315518
-        type: integer
-        format: int32
-      vendor_name:
-        description: ''
-        example: Cisco
-        type: string
-      zero_day_config_spec:
-        description: ''
-        type: string
-  InventoryvnfvportpostResponse:
-    title: inventoryvnfvportpostResponse
-    type: object
-    properties:
-      vnfuuid:
-        description: vnfuuid which was passed in the request
-        example: 9da748fb-9044-4909-95c2-4245d7592bec
-        type: string
-      vnportuuid:
-        description: uuid of the newly-created vport
-        example: 1402ed53-4693-40e0-aa1e-5d5b85052f3d
-        type: string
-  Body56:
-    title: body56
-    type: object
-    properties:
-      customeruuid:
-        description: ''
-        example: e58af39b-4a89-43f2-b1ed-1816b6d1f8e9
-        type: string
-      management_port:
-        description: ''
-        type: boolean
-      vnfuuid:
-        description: ''
-        example: 9da748fb-9044-4909-95c2-4245d7592bec
-        type: string
-  InventoryregularvportpostResponse:
-    title: inventoryregularvportpostResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
-        type: string
-      vportuuid:
-        description: ''
-        example: 251a54f9-f534-4d92-86b9-77e73bd4ede4
-        type: string
-  Link78:
-    title: Link78
-    type: object
-    properties:
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      vport:
-        description: ''
-        type: array
-        items:
-          type: string
-  Params50:
-    title: Params50
-    type: object
-    properties:
-      contractid:
-        description: Identifier of a contract
-        example: f070660600c1c45f.2
-        type: string
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      price:
-        description: ''
-        example: 259
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-  Params44:
-    title: Params44
-    type: object
-    properties:
-      bandwidth:
-        description: Bandwidth in kB/s
-        example: 1000
-        type: integer
-        minimum: 1000
-        maximum: 10000000
-        format: int32
-      contractid:
-        description: Identifier of a contract
-        example: f070660600c1c45f.2
-        type: string
-      currencyId:
-        description: ''
-        example: '1'
-        type: string
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      price:
-        description: ''
-        example: 259
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-  Body72:
-    title: body72
-    type: object
-    properties:
-      description:
-        description: ''
-        example: Main topology for WAN
-        type: string
-      name:
-        description: ''
-        example: Production WAN
-        type: string
-  Body53:
-    title: body53
-    type: object
-    properties:
-      endpointuuid:
-        description: ''
-        example: 9a04a7ff-0a82-4259-9f2b-c384b6d720ab
-        type: string
-      vporttype:
-        description: ''
-        example: vlan
-        type: string
-      vportvalue:
-        $ref: '#/definitions/Vportvalue'
-  InventorylinkslinkidgetResponse:
-    title: inventorylinkslinkidgetResponse
-    type: object
-    properties:
-      billing-id:
-        description: ''
-        example: d04544ba-6c9c-4e84-bd60-848e56a116c4
-        type: string
-      connections:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      contracts:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Contract'
-      description:
-        description: ''
-        example: MEL-SYD
-        type: string
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      linkStatus:
-        description: ''
-        example: 1
-        type: integer
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      tag:
-        description: ''
-        example: prod
-        type: string
-      topology_tag_uuid:
-        description: ''
-        example: 5f02ee19-8de3-4a0d-8baf-823e4aa16780
-        type: string
-      type:
-        description: ''
-        example: '0'
-        type: string
-  Body:
-    title: body
-    type: object
-    properties:
-      bandwidth:
-        description: Bandwidth in kB/s
-        example: 1000
-        type: integer
-        minimum: 1000
-        maximum: 10000000
-        format: int32
-      billing-id:
-        description: ''
-        example: 684903a3-78b0-4005-9bfe-eece54ad42f3
-        type: string
-      connections:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      description:
-        description: ''
-        example: '"Replication link between Equinix SYD and NextDC MEL"'
-        type: string
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      link-type:
-        description: '1=VLAN, 2=VNF'
-        example: 1
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-      tag:
-        description: ''
-        example: prod
-        type: string
-      topology_tag_uuid:
-        description: ''
-        example: 684903a3-78b0-4005-9bfe-eece54ad42f3
-        type: string
-  AccountcustomeruuidgetResponse:
-    title: accountcustomeruuidgetResponse
-    type: object
-    properties:
-      address:
-        description: ''
-        example: 555 Paularino Avenue
-        type: string
-      city:
-        description: ''
-        example: Dallas
-        type: string
-      companyname:
-        description: ''
-        example: customer.pen.10
-        type: string
-      companyuuid:
-        description: ''
-        example: a6cef301-de34-4654-8933-ceafc7d2ae6e
-        type: string
-      country:
-        description: ''
-        example: USA
-        type: string
-      customeraccountid:
-        description: ''
-        example: '71234010'
-        type: string
-      customertype:
-        description: ''
-        type: string
-      fax:
-        description: ''
-        type: string
-      phone:
-        description: ''
-        example: '7026661954'
-        type: string
-      postalcode:
-        description: ''
-        example: '75024'
-        type: string
-      state:
-        description: ''
-        example: Texas
-        type: string
-      status:
-        description: ''
-        example: '1'
-        type: string
-      website:
-        description: ''
-        example: 'http://dummy.com'
-        type: string
-  InventoryregularendpointpostResponse:
-    title: inventoryregularendpointpostResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
-        type: string
-      endpointuuid:
-        description: ''
-        example: c6b5c04f-c968-432e-a70f-b929437ea6e4
-        type: string
-  Body51:
-    title: body51
-    type: object
-    properties:
-      customeruuid:
-        description: ''
-        example: 6a607f5f-25c9-45a1-a960-a34245509208
-        type: string
-      datacenteruuid:
-        description: ''
-        example: dc8f4a57-4621-4b17-87bd-e5a7e508bf7a
-        type: string
-      interfacetype:
-        description: ''
-        example: 1000Base-TX
-        type: string
-  InventorylinkshistorylinkidgetResponse:
-    title: inventorylinkshistorylinkidgetResponse
-    type: object
-    properties:
-      billing-id:
-        description: ''
-        example: 9c1ffab1-d037-4cf7-a19d-d213a05f5e6a
-        type: string
-      connections:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      contracts:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Contract'
-      description:
-        description: ''
-        example: '"Replication link between Equinix SYD and NextDC MEL"'
-        type: string
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      linkStatus:
-        description: ''
-        example: 1
-        type: integer
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      tag:
-        description: ''
-        example: prod
-        type: string
-      type:
-        description: ''
-        example: '0'
-        type: string
-  Body71:
-    title: body71
-    type: object
-    properties:
-      topology_tag:
-        description: ''
-        example: 38d17228-0179-491f-9e84-36ddd078b8e6
-        type: string
-  Datacenter:
-    title: Datacenter
-    type: object
-    properties:
-      cityname:
-        description: ''
-        example: Melbourne
-        type: string
-      countryname:
-        description: ''
-        example: Australia
-        type: string
-      datacentercode:
-        description: ''
-        example: amls
-        type: string
-      datacentername:
-        description: ''
-        example: Melbourne (NextDC)
-        type: string
-      datacenteruuid:
-        description: ''
-        example: 61f6522f-83e4-4c71-b638-63808240ef88
-        type: string
-      interfacetypes:
-        description: ''
-        type: array
-        items:
-          type: string
-      operatorname:
-        description: ''
-        type: string
-  InventorylinksputResponse:
-    title: inventorylinksputResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
-        type: string
-      params:
-        $ref: '#/definitions/Params50'
   Endpoint:
-    title: Endpoint
-    type: object
     properties:
       endpoint_uuid:
-        description: ''
         example: c36a6a66-6b1c-47c4-866e-6e4657388557
         type: string
       vports:
-        description: ''
-        type: array
         items:
+          example: 82626f13-af0b-4fb2-9b36-68176602dc4f
           type: string
-  Body67:
-    title: body67
+        type: array
+    title: Endpoint
     type: object
+  Error:
     properties:
-      name:
-        description: ''
-        example: My Endpoint
+      error-auxiliary:
         type: string
-  MarketplaceimageimageidremovefrommyimagespostResponse:
-    title: marketplaceimageimageidremovefrommyimagespostResponse
-    type: object
-    properties:
-      status:
-        description: ''
-        example: success
-        type: string
-  MarketplaceimageimageidaddtomyimagespostResponse:
-    title: marketplaceimageimageidaddtomyimagespostResponse
-    type: object
-    properties:
-      status:
-        description: ''
-        example: success
-        type: string
-  User:
-    title: user
-    type: object
-    properties:
-      status:
-        description: ''
-        example: '1'
-        type: string
-      useruuid:
-        description: ''
-        example: Ms
-        type: string
-      emailaddress:
-        description: ''
-        example: test@dummy.com
-        type: string
-      firstname:
-        description: ''
-        example: Person
-        type: string
-      jobtitle:
-        description: ''
-        type: string
-      lastname:
-        description: ''
-        example: Pacman
-        type: string
-      middlename:
-        description: ''
-        type: string
-      phoneext:
-        description: ''
-        type: string
-      phonenumber:
-        description: ''
-        example: '7026661954'
-        type: string
-      phonetype:
-        description: ''
-        example: mobile
-        type: string
-      title:
-        description: ''
-        example: Ms
-        type: string
-      usercountry:
-        description: ''
-        example: USA
-        type: string
-    required:
-      - status
-      - useruuid
-  InventorylinkslinkidcontractpostResponse:
-    title: inventorylinkslinkidcontractpostResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
+        xml:
+          name: 'ams:error-auxiliary'
+      error-code:
+        example: 1010099
         type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
+        xml:
+          name: 'ams:error-code'
+      error-message:
         type: string
-      params:
-        $ref: '#/definitions/Params44'
-  Flavor:
-    title: flavor
+        xml:
+          name: 'ams:error-message'
+      ns:
+        type: string
+        xml:
+          attribute: true
+          name: 'xmlns:ams'
     type: object
+    xml:
+      name: 'ams:error'
+  Links:
+    properties:
+      linkid:
+        $ref: '#/definitions/linkid'
+      vport:
+        items:
+          example: 63cd1f6d-8a0a-4ec5-aae2-65f31add9d6a
+          type: string
+        type: array
+    title: Links
+    type: object
+  Vportvalue:
+    properties:
+      vlan:
+        $ref: '#/definitions/vlan'
+    title: Vportvalue
+    type: object
+  bandwidth.kbs:
+    description: Bandwidth in kB/s
+    example: 1000
+    maximum: 10000000
+    minimum: 1000
+    type: integer
+  bandwidth.mbs:
+    description: Bandwidth in MB/s (not kB/s)
+    example: 1
+    maximum: 10000
+    minimum: 1
+    type: integer
+  billing:
+    properties:
+      billing-account:
+        example: '60012345'
+        type: string
+      billingid:
+        example: dae2cb75-89f2-4b5b-be99-5cf3ae3faa20
+        type: string
+    type: object
+  connections:
+    example:
+      - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
+      - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
+    items:
+      description: two vport uuids identified the endpoints of the link
+      type: string
+    maxItems: 2
+    minItems: 2
+    type: array
+  contract:
+    properties:
+      bandwidth:
+        $ref: '#/definitions/bandwidth.kbs'
+      contract-end-time:
+        $ref: '#/definitions/contract-end-time'
+      contract-start-time:
+        $ref: '#/definitions/contract-start-time'
+      contractStatus:
+        $ref: '#/definitions/contractStatus'
+      contractid:
+        $ref: '#/definitions/contractid'
+      currencyCode:
+        $ref: '#/definitions/currencyCode'
+      currencyID:
+        $ref: '#/definitions/currencyID'
+      deletedtimestamp:
+        $ref: '#/definitions/deletedtimestamp'
+      duration:
+        $ref: '#/definitions/duration.mins'
+      price:
+        $ref: '#/definitions/price'
+      renewal-option:
+        $ref: '#/definitions/renewal-option'
+      version:
+        $ref: '#/definitions/version'
+    type: object
+  contract-end-time:
+    example: 1508593521000
+    type: integer
+  contract-start-time:
+    example: 1508589922000
+    type: integer
+  contractStatus:
+    example: 8
+    type: integer
+  contractgetres:
+    properties:
+      params:
+        properties:
+          bandwidth:
+            $ref: '#/definitions/bandwidth.kbs'
+          billing-id:
+            example: 3ba35364-226f-405b-a162-0689ac239b18
+            type: string
+          connection:
+            $ref: '#/definitions/connections'
+          contract-end-time:
+            $ref: '#/definitions/contract-end-time'
+          contract-start-time:
+            $ref: '#/definitions/contract-start-time'
+          contractStatus:
+            $ref: '#/definitions/contractStatus'
+          contractid:
+            $ref: '#/definitions/contractid'
+          deletedtimestamp:
+            $ref: '#/definitions/deletedtimestamp'
+          description:
+            example: '"Replication link between Equinix SYD and NextDC MEL"'
+            type: string
+          duration:
+            $ref: '#/definitions/duration.mins'
+          latency:
+            $ref: '#/definitions/latency'
+          linkid:
+            $ref: '#/definitions/linkid'
+          price:
+            $ref: '#/definitions/price'
+          renewal-option:
+            $ref: '#/definitions/renewal-option'
+          tag:
+            example: prod
+            type: string
+          type:
+            example: '0'
+            type: string
+          version:
+            $ref: '#/definitions/version'
+        type: object
+    type: object
+  contractid:
+    description: Identifier of a contract
+    example: f070660600c1c45f.2
+    type: string
+  currencyCode:
+    example: USD
+    type: string
+  currencyID:
+    example: '1'
+    type: string
+  datacenterResponse:
+    properties:
+      datacenter:
+        items:
+          properties:
+            datacenteruuid:
+              example: fb089004-53c9-476e-b7b2-3cc91829e0d1
+              type: string
+            port:
+              items:
+                $ref: '#/definitions/endpoint-port'
+              type: array
+          type: object
+        type: array
+    title: datacentreresponse
+    type: object
+  datacenterget:
+    properties:
+      datacenters:
+        items:
+          properties:
+            cityname:
+              example: Melbourne
+              type: string
+            countryname:
+              example: Australia
+              type: string
+            datacentercode:
+              example: amls
+              type: string
+            datacentername:
+              example: Melbourne (NextDC)
+              type: string
+            datacenteruuid:
+              example: 61f6522f-83e4-4c71-b638-63808240ef88
+              type: string
+            interfacetypes:
+              items:
+                type: string
+              type: array
+            operatorname:
+              type: string
+          type: object
+        type: array
+    type: object
+  deletedtimestamp:
+    example: 0
+    type: integer
+  duration.hrs:
+    description: Duration of contract in hours (not minutes)
+    example: 1
+    minimum: 1
+    type: integer
+  duration.mins:
+    description: Duration of contract in minutes
+    example: 3600
+    minimum: 3600
+    type: integer
+  endpoint-port:
+    properties:
+      cabletype:
+        example: SMF
+        type: string
+      cfa:
+        example: 10GBase-LR SMF/LC
+        type: string
+      connectortype:
+        example: LC
+        type: string
+      endpointuuid:
+        example: 8843fd24-4ef6-4a7d-8241-aed3778d6f07
+        type: string
+      interfacespeed:
+        example: '100'
+        type: string
+      interfacetype:
+        example: 10GBase-LR
+        type: string
+      vport:
+        items:
+          $ref: '#/definitions/vport'
+        type: array
+    type: object
+  endpointone:
+    properties:
+      epoint:
+        items:
+          properties:
+            datacenteruuid:
+              example: 7d89a3e0-ea82-4970-82f3-359d15d364b2
+              type: string
+          type: object
+        type: array
+    type: object
+  endpointuuidResponse:
+    properties:
+      params:
+        properties:
+          bandwidth:
+            $ref: '#/definitions/bandwidth.kbs'
+          billing-id:
+            example: 3ba35364-226f-405b-a162-0689ac239b18
+            type: string
+          connections:
+            $ref: '#/definitions/connections'
+          contractid:
+            $ref: '#/definitions/contractid'
+          description:
+            example: Replication link between Equinix SYD and NextDC MEL
+            type: string
+          duration:
+            $ref: '#/definitions/duration.mins'
+          latency:
+            $ref: '#/definitions/latency'
+          latency-sla:
+            type: string
+          link-type:
+            example: '1'
+            type: string
+          linkid:
+            $ref: '#/definitions/linkid'
+          linkstatus:
+            example: 6
+            type: integer
+          price:
+            $ref: '#/definitions/price'
+          renewal-option:
+            $ref: '#/definitions/renewal-option'
+          tag:
+            example: prod
+            type: string
+          topology_tag_uuid:
+            example: 4830beab-2950-47be-a5f9-e3cfeee0eed9
+            type: string
+        type: object
+    title: endpointuuid response
+    type: object
+  flavor:
     properties:
       currency:
-        description: ''
         example: USD
         type: string
       description:
-        description: ''
         example: Flavor for CSP image
         type: string
       disk:
-        description: ''
         example: 0
         type: integer
-        format: int32
       ephemeral:
-        description: ''
         example: 0
         type: integer
-        format: int32
       id:
-        description: ''
         example: 3
         type: integer
-        format: int32
       name:
-        description: ''
         example: Medium-CSP
         type: string
       price:
-        description: ''
         example: 0.4
         type: number
-        format: double
       ram:
-        description: ''
         example: 0
         type: integer
-        format: int32
       specific_customer:
-        description: ''
         type: string
       swap:
-        description: ''
         example: 0
         type: integer
-        format: int32
       vcpus:
-        description: ''
         example: 2
         type: integer
-        format: int32
-  AuthvalidatetokengetResponse:
-    title: authvalidatetokengetResponse
     type: object
+  image:
     properties:
-      billings:
-        description: ''
-        type: array
+      tags:
         items:
-          $ref: '#/definitions/Billing'
-      company-name:
-        description: ''
-        example: Acme Corporation
+          $ref: '#/definitions/vnf-tag'
+        type: array
+      brief_description:
+        example: Quagga for general use
         type: string
-      customer-account:
-        description: ''
-        example: '70012345'
+      buyers:
         type: string
-      customerid:
-        description: ''
-        example: bae254c1-3d78-4d68-8948-8b929c48e576
+      classifications:
+        items:
+          properties:
+            description:
+              example: Router
+              type: string
+            id:
+              example: 4
+              type: integer
+            name:
+              example: Router
+              type: string
+          type: object
+        type: array
+      comments:
         type: string
-      internalid:
-        description: ''
-        example: 353
+      create_at:
+        example: 1456314043
         type: integer
-        format: int32
-      roles:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Role'
-      userid:
-        description: ''
-        example: 321a5016-00a5-44ed-a749-4531ed89979a
+      creator:
+        example: 1f10c671-cd71-4467-b605-d150113629b9
         type: string
-  Topology:
-    title: topology
+      description:
+        example: Quagga router image with version 0.99.22.1
+        type: string
+      eos:
+        type: string
+      flavors:
+        items:
+          $ref: '#/definitions/flavor'
+        type: array
+      flavors_price:
+        type: string
+      glance_comments:
+        type: string
+      glance_image:
+        properties:
+          create_at:
+            type: string
+          id:
+            example: 7
+            type: integer
+          name:
+            example: quagga-0.99.22.1
+            type: string
+          owner:
+            example: 9222433f-727d-4679-b807-3ce39b9f8ef2
+            type: string
+          status:
+            type: string
+        type: object
+      glance_name:
+        example: c9b2444c-239a-475b-af54-db9deccefca3
+        type: string
+      glance_properties:
+        type: string
+      id:
+        example: 6
+        type: integer
+      image_format:
+        example: qcow2
+        type: string
+      license_required:
+        type: boolean
+      logo:
+        example: '"https://marketplace-ms-production.s3.amazonaws.com/logos/cloud-8.jpg"'
+        type: string
+      max_ports:
+        example: 8
+        type: integer
+      md5:
+        type: string
+      min_ports:
+        example: 1
+        type: integer
+      name:
+        example: CSR1000v
+        type: string
+      os_version:
+        example: Ubuntu 16.04
+        type: string
+      owner:
+        example: d486321a-9a91-4879-8d7c-2fcf4506e33e
+        type: string
+      product:
+        properties:
+          id:
+            example: 7
+            type: integer
+        type: object
+      publish_date:
+        type: string
+      restrict_vnc_console:
+        type: boolean
+      status:
+        example: Published
+        type: string
+      support_hot_plug:
+        type: boolean
+      upload_at:
+        example: 1456315518
+        type: integer
+      vendor_name:
+        example: Cisco
+        type: string
+      zero_day_config_spec:
+        properties:
+          conf_type:
+            example: custom
+            type: string
+          count:
+            example: 1
+            type: integer
+          create_at:
+            example: 1499941289
+            type: integer
+          creator:
+            example: 918165
+            type: string
+          file_name:
+            example: config.txt
+            type: string
+          id:
+            example: 123
+            type: integer
+          name:
+            example: config
+            type: string
+          owner:
+            example: 8050e2c1-726d-4c50-ae1b-3a44dadaa68e
+            type: string
+          updated_at:
+            example: 1499941289
+            type: integer
+        type: object
     type: object
+  latency:
+    description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
+    example: 0
+    pattern: '[012]'
+    type: integer
+  link:
+    properties:
+      billing-id:
+        example: b41c4ec8-1825-404b-b740-feaeba96681d
+        type: string
+      connections:
+        $ref: '#/definitions/connections'
+      contracts:
+        items:
+          $ref: '#/definitions/contract'
+        type: array
+      description:
+        example: Main link from Melbourne to Sydney
+        type: string
+      latency:
+        $ref: '#/definitions/latency'
+      linkStatus:
+        example: 1
+        type: integer
+      linkid:
+        $ref: '#/definitions/linkid'
+      tag:
+        example: prod
+        type: string
+      type:
+        example: '0'
+        type: string
+    type: object
+  linkid:
+    description: Identifier of a link
+    example: f070660600c1c45f
+    type: string
+  meta:
+    properties:
+      limit:
+        type: integer
+      next:
+        type: integer
+      offset:
+        type: integer
+      previous:
+        type: integer
+      total_count:
+        type: integer
+    type: object
+  price:
+    example: 259
+    type: integer
+  renewal-option:
+    description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
+    example: 0
+    type: integer
+  role:
+    properties:
+      permissions:
+        items:
+          example: delete-user
+          type: string
+        type: array
+      role-name:
+        example: customer-admin
+        type: string
+    type: object
+  success-contractid:
+    properties:
+      params:
+        properties:
+          contractid:
+            $ref: '#/definitions/contractid'
+          duration:
+            $ref: '#/definitions/duration.mins'
+          linkid:
+            $ref: '#/definitions/linkid'
+          price:
+            $ref: '#/definitions/price'
+          renewal-option:
+            $ref: '#/definitions/renewal-option'
+        type: object
+    type: object
+  success-fragment:
+    properties:
+      success-auxiliary:
+        example: success
+        type: string
+      success-code:
+        example: 20000
+        type: integer
+      success-message:
+        example: vport created successfully
+        type: string
+    type: object
+  success-fragment2:
+    properties:
+      endpointuuid:
+        example: c6b5c04f-c968-432e-a70f-b929437ea6e4
+        type: string
+      success-auxiliary:
+        example: success
+        type: string
+      success-code:
+        example: 20000
+        type: integer
+      success-message:
+        example: vport created successfully
+        type: string
+    type: object
+  success-links:
+    properties:
+      params:
+        properties:
+          bandwidth:
+            $ref: '#/definitions/bandwidth.kbs'
+          contractid:
+            $ref: '#/definitions/contractid'
+          currencyId:
+            $ref: '#/definitions/currencyID'
+          duration:
+            $ref: '#/definitions/duration.mins'
+          linkid:
+            $ref: '#/definitions/linkid'
+          price:
+            $ref: '#/definitions/price'
+          renewal-option:
+            $ref: '#/definitions/renewal-option'
+        type: object
+    type: object
+  topology:
     properties:
       created_by:
-        description: ''
         example: 7a53ecf9-644a-4c92-8c63-eabc1ffe131f
         type: string
       creation_date:
-        description: ''
         example: 1508307028000
         type: integer
-        format: int64
       customer_uuid:
-        description: ''
         example: 536b8cca-6594-46b9-8e62-1638e42deb6e
         type: string
       deletion_date:
-        description: ''
         example: 0
         type: integer
-        format: int32
       description:
-        description: ''
         example: Main topology for WAN
         type: string
       guid_topology_id:
-        description: ''
         type: string
       name:
-        description: ''
         example: Production WAN
         type: string
       nsd_uuid:
         description: no longer used
         type: string
       status:
-        description: ''
         example: active
         type: string
       uuid:
-        description: ''
         example: 2056dbc6-fcad-4374-9dda-3bde3507b3b3
         type: string
-  Body42:
-    title: body42
     type: object
+  user:
     properties:
-      bandwidth:
-        description: Bandwidth in MB/s (not kB/s)
-        example: 1
-        type: integer
-        minimum: 1
-        maximum: 10000
-        format: int32
-      duration:
-        description: Duration of contract in hours (not minutes)
-        example: 1
-        type: integer
-        minimum: 1
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-  InventorylinkpostResponse:
-    title: inventorylinkpostResponse
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
+      emailaddress:
+        example: test@dummy.com
         type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
+      firstname:
+        example: Person
         type: string
-      params:
-        $ref: '#/definitions/Params'
-  Meta:
-    title: meta
-    type: object
-    properties:
-      limit:
-        description: ''
-        type: integer
-        format: int32
-      next:
-        description: ''
-        type: integer
-        format: int32
-      offset:
-        description: ''
-        type: integer
-        format: int32
-      previous:
-        description: ''
-        type: integer
-        format: int32
-      total_count:
-        description: ''
-        type: integer
-        format: int32
-  MarketplaceimagemyimagesgetResponse:
-    title: marketplaceimagemyimagesgetResponse
-    type: object
-    properties:
-      meta:
-        $ref: '#/definitions/Meta'
-      objects:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Image'
-  MarketplaceimagegetResponse:
-    title: marketplaceimagegetResponse
-    type: object
-    properties:
-      meta:
-        $ref: '#/definitions/Meta'
-      objects:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Image'
-  Contract:
-    title: contract
-    type: object
-    properties:
-      bandwidth:
-        description: Bandwidth in kB/s
-        example: 1000
-        type: integer
-        minimum: 1000
-        maximum: 10000000
-        format: int32
-      contract-end-time:
-        description: ''
-        example: 1508593521000
-        type: integer
-        format: int64
-      contract-start-time:
-        description: ''
-        example: 1508589922000
-        type: integer
-        format: int64
-      contractStatus:
-        description: ''
-        example: 8
-        type: integer
-        format: int32
-      contractid:
-        description: Identifier of a contract
-        example: f070660600c1c45f.2
+      jobtitle:
         type: string
-      currencyCode:
-        description: ''
-        example: USD
+      lastname:
+        example: Pacman
         type: string
-      currencyID:
-        description: ''
+      middlename:
+        type: string
+      phoneext:
+        type: string
+      phonenumber:
+        example: '7026661954'
+        type: string
+      phonetype:
+        example: mobile
+        type: string
+      status:
         example: '1'
         type: string
-      deletedtimestamp:
-        description: ''
-        example: 0
-        type: integer
-        format: int32
-      duration:
-        description: Duration of contract in minutes
-        example: 3600
-        type: integer
-        minimum: 3600
-        format: int32
-      price:
-        description: ''
-        example: 259
-        type: integer
-        format: int32
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-      version:
-        description: ''
-        example: 20431
-        type: integer
-        format: int32
-  InventorydatacentersgetException:
-    title: inventorydatacentersgetException
+      title:
+        example: Ms
+        type: string
+      usercountry:
+        example: USA
+        type: string
+      useruuid:
+        example: Ms
+        type: string
+    required:
+      - useruuid
+      - status
+      - username
     type: object
-    properties:
-      error:
-        description: ''
-        example: error
-        type: string
-      error-code:
-        description: ''
-        example: 1060052
-        type: integer
-        format: int32
-      error_description:
-        description: ''
-        example: Payload required.
-        type: string
-  Link:
-    title: link
-    type: object
-    properties:
-      billing-id:
-        description: ''
-        example: b41c4ec8-1825-404b-b740-feaeba96681d
-        type: string
-      connections:
-        description: ''
-        example:
-          - 5134d2ba-ce81-4b1c-9242-d2f30896c3a0
-          - e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd
-        type: array
-        items:
-          type: string
-        minItems: 2
-        maxItems: 2
-      contracts:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Contract'
-      description:
-        description: ''
-        example: Main link from Melbourne to Sydney
-        type: string
-      latency:
-        description: 'Latency: 0=Low, 1=Standard, 2=Best Effort'
-        example: 0
-        type: integer
-        format: int32
-      linkStatus:
-        description: ''
-        example: 1
-        type: integer
-        format: int32
-      linkid:
-        description: Identifier of a link
-        example: f070660600c1c45f
-        type: string
-      tag:
-        description: ''
-        example: prod
-        type: string
-      type:
-        description: ''
-        example: '0'
-        type: string
-  AuthgeneratetokenpostResponse:
-    title: authgeneratetokenpostResponse
-    type: object
-    properties:
-      access_token:
-        description: ''
-        example: a8856a1a4e25b23d86fa9ae2ffce3b63
-        type: string
-      expires_in:
-        description: ''
-        example: 6900
-        type: integer
-        format: int32
-      refresh_token:
-        description: ''
-        example: 6fdad23ccbc1f8e415fc2cf8cd245dae
-        type: string
-      token_type:
-        description: ''
-        example: bearer
-        type: string
-  Error:
-    title: Error
-    type: object
-    properties:
-      error-auxiliary:
-        description: ''
-        type: string
-      error-code:
-        description: ''
-        example: 1010099
-        type: integer
-        format: int32
-      error-message:
-        description: ''
-        type: string
-      ns:
-        description: ''
-        type: string
-  SuccessFragment:
-    title: success-fragment
-    type: object
-    properties:
-      success-auxiliary:
-        description: ''
-        example: success
-        type: string
-      success-code:
-        description: ''
-        example: 20000
-        type: integer
-        format: int32
-      success-message:
-        description: ''
-        example: vport created successfully
-        type: string
-  GlanceImage:
-    title: GlanceImage
-    type: object
-    properties:
-      create_at:
-        description: ''
-        type: string
-      id:
-        description: ''
-        example: 7
-        type: integer
-        format: int32
-      name:
-        description: ''
-        example: quagga-0.99.22.1
-        type: string
-      owner:
-        description: ''
-        example: 9222433f-727d-4679-b807-3ce39b9f8ef2
-        type: string
-      status:
-        description: ''
-        type: string
-  Vport:
-    title: vport
-    type: object
-    properties:
-      bandwidth:
-        description: ''
-        example: 0
-        type: integer
-        format: int32
-      interfacesequence:
-        description: ''
-        example: 0
-        type: integer
-        format: int32
-      status:
-        description: ''
-        example: deployed
-        type: string
-      vporttype:
-        description: ''
-        example: vlan
-        type: string
-      vportuuid:
-        description: ''
-        example: e62716f5-cc68-40e7-b97e-f1e3d1bda9a8
-        type: string
-      vportvalue:
-        $ref: '#/definitions/Vportvalue'
-  EndpointPort:
-    title: endpoint-port
-    type: object
-    properties:
-      cabletype:
-        description: ''
-        example: SMF
-        type: string
-      cfa:
-        description: ''
-        example: 10GBase-LR SMF/LC
-        type: string
-      connectortype:
-        description: ''
-        example: LC
-        type: string
-      endpointuuid:
-        description: ''
-        example: 8843fd24-4ef6-4a7d-8241-aed3778d6f07
-        type: string
-      interfacespeed:
-        description: ''
-        example: '100'
-        type: string
-      interfacetype:
-        description: ''
-        example: 10GBase-LR
-        type: string
-      vport:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Vport'
-  InventorylinksgetResponse:
-    title: inventorylinksgetResponse
-    type: object
-    properties:
-      params:
-        $ref: '#/definitions/Params47'
-  Body45:
-    title: body45
-    type: object
-    properties:
-      renewal-option:
-        description: '"Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"'
-        example: 0
-        type: integer
-        format: int32
-  Endpointlist:
-    title: Endpointlist
-    type: object
-    properties:
-      datacenteruuid:
-        description: ''
-        example: 7d89a3e0-ea82-4970-82f3-359d15d364b2
-        type: string
-      endpointuuid:
-        description: ''
-        example: ebe5a688-2a87-40ba-8303-049b1855271c
-        type: string
-  InventoryendpointscustomeruuidcustomeruuidgetResponse:
-    title: inventoryendpointscustomeruuidcustomeruuidgetResponse
-    type: object
-    properties:
-      endpointlist:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Endpointlist'
-  Datacenter34:
-    title: Datacenter34
-    type: object
-    properties:
-      datacenteruuid:
-        description: ''
-        example: fb089004-53c9-476e-b7b2-3cc91829e0d1
-        type: string
-      port:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/EndpointPort'
-  Classification:
-    title: Classification
-    type: object
-    properties:
-      description:
-        description: ''
-        example: Router
-        type: string
-      id:
-        description: ''
-        example: 4
-        type: integer
-        format: int32
-      name:
-        description: ''
-        example: Router
-        type: string
-  InventoryendpointendpointuuidgetResponse:
-    title: inventoryendpointendpointuuidgetResponse
-    type: object
-    properties:
-      datacenter:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Datacenter34'
-  InventorydatacentersgetResponse:
-    title: inventorydatacentersgetResponse
-    type: object
-    properties:
-      datacenters:
-        description: ''
-        type: array
-        items:
-          $ref: '#/definitions/Datacenter'
-  Role:
-    title: role
-    type: object
-    properties:
-      permissions:
-        description: ''
-        type: array
-        items:
-          type: string
-      role-name:
-        description: ''
-        example: customer-admin
-        type: string
-  VnfTag:
-    title: vnf-tag
-    type: object
-    properties:
-      description:
-        description: ''
-        example: UNIX
-        type: string
-      id:
-        description: ''
-        example: 2
-        type: integer
-        format: int32
-      name:
-        description: ''
-        example: UNIX
-        type: string
-  Product:
-    title: Product
-    type: object
+  version:
+    example: 20431
+    type: integer
+  vlan:
     properties:
       id:
-        description: ''
-        example: 7
-        type: integer
-        format: int32
-  Vlan:
-    title: vlan
-    type: object
-    properties:
-      id:
-        description: ''
         example: '101'
         type: string
       mac:
-        description: ''
+        example: ''
         type: string
     required:
       - id
       - mac
-  Billing:
-    title: billing
     type: object
+  vnf-tag:
     properties:
-      billing-account:
-        description: ''
-        example: '60012345'
+      description:
+        example: UNIX
         type: string
-      billingid:
-        description: ''
-        example: dae2cb75-89f2-4b5b-be99-5cf3ae3faa20
+      id:
+        example: 2
+        type: integer
+      name:
+        example: UNIX
         type: string
+    type: object
+  vport:
+    properties:
+      bandwidth:
+        example: 0
+        type: integer
+      interfacesequence:
+        example: 0
+        type: integer
+      status:
+        example: deployed
+        type: string
+      vporttype:
+        example: vlan
+        type: string
+      vportuuid:
+        example: e62716f5-cc68-40e7-b97e-f1e3d1bda9a8
+        type: string
+      vportvalue:
+        properties:
+          vlan:
+            $ref: '#/definitions/vlan'
+        type: object
+    type: object
+securityDefinitions:
+  oAuth2:
+    description: OAuth 2 with password grant flow
+    flow: password
+    scopes:
+      oAuth2: oAuth2
+    tokenUrl: 'https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken'
+    type: oauth2
+tags:
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+    description: Authentication
+    name: authentication
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
+    description: Endpoints
+    name: endpoints
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
+    description: Internet
+    name: internet
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#link
+    description: Links
+    name: links
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#contract
+    description: Contracts
+    name: contracts
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-ports-vport
+    description: Virtual Ports (VPorts)
+    name: vports
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-network-functions-marketplace
+    description: Virtual Network Functions (Marketplace)
+    name: vnfs
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#data-centre
+    description: Data Centres
+    name: datacentres
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#global-exchange
+    description: Global Exchange
+    name: exchange
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-global-ipvpn
+    description: Telstra Global IPVPN
+    name: ipvpn
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-next-ip
+    description: Telstra Australian IPVPN (Next IP)
+    name: nextip
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#topology-and-tag
+    description: Topologies
+    name: topologies
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+    description: Customers
+    name: customers
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+    description: Users
+    name: users
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+    description: Pricing
+    name: pricing
+  - externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#statistics
+    description: Statistics
+    name: statistics
+x-components:
+  parameters:
+    backupuuid:
+      description: Unique identifier representing a specific VNF backup
+      in: path
+      name: backupuuid
+      required: true
+      schema:
+        type: string
+    contractid:
+      description: Unique identifier representing a specific contract
+      in: path
+      name: contractid
+      required: true
+      type: string
+    customer_id:
+      description: Should this be customeruuid?
+      in: path
+      name: customer_id
+      required: true
+      schema:
+        type: string
+    customeruuid:
+      description: Unique identifier representing a specific customer
+      in: path
+      name: customeruuid
+      required: true
+      type: string
+    enddate:
+      description: End date for statistics query
+      in: path
+      name: enddate
+      required: true
+      schema:
+        type: string
+    endpointuuid:
+      description: Unique identifier representing a specific endpoint
+      in: path
+      name: endpointuuid
+      required: true
+      type: string
+    exrequuid:
+      description: Unique identifier representing a specific exchange request
+      in: path
+      name: exrequuid
+      required: true
+      schema:
+        type: string
+    imageid:
+      description: Identifier representing a specific VNF image
+      in: path
+      name: imageid
+      required: true
+      type: integer
+    linkid:
+      description: Unique identifier representing a specific link
+      in: path
+      name: linkid
+      required: true
+      type: string
+    service_uuid:
+      description: Unique identifier representing a specific IPVPN or Next IP service (?)
+      in: path
+      name: service_uuid
+      required: true
+      schema:
+        type: string
+    startdate:
+      description: Start date for statistics query
+      in: path
+      name: startdate
+      required: true
+      schema:
+        type: string
+    taguuid:
+      description: Unique identifier representing a specific customer tag
+      in: path
+      name: taguuid
+      required: true
+      schema:
+        type: string
+    topotaguuid:
+      description: Unique identifier representing a specific topology tag
+      in: path
+      name: topotaguuid
+      required: true
+      type: string
+    useruuid:
+      description: Unique identifier representing a specific user
+      in: path
+      name: useruuid
+      required: true
+      schema:
+        type: string
+    visitcarduuid:
+      description: >-
+        Unique identifier representing a specific exchange visit card (provider
+        description)
+      in: path
+      name: visitcarduuid
+      required: true
+      schema:
+        type: string
+    vnfuuid:
+      description: Unique identifier representing a specific virtual network function
+      in: path
+      name: vnfuuid
+      required: true
+      type: string
+    vportuuid:
+      description: Unique identifier representing a specific virtual port
+      in: path
+      name: vportuuid
+      required: true
+      type: string
+  responses:
+    contractgetresponse:
+      description: Success
+      schema:
+        $ref: '#/definitions/contractgetres'
+    datacenterinventorygetresponse:
+      description: array of data center objects
+      schema:
+        $ref: '#/definitions/datacenterget'
+    endpointlist:
+      description: Success
+      schema:
+        $ref: '#/definitions/endpointone'
+    forbidden:
+      description: Authorization Failed
+      schema:
+        $ref: '#/definitions/Error'
+    getmarketplaceimg:
+      description: Success
+      schema:
+        properties:
+          meta:
+            $ref: '#/definitions/meta'
+          objects:
+            items:
+              $ref: '#/definitions/image'
+            type: array
+        type: object
+    internalerror:
+      description: Backend Error
+      schema:
+        $ref: '#/definitions/Error'
+    invalidrequest:
+      description: Request is not correctly formatted
+      schema:
+        $ref: '#/definitions/Error'
+    invlinkscustomer:
+      description: Success
+      schema:
+        items:
+          $ref: '#/definitions/link'
+        type: array
+    linkhistoryget:
+      description: Success
+      schema:
+        properties:
+          billing-id:
+            example: 9c1ffab1-d037-4cf7-a19d-d213a05f5e6a
+            type: string
+          connections:
+            $ref: '#/definitions/connections'
+          contracts:
+            items:
+              $ref: '#/definitions/contract'
+            type: array
+          description:
+            example: '"Replication link between Equinix SYD and NextDC MEL"'
+            type: string
+          latency:
+            $ref: '#/definitions/latency'
+          linkStatus:
+            example: 1
+            type: integer
+          linkid:
+            $ref: '#/definitions/linkid'
+          tag:
+            example: prod
+            type: string
+          type:
+            example: '0'
+            type: string
+        type: object
+    methodnotallowed:
+      description: Method Not Allowed
+      schema:
+        $ref: '#/definitions/Error'
+    objectnotfound:
+      description: Specified object cannot be found
+      schema:
+        $ref: '#/definitions/Error'
+    statusconflict:
+      description: Status onflict
+      schema:
+        $ref: '#/definitions/Error'
+    unauthenticated:
+      description: Missing Token
+      schema:
+        properties:
+          error:
+            example: error
+            type: string
+          error-code:
+            example: 1060052
+            type: integer
+          error_description:
+            example: Payload required.
+            type: string
+        type: object
+    validationerror:
+      description: Request is invalid
+      schema:
+        $ref: '#/definitions/Error'
