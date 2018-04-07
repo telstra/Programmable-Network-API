@@ -16,7 +16,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.3.3
+  version: 2.4.0
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -73,24 +73,35 @@ components:
       type: object
       properties:
         cabletype:
+          description: "Physical cable medium required to connect to this port"
           type: string
           example: "SMF"
         connectortype:
+          description: >-
+            Type of phyisical connector required to connect to this port
           type: string
           example: "LC"
         cfa:
+          description: >-
+            Customer Facility Assignment, or the reference ID for the
+            physical port within the DC for interconnect
           type: string
           example: "10GBase-LR SMF/LC"
         endpointuuid:
+          description: "Unique identifier for this endpoint"
           type: string
           example: "8843fd24-4ef6-4a7d-8241-aed3778d6f07"
         interfacespeed:
+          description: "Speed at which the physical interface operates"
           type: string
           example: "100"
         interfacetype:
+          description: "Common name for the standard used on this port"
           type: string
           example: "10GBase-LR"
         vport:
+          description: >-
+            List of Virtual Ports (or VLANs) which exist on this endpoint
           type: array
           items:
             $ref: '#/components/schemas/vport'
@@ -324,6 +335,78 @@ components:
           $ref: '#/components/schemas/contract-start-time'
         contract-end-time:
           $ref: '#/components/schemas/contract-end-time'
+    visitcard:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "44aac063-3437-4781-96e9-63610d659afb"
+        provided_services:
+          type: array
+          items:
+            type: string
+            example: "exchange"
+        name:
+          type: string
+          example: "Vendor Name"
+        website:
+          type: string
+          example: "http://www.example.com/"
+        contact_name:
+          type: string
+          example: "Person Name"
+        contact_number:
+          type: string
+          example: "+1 (555) 123-4567"
+        email:
+          type: string
+          example: "sales@example.com"
+        profile:
+          type: string
+          example: "Our company provides everything and so much more!"
+        services_offered:
+          type: string
+          example: "Lightbulbs, Installation, Support, Maintenance"
+        description:
+          type: string
+          example: "Detailed description of the organisation"
+        image:
+          type: string
+          example: "https://url.storage.com/images/04223e36-2215a6df9513.png"
+        provider_category:
+          type: string
+          example: "exchange"
+        provider_type:
+          type: string
+    pop:
+      type: object
+      properties:
+        datacentername: "Melbourne (NextDC)"
+        datacenteruuid: "8c6fd1fa-df58-416b-937d-a82d8ecc9d7b"
+        datacentercode: "AMLS"
+    exchange-provider:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "9faa4e3a-e33d-4639-bc3f-cc1a5cf37b1e"
+        is_provider:
+          type: boolean
+        visit_card_uuid:
+          type: string
+          example: "c88b60d1-c848-4d6b-9ba4-68b606b187db"
+        is_public:
+          type: boolean
+        pops:
+          type: array
+          items:
+            $ref: '#/components/schemas/pop'
+        pending_requests_count:
+          type: integer
+          example: 4
+        approved_requests_count:
+          type: integer
+          example: 0
     image:
       type: object
       properties:
@@ -611,6 +694,13 @@ components:
       name: vnfuuid
       description: >-
         Unique identifier representing a specific virtual network function
+      schema:
+        type: string
+      required: true
+    exprovuuid:
+      in: path
+      name: exprovuuid
+      description: Unique identifier representing a specific exchange provider
       schema:
         type: string
       required: true
@@ -934,6 +1024,52 @@ paths:
                       vnfuuid:
                         type: string
                         example: "37449aab-0aa2-44ae-929b-7616549ee20e"
+  '/eis/1.0.0/vnfendpoint/vnfuuid/{vnfuuid}':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    get:
+      summary: Get detalis of a specific VNF
+      tags:
+        - endpoints
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  compute_hostname:
+                    type: string
+                    example: "dc3_node1@node-9.domain.tld"
+                  customeruuid:
+                    type: string
+                    example: "ffe7eae8-4782-49ac-a66e-8515032f6678"
+                  datacenteruuid:
+                    type: string
+                    example: "43f91af6-e4aa-4037-8c48-33ac74719615"
+                  flavoruuid:
+                    type: integer
+                    example: 2
+                  floating_ip:
+                    type: string
+                    example: ""
+                  imageuuid:
+                    type: integer
+                    example: 10
+                  instance_uuid:
+                    type: string
+                    example: "0aaae62e-c5b0-4a44-9e47-22974dfa4982"
+                  status:
+                    type: string
+                    example: "deleted"
+                  vnfuuid:
+                    type: string
+                    example: "69418457-66e9-4bea-9dc5-6fbe18ebac9a"
+                  vportcount:
+                    type: integer
+                    example: 0
   /1.0.0/inventory/regularendpoint:
     post:
       summary: Create Physical (Port) Endpoint
@@ -1007,6 +1143,36 @@ paths:
   '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
+    get:
+      summary: Get Endpoint name and status
+      tags:
+        - endpoints
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  customeruuid:
+                    type: string
+                    example: "bc42dfce-d542-467f-acb9-2442c8a609ee"
+                  endpointTypeuuid:
+                    type: string
+                    example: "32eea883-16cf-11e8-902e-000c293805b1"
+                  description:
+                    type: string
+                    example: "An optional description"
+                  endpointuuid:
+                    type: string
+                    example: "83762e08-ddad-43d9-a378-336bf43dbc57"
+                  name:
+                    type: string
+                    example: "My Endpoint"
+                  status:
+                    type: string
+                    example: "deployed"
     put:
       summary: Update Endpoint name
       tags:
@@ -1635,6 +1801,122 @@ paths:
                   status:
                     type: string
                     example: "ACTIVE"
+  /1.0.0/exchange:
+    get:
+      summary: List all Exchange providers, with POPs
+      tags:
+        - exchange
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/exchange-provider'
+  '/1.0.0/exchange/{exprovuuid}':
+    parameters:
+      - $ref: '#/components/parameters/exprovuuid'
+    get:
+      summary: Exchange provider details
+      tags:
+        - exchange
+      description: Get information about the specified Exchange provider
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/exchange-provider'
+  /1.0.0/visitcard:
+    get:
+      summary: Get list of Visit Cards
+      tags:
+        - exchange
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/visitcard'
+  '/1.0.0/visitcard/{visitcarduuid}':
+    parameters:
+      - $ref: '#/components/parameters/visitcarduuid'
+    get:
+      summary: View details of the specified Visit Card
+      tags:
+        - exchange
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/visitcard'
+    put:
+      summary: Update details of the specified Visit Card
+      tags:
+        - exchange
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                $ref: '#/components/schemas/visitcard'
+              required:
+                - contact_name
+                - provider_category
+                - services_offered
+                - email
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/visitcard'
+  /1.0.0/account/profile/exchange:
+    get:
+      summary: Get the current account's Exchange profile
+      tags:
+        - exchange
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  uuid:
+                    type: string
+                    example: "70441cd3-a191-4f8a-8dc2-c5dad54c608c"
+                  is_provider:
+                    type: boolean
+                    example: true
+                  visit_card_uuid:
+                    type: string
+                    example: "aff13faf-a4e5-48b7-973f-ad99e6bf85d6"
+                  is_public:
+                    type: boolean
+                    example: true
+                  pops:
+                    type: array
+                    description: XXX fix me
+                    items:
+                      string
+                  pending_requests_count:
+                    type: integer
+                    example: 0
+                  approved_requests_count:
+                    type: integer
+                    example: 0
 
   /ttms/1.0.0/topology_tag:
     get:
@@ -1869,12 +2151,21 @@ paths:
               schema:
                 type: object
                 properties:
+                  app-name:
+                    type: string
+                    example: "API_TPN"
                   company-name:
                     type: string
                     example: "Acme Corporation"
                   userid:
                     type: string
                     example: "321a5016-00a5-44ed-a749-4531ed89979a"
+                  username:
+                    type: string
+                    example: "19385949023/user.name"
+                  domain-name:
+                    type: string
+                    example: "domain7"
                   internalid:
                     type: integer
                     example: 353
