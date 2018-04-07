@@ -341,6 +341,7 @@ components:
         uuid:
           type: string
           example: "44aac063-3437-4781-96e9-63610d659afb"
+          readOnly: true
         provided_services:
           type: array
           items:
@@ -381,9 +382,15 @@ components:
     pop:
       type: object
       properties:
-        datacentername: "Melbourne (NextDC)"
-        datacenteruuid: "8c6fd1fa-df58-416b-937d-a82d8ecc9d7b"
-        datacentercode: "AMLS"
+        datacentername:
+          type: string
+          example: "Melbourne (NextDC)"
+        datacenteruuid:
+          type: string
+          example: "8c6fd1fa-df58-416b-937d-a82d8ecc9d7b"
+        datacentercode:
+          type: string
+          example: "AMLS"
     exchange-provider:
       type: object
       properties:
@@ -1866,14 +1873,13 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                $ref: '#/components/schemas/visitcard'
-              required:
-                - contact_name
-                - provider_category
-                - services_offered
-                - email
+              allOf:
+                - $ref: '#/components/schemas/visitcard'
+                - required:
+                    - contact_name
+                    - provider_category
+                    - services_offered
+                    - email
       responses:
         '200':
           description: Success
@@ -1910,7 +1916,7 @@ paths:
                     type: array
                     description: XXX fix me
                     items:
-                      string
+                      type: string
                   pending_requests_count:
                     type: integer
                     example: 0
