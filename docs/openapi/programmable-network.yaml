@@ -342,6 +342,7 @@ components:
           type: string
           example: "44aac063-3437-4781-96e9-63610d659afb"
           readOnly: true
+          description: UUID of the Visit Card
         provided_services:
           type: array
           items:
@@ -350,9 +351,13 @@ components:
         name:
           type: string
           example: "Vendor Name"
+          description: Short name by which to describe the provider
         website:
           type: string
           example: "http://www.example.com/"
+          description: >-
+            Web site to redirect user to if they click on the provider in
+            the Global Exchange
         contact_name:
           type: string
           example: "Person Name"
@@ -368,12 +373,18 @@ components:
         services_offered:
           type: string
           example: "Lightbulbs, Installation, Support, Maintenance"
+          description: >-
+            Brief description of the services available from this provider
         description:
           type: string
-          example: "Detailed description of the organisation"
+          example: "Excellent provider of services"
+          description: Detailed description of the organisation
         image:
           type: string
           example: "https://url.storage.com/images/04223e36-2215a6df9513.png"
+          description: >-
+            URL for an image to be displayed on Global Exchange for this
+            provider
         provider_category:
           type: string
           example: "exchange"
@@ -385,35 +396,45 @@ components:
         datacentername:
           type: string
           example: "Melbourne (NextDC)"
+          description: Name of the data centre
         datacenteruuid:
           type: string
           example: "8c6fd1fa-df58-416b-937d-a82d8ecc9d7b"
+          description: UUID of the data centre
         datacentercode:
           type: string
           example: "AMLS"
+          description: Four-letter code unique to the data centre
     exchange-provider:
       type: object
       properties:
         uuid:
           type: string
           example: "9faa4e3a-e33d-4639-bc3f-cc1a5cf37b1e"
+          description: UUID of the exchange provider
         is_provider:
           type: boolean
         visit_card_uuid:
           type: string
           example: "c88b60d1-c848-4d6b-9ba4-68b606b187db"
+          description: UUID of the visit card
         is_public:
           type: boolean
+          description: If true, provider is listed in Global Exchange
         pops:
           type: array
           items:
             $ref: '#/components/schemas/pop'
+          description: >-
+            Locations for which exchange requests can be made to this provider
         pending_requests_count:
           type: integer
           example: 4
+          description: Number of requests awaiting provider approval
         approved_requests_count:
           type: integer
           example: 0
+          description: Number of requests provider has approved
     image:
       type: object
       properties:
@@ -610,6 +631,66 @@ components:
         vcpus:
           type: integer
           example: 2
+    backup:
+      type: object
+      properties:
+        backup_name:
+          type: string
+          example: "prior to production network reconfiguration"
+          description: User-defined name referring to the backup
+        uuid:
+          type: string
+          example: "d3141ea0-7379-4959-966a-61e430428220"
+          description: UUID of the backup instance
+        vnf_uuid:
+          type: string
+          example: "303c6928-f9de-4e4c-a563-4772775f2316"
+          description: UUID of the VNF being backed up
+        glance_image_id:
+          type: string
+          example: "ce36d53a-6b72-4a4b-ad2d-efd04a8a29ab"
+          description: UUID of the underlying image id for the backup
+        backup_schedule_uuid:
+          type: string
+          example: "null"
+        total_interfaces:
+          type: integer
+          example: 2
+          description: >-
+            Number of virtual interfaces active when the VNF was backed up
+        backup_started_at:
+          type: string
+          example: "2019-08-02 01:17:49.0"
+          description: Time at which backup was started YYYY-MM-DD HH:MM:SS.S
+        backup_completed_at:
+          type: string
+          example: "null"
+          description: Time at which backup was completed YYYY-MM-DD HH:MM:SS.S
+        backup_restored_at:
+          type: string
+          example: "null"
+          description: >-
+            Time at which backup was most recently restored
+            YYYY-MM-DD HH:MM:SS.S
+        backup_restored_by:
+          type: string
+          example: "null"
+          description: UUID of the user who most recently restored the backup
+        replace_backup_uuid:
+          type: string
+          example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
+          description: UUID of the backup that the current backup replaced
+        Status:
+          type: string
+          example: "Creating"
+          description: Description of the current state of the backup
+        status_code:
+          type: string
+          example: "CRG"
+          description: >-
+            "Unique code representing the current state of the backup:
+              CRG=Creating, CRE=Created, DLG=Deleting, DEL=Deleted,
+              REG=Restoring, ACT=Active/Restored"
     user:
       type: object
       required:
@@ -622,7 +703,7 @@ components:
           example: "Ms"
         useruuid:
           type: string
-          example: "Ms"
+          example: "77cc6685-54a9-41f0-a714-2a76aa17f02a"
         usercountry:
           type: string
           example: "USA"
@@ -2265,6 +2346,154 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/user'
+
+
+  /bms/1.0.0/backup:
+    get:
+      summary: Create backup of specified VNF
+      description: >-
+        'Note: if a second backup creation is attempted while one is
+        already active, an error will be returned indicating that
+        the VNF is invalid. If replace_backup_uuid is provided, this
+        backup is deleted once the new backup is successfully completed'
+      tags:
+        - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              required:
+                - vnf_uuid
+                - backup_name
+              type: object
+              properties:
+                vnf_uuid:
+                  type: string
+                  example: "303c6928-f9de-4e4c-a563-4772775f2316"
+                backup_name:
+                  type: string
+                  example: "prior to production network reconfiguration"
+                replace_backup_uuid:
+                  type: string
+                  example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
+      responses:
+        '200':
+          description: Success
+          content:
+            schema:
+              type: object
+              properties:
+                $ref: '#/components/schemas/backup'
+  '/bms/1.0.0/backup/{backupuuid}':
+    parameters:
+      - $ref: '#/components/parameters/backupuuid'
+    get:
+      summary: Get information about the specified backup
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            schema:
+              type: object
+              properties:
+                $ref: '#/components/schemas/backup'
+    delete:
+      summary: Delete specified backup
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            schema:
+              type: object
+              properties:
+                $ref: '#/components/schemas/backup'
+  '/bms/1.0.0/backup/vnf/{vnfuuid}':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    get:
+      summary: List backups
+      description: List available backups for the specified VNF
+      tags:
+        - vnfs
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    $ref: '#/components/schemas/backup'
+  '/bms/1.0.0/backup/vnf/{vnfuuid}/delete':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    post:
+      summary: Delete multiple backups
+      description: Delete list of backups associated with specified VNF
+      tags:
+        - vnfs
+      responses:
+        '202':
+          description: Accepted
+          content:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: array
+                  items:
+                    type: string
+                    example: "9480d560-f21e-4be1-bf8a-212a15525553"
+                    description: >-
+                      UUID of backup images which was successfully deleted
+                Errormsg:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      uuid:
+                        type: string
+                        example: "a0064351-d31e-4a76-afb4-81d510046f6f"
+                        description: >-
+                          UUID of backup image which was not
+                          successfully deleted
+                      error-code:
+                        type: integer
+                        example: 1350003
+                      error-message:
+                        type: string
+                        example: "Data not found"
+                      error-auxiliary:
+                        type: string
+                        example: "Error"
+  '/bms/1.0.0/backup/{backupuuid}/restore':
+    parameters:
+      - $ref: '#/components/parameters/backupuuid'
+    post:
+      summary: Restore VNF from backup
+      description: Restore VNF from specified backup
+      tags:
+        - vnfs
+      responses:
+        '202':
+          description: Accepted
+          content:
+            schema:
+              type: object
+              properties:
+                $ref: '#/components/schemas/backup'
+        '400':
+          $ref: '#/components/responses/invalidrequest'
+        '401':
+          $ref: '#/components/responses/unauthenticated'
+        '403':
+          $ref: '#/components/responses/forbidden'
 tags:
   - name: authentication
     description: Authentication
