@@ -2349,7 +2349,7 @@ paths:
 
 
   /bms/1.0.0/backup:
-    get:
+    post:
       summary: Create backup of specified VNF
       description: >-
         'Note: if a second backup creation is attempted while one is
@@ -2405,8 +2405,9 @@ paths:
         '200':
           description: Success
           content:
-            schema:
-              $ref: '#/components/schemas/backup'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/backup'
   '/bms/1.0.0/backup/vnf/{vnfuuid}':
     parameters:
       - $ref: '#/components/parameters/vnfuuid'
