@@ -2380,9 +2380,8 @@ paths:
         '200':
           description: Success
           content:
-            schema:
-              type: object
-              properties:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/backup'
   '/bms/1.0.0/backup/{backupuuid}':
     parameters:
@@ -2395,9 +2394,8 @@ paths:
         '200':
           description: Success
           content:
-            schema:
-              type: object
-              properties:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/backup'
     delete:
       summary: Delete specified backup
@@ -2408,9 +2406,7 @@ paths:
           description: Success
           content:
             schema:
-              type: object
-              properties:
-                $ref: '#/components/schemas/backup'
+              $ref: '#/components/schemas/backup'
   '/bms/1.0.0/backup/vnf/{vnfuuid}':
     parameters:
       - $ref: '#/components/parameters/vnfuuid'
@@ -2427,9 +2423,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    $ref: '#/components/schemas/backup'
+                  $ref: '#/components/schemas/backup'
   '/bms/1.0.0/backup/vnf/{vnfuuid}/delete':
     parameters:
       - $ref: '#/components/parameters/vnfuuid'
@@ -2442,36 +2436,37 @@ paths:
         '202':
           description: Accepted
           content:
-            schema:
-              type: object
-              properties:
-                success:
-                  type: array
-                  items:
-                    type: string
-                    example: "9480d560-f21e-4be1-bf8a-212a15525553"
-                    description: >-
-                      UUID of backup images which was successfully deleted
-                Errormsg:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      uuid:
-                        type: string
-                        example: "a0064351-d31e-4a76-afb4-81d510046f6f"
-                        description: >-
-                          UUID of backup image which was not
-                          successfully deleted
-                      error-code:
-                        type: integer
-                        example: 1350003
-                      error-message:
-                        type: string
-                        example: "Data not found"
-                      error-auxiliary:
-                        type: string
-                        example: "Error"
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: array
+                    items:
+                      type: string
+                      example: "9480d560-f21e-4be1-bf8a-212a15525553"
+                      description: >-
+                        UUID of backup images which was successfully deleted
+                  Errormsg:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        uuid:
+                          type: string
+                          example: "a0064351-d31e-4a76-afb4-81d510046f6f"
+                          description: >-
+                            UUID of backup image which was not
+                            successfully deleted
+                        error-code:
+                          type: integer
+                          example: 1350003
+                        error-message:
+                          type: string
+                          example: "Data not found"
+                        error-auxiliary:
+                          type: string
+                          example: "Error"
   '/bms/1.0.0/backup/{backupuuid}/restore':
     parameters:
       - $ref: '#/components/parameters/backupuuid'
@@ -2484,9 +2479,8 @@ paths:
         '202':
           description: Accepted
           content:
-            schema:
-              type: object
-              properties:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/backup'
         '400':
           $ref: '#/components/responses/invalidrequest'
