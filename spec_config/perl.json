@@ -3,5 +3,6 @@
   "gitRepoId": "Programmable-network-SDK-perl",
   "clientPackage": "TelstraTPN",
   "packageName": "TelstraTPN",
-  "moduleName": "TelstraTPN"
+  "moduleName": "TelstraTPN",
+  "moduleVersion": "1.0.3"
 }

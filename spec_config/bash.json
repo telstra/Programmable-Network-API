@@ -3,5 +3,6 @@
   "gitRepoId": "Programmable-network-SDK-bash",
   "scriptName": "TelstraTPN",
   "packageName": "TelstraTPN",
-  "moduleName": "TelstraTPN"
+  "moduleName": "TelstraTPN",
+  "packageVersion": "1.0.3"
 }

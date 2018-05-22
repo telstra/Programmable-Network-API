@@ -2,5 +2,6 @@
   "gitUserId": "Telstra",
   "gitRepoId": "Programmable-network-SDK-dotnet",
   "clientPackage": "IO.TelstraTPN",
-  "packageName": "IO.TelstraTPN"
+  "packageName": "IO.TelstraTPN",
+  "packageVersion": "1.0.3"
 }

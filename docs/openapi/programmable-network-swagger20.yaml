@@ -17,12 +17,51 @@ info:
 
     To register, please contact your account representative.
   title: Telstra Programmable Network API
-  version: 2.3.3
+  version: 2.4.0
 host: penapi.pacnetconnect.com
 basePath: /
 schemes:
   - https
 paths:
+  /1.0.0/account/profile/exchange:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              approved_requests_count:
+                example: 0
+                type: integer
+              is_provider:
+                example: true
+                type: boolean
+              is_public:
+                example: true
+                type: boolean
+              pending_requests_count:
+                example: 0
+                type: integer
+              pops:
+                description: XXX fix me
+                items:
+                  type: string
+                type: array
+              uuid:
+                example: 70441cd3-a191-4f8a-8dc2-c5dad54c608c
+                type: string
+              visit_card_uuid:
+                example: aff13faf-a4e5-48b7-973f-ad99e6bf85d6
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      operationId: accountprofileexchangeget
+      summary: Get the current account's Exchange profile
   '/1.0.0/account/{customeruuid}':
     get:
       parameters:
@@ -162,6 +201,9 @@ paths:
           description: Success
           schema:
             properties:
+              app-name:
+                example: API_TPN
+                type: string
               billings:
                 items:
                   $ref: '#/definitions/billing'
@@ -175,6 +217,9 @@ paths:
               customerid:
                 example: bae254c1-3d78-4d68-8948-8b929c48e576
                 type: string
+              domain-name:
+                example: domain7
+                type: string
               internalid:
                 example: 353
                 type: integer
@@ -184,6 +229,9 @@ paths:
                 type: array
               userid:
                 example: 321a5016-00a5-44ed-a749-4531ed89979a
+                type: string
+              username:
+                example: 19385949023/user.name
                 type: string
             type: object
       security:
@@ -196,6 +244,44 @@ paths:
         (roles, permissions, etc.)
       operationId: authvalidatetokenget
       summary: Validate authentication token
+  /1.0.0/exchange:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/exchange-provider'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      operationId: exchangeget
+      summary: 'List all Exchange providers, with POPs'
+  '/1.0.0/exchange/{exprovuuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific exchange provider
+          in: path
+          name: exprovuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/exchange-provider'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      description: Get information about the specified Exchange provider
+      operationId: exchangeexprovuuidget
+      summary: Exchange provider details
   /1.0.0/inventory/datacenters:
     get:
       parameters: []
@@ -283,9 +369,16 @@ paths:
           type: string
       responses:
         '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/endpointone'
+          properties:
+            epoint:
+              items:
+                properties:
+                  datacenteruuid:
+                    example: 7d89a3e0-ea82-4970-82f3-359d15d364b2
+                    type: string
+                type: object
+              type: array
+          type: object
       security:
         - oAuth2:
             - oAuth2
@@ -333,7 +426,47 @@ paths:
           schema:
             allOf:
               - $ref: '#/definitions/success-fragment'
-              - $ref: '#/definitions/endpointuuidResponse'
+              - properties:
+                  params:
+                    properties:
+                      bandwidth:
+                        $ref: '#/definitions/bandwidth.kbs'
+                      billing-id:
+                        example: 3ba35364-226f-405b-a162-0689ac239b18
+                        type: string
+                      connections:
+                        $ref: '#/definitions/connections'
+                      contractid:
+                        $ref: '#/definitions/contractid'
+                      description:
+                        example: Replication link between Equinix SYD and NextDC MEL
+                        type: string
+                      duration:
+                        $ref: '#/definitions/duration.mins'
+                      latency:
+                        $ref: '#/definitions/latency'
+                      latency-sla:
+                        type: string
+                      link-type:
+                        example: '1'
+                        type: string
+                      linkid:
+                        $ref: '#/definitions/linkid'
+                      linkstatus:
+                        example: 6
+                        type: integer
+                      price:
+                        $ref: '#/definitions/price'
+                      renewal-option:
+                        $ref: '#/definitions/renewal-option'
+                      tag:
+                        example: prod
+                        type: string
+                      topology_tag_uuid:
+                        example: 4830beab-2950-47be-a5f9-e3cfeee0eed9
+                        type: string
+                    type: object
+                type: object
       security:
         - oAuth2:
             - oAuth2
@@ -483,7 +616,25 @@ paths:
           schema:
             allOf:
               - $ref: '#/definitions/success-fragment'
-              - $ref: '#components/schemas/success-links'
+              - properties:
+                  params:
+                    properties:
+                      bandwidth:
+                        $ref: '#/definitions/bandwidth.kbs'
+                      contractid:
+                        $ref: '#/definitions/contractid'
+                      currencyId:
+                        $ref: '#/definitions/currencyID'
+                      duration:
+                        $ref: '#/definitions/duration.mins'
+                      linkid:
+                        $ref: '#/definitions/linkid'
+                      price:
+                        $ref: '#/definitions/price'
+                      renewal-option:
+                        $ref: '#/definitions/renewal-option'
+                    type: object
+                type: object
       security:
         - oAuth2:
             - oAuth2
@@ -513,9 +664,49 @@ paths:
             type: object
       responses:
         '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/contractgetres'
+          properties:
+            params:
+              properties:
+                bandwidth:
+                  $ref: '#/definitions/bandwidth.kbs'
+                billing-id:
+                  example: 3ba35364-226f-405b-a162-0689ac239b18
+                  type: string
+                connection:
+                  $ref: '#/definitions/connections'
+                contract-end-time:
+                  $ref: '#/definitions/contract-end-time'
+                contract-start-time:
+                  $ref: '#/definitions/contract-start-time'
+                contractStatus:
+                  $ref: '#/definitions/contractStatus'
+                contractid:
+                  $ref: '#/definitions/contractid'
+                deletedtimestamp:
+                  $ref: '#/definitions/deletedtimestamp'
+                description:
+                  example: '"Replication link between Equinix SYD and NextDC MEL"'
+                  type: string
+                duration:
+                  $ref: '#/definitions/duration.mins'
+                latency:
+                  $ref: '#/definitions/latency'
+                linkid:
+                  $ref: '#/definitions/linkid'
+                price:
+                  $ref: '#/definitions/price'
+                renewal-option:
+                  $ref: '#/definitions/renewal-option'
+                tag:
+                  example: prod
+                  type: string
+                type:
+                  example: '0'
+                  type: string
+                version:
+                  $ref: '#/definitions/version'
+              type: object
+          type: object
       security:
         - oAuth2:
             - oAuth2
@@ -548,7 +739,21 @@ paths:
           schema:
             allOf:
               - $ref: '#/definitions/success-fragment'
-              - $ref: '#/definitions/success-contractid'
+              - properties:
+                  params:
+                    properties:
+                      contractid:
+                        $ref: '#/definitions/contractid'
+                      duration:
+                        $ref: '#/definitions/duration.mins'
+                      linkid:
+                        $ref: '#/definitions/linkid'
+                      price:
+                        $ref: '#/definitions/price'
+                      renewal-option:
+                        $ref: '#/definitions/renewal-option'
+                    type: object
+                type: object
       security:
         - oAuth2:
             - oAuth2
@@ -578,6 +783,12 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/success-fragment2'
+            allof:
+              - properties:
+                  endpointuuid:
+                    example: c6b5c04f-c968-432e-a70f-b929437ea6e4
+                    type: string
+                type: object
       security:
         - oAuth2:
             - oAuth2
@@ -869,7 +1080,307 @@ paths:
       description: 'Note that trailing / is required, body must be {}'
       operationId: marketplaceimageimageidremovefrommyimagespost
       summary: Remove specified image from "My Images"
+  /1.0.0/visitcard:
+    get:
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/visitcard'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      operationId: visitcardget
+      summary: Get list of Visit Cards
+  '/1.0.0/visitcard/{visitcarduuid}':
+    get:
+      parameters:
+        - description: >-
+            Unique identifier representing a specific exchange visit card
+            (provider description)
+          in: path
+          name: visitcarduuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            allOf:
+              - $ref: '#/definitions/visitcard'
+              - required:
+                  - contact_name
+                  - provider_category
+                  - services_offered
+                  - email
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/visitcard'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      operationId: visitcardvisitcarduuidget
+      summary: View details of the specified Visit Card
+    put:
+      parameters:
+        - description: >-
+            Unique identifier representing a specific exchange visit card
+            (provider description)
+          in: path
+          name: visitcarduuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            allOf:
+              - $ref: '#/definitions/visitcard'
+              - required:
+                  - contact_name
+                  - provider_category
+                  - services_offered
+                  - email
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/visitcard'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - exchange
+      operationId: visitcardvisitcarduuidput
+      summary: Update details of the specified Visit Card
+  /bms/1.0.0/backup:
+    post:
+      parameters:
+        - in: body
+          name: body
+          schema:
+            properties:
+              backup_name:
+                example: prior to production network reconfiguration
+                type: string
+              replace_backup_uuid:
+                example: 736848ab-d4dc-4f94-a255-35f9984f8a42
+                type: string
+              vnf_uuid:
+                example: 303c6928-f9de-4e4c-a563-4772775f2316
+                type: string
+            required:
+              - vnf_uuid
+              - backup_name
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/backup'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: >-
+        'Note: if a second backup creation is attempted while one is already
+        active, an error will be returned indicating that the VNF is invalid. If
+        replace_backup_uuid is provided, this backup is deleted once the new
+        backup is successfully completed'
+      operationId: bmsbackuppost
+      summary: Create backup of specified VNF
+  '/bms/1.0.0/backup/vnf/{vnfuuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific virtual network function
+          in: path
+          name: vnfuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            items:
+              $ref: '#/definitions/backup'
+            type: array
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: List available backups for the specified VNF
+      operationId: bmsbackupvnfvnfuuidget
+      summary: List backups
+  '/bms/1.0.0/backup/vnf/{vnfuuid}/delete':
+    post:
+      parameters:
+        - description: Unique identifier representing a specific virtual network function
+          in: path
+          name: vnfuuid
+          required: true
+          type: string
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            properties:
+              errormsg:
+                items:
+                  $ref: '#/definitions/vnfdelete'
+                type: array
+              success:
+                items:
+                  description: UUID of backup images which was successfully deleted
+                  example: 9480d560-f21e-4be1-bf8a-212a15525553
+                  type: string
+                type: array
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: Delete list of backups associated with specified VNF
+      operationId: bmsbackupvnfvnfuuiddeletepost
+      summary: Delete multiple backups
+  '/bms/1.0.0/backup/{backupuuid}':
+    delete:
+      parameters:
+        - description: Unique identifier representing a specific VNF backup
+          in: path
+          name: backupuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/backup'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      operationId: bmsbackupbackupuuiddelete
+      summary: Delete specified backup
+    get:
+      parameters:
+        - description: Unique identifier representing a specific VNF backup
+          in: path
+          name: backupuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/backup'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      operationId: bmsbackupbackupuuidget
+      summary: Get information about the specified backup
+  '/bms/1.0.0/backup/{backupuuid}/restore':
+    post:
+      parameters:
+        - description: Unique identifier representing a specific VNF backup
+          in: path
+          name: backupuuid
+          required: true
+          type: string
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/backup'
+        '400':
+          description: Request is not correctly formatted
+          schema:
+            $ref: '#/definitions/Error'
+        '401':
+          description: Missing Token
+          schema:
+            properties:
+              error:
+                example: error
+                type: string
+              error-code:
+                example: 1060052
+                type: integer
+              error_description:
+                example: Payload required.
+                type: string
+            type: object
+        '403':
+          description: Authorization Failed
+          schema:
+            $ref: '#/definitions/Error'
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - vnfs
+      description: Restore VNF from specified backup
+      operationId: bmsbackupbackupuuidrestorepost
+      summary: Restore VNF from backup
   '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific endpoint
+          in: path
+          name: endpointuuid
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            properties:
+              name:
+                example: My Endpoint
+                type: string
+            type: object
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              customeruuid:
+                example: bc42dfce-d542-467f-acb9-2442c8a609ee
+                type: string
+              description:
+                example: An optional description
+                type: string
+              endpointTypeuuid:
+                example: 32eea883-16cf-11e8-902e-000c293805b1
+                type: string
+              endpointuuid:
+                example: 83762e08-ddad-43d9-a378-336bf43dbc57
+                type: string
+              name:
+                example: My Endpoint
+                type: string
+              status:
+                example: deployed
+                type: string
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+      operationId: eisendpointendpointuuidendpointuuidget
+      summary: Get Endpoint name and status
     put:
       parameters:
         - description: Unique identifier representing a specific endpoint
@@ -989,6 +1500,58 @@ paths:
         - topologies
       operationId: eisendpointsendpointuuidassigntopologytagpost
       summary: Assign an Endpoint to a Topology
+  '/eis/1.0.0/vnfendpoint/vnfuuid/{vnfuuid}':
+    get:
+      parameters:
+        - description: Unique identifier representing a specific virtual network function
+          in: path
+          name: vnfuuid
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            properties:
+              compute_hostname:
+                example: dc3_node1@node-9.domain.tld
+                type: string
+              customeruuid:
+                example: ffe7eae8-4782-49ac-a66e-8515032f6678
+                type: string
+              datacenteruuid:
+                example: 43f91af6-e4aa-4037-8c48-33ac74719615
+                type: string
+              flavoruuid:
+                example: 2
+                type: integer
+              floating_ip:
+                example: ''
+                type: string
+              imageuuid:
+                example: 10
+                type: integer
+              instance_uuid:
+                example: 0aaae62e-c5b0-4a44-9e47-22974dfa4982
+                type: string
+              status:
+                example: deleted
+                type: string
+              vnfuuid:
+                example: 69418457-66e9-4bea-9dc5-6fbe18ebac9a
+                type: string
+              vportcount:
+                example: 0
+                type: integer
+            type: object
+      security:
+        - oAuth2:
+            - oAuth2
+      tags:
+        - endpoints
+        - vnfs
+      operationId: eisvnfendpointvnfuuidvnfuuidget
+      summary: Get detalis of a specific VNF
   /ttms/1.0.0/topology_tag:
     get:
       parameters: []
@@ -1320,6 +1883,63 @@ definitions:
         $ref: '#/definitions/vlan'
     title: Vportvalue
     type: object
+  backup:
+    properties:
+      Status:
+        description: Description of the current state of the backup
+        example: Creating
+        type: string
+      backup_completed_at:
+        description: 'Time at which backup was completed YYYY-MM-DD HH:MM:SS.S'
+        example: 'null'
+        type: string
+      backup_name:
+        description: User-defined name referring to the backup
+        example: prior to production network reconfiguration
+        type: string
+      backup_restored_at:
+        description: 'Time at which backup was most recently restored YYYY-MM-DD HH:MM:SS.S'
+        example: 'null'
+        type: string
+      backup_restored_by:
+        description: UUID of the user who most recently restored the backup
+        example: 'null'
+        type: string
+      backup_schedule_uuid:
+        example: 'null'
+        type: string
+      backup_started_at:
+        description: 'Time at which backup was started YYYY-MM-DD HH:MM:SS.S'
+        example: '2019-08-02 01:17:49.0'
+        type: string
+      glance_image_id:
+        description: UUID of the underlying image id for the backup
+        example: ce36d53a-6b72-4a4b-ad2d-efd04a8a29ab
+        type: string
+      replace_backup_uuid:
+        description: UUID of the backup that the current backup replaced
+        example: 736848ab-d4dc-4f94-a255-35f9984f8a42
+        type: string
+      status_code:
+        description: |-
+          "Unique code representing the current state of the backup:
+            CRG=Creating, CRE=Created, DLG=Deleting, DEL=Deleted,
+            REG=Restoring, ACT=Active/Restored"
+        example: CRG
+        type: string
+      total_interfaces:
+        description: Number of virtual interfaces active when the VNF was backed up
+        example: 2
+        type: integer
+      uuid:
+        description: UUID of the backup instance
+        example: d3141ea0-7379-4959-966a-61e430428220
+        type: string
+      vnf_uuid:
+        description: UUID of the VNF being backed up
+        example: 303c6928-f9de-4e4c-a563-4772775f2316
+        type: string
+    type: object
   bandwidth.kbs:
     description: Bandwidth in kB/s
     example: 1000
@@ -1502,24 +2122,33 @@ definitions:
   endpoint-port:
     properties:
       cabletype:
+        description: Physical cable medium required to connect to this port
         example: SMF
         type: string
       cfa:
+        description: >-
+          Customer Facility Assignment, or the reference ID for the physical
+          port within the DC for interconnect
         example: 10GBase-LR SMF/LC
         type: string
       connectortype:
+        description: Type of phyisical connector required to connect to this port
         example: LC
         type: string
       endpointuuid:
+        description: Unique identifier for this endpoint
         example: 8843fd24-4ef6-4a7d-8241-aed3778d6f07
         type: string
       interfacespeed:
+        description: Speed at which the physical interface operates
         example: '100'
         type: string
       interfacetype:
+        description: Common name for the standard used on this port
         example: 10GBase-LR
         type: string
       vport:
+        description: List of Virtual Ports (or VLANs) which exist on this endpoint
         items:
           $ref: '#/definitions/vport'
         type: array
@@ -1577,6 +2206,35 @@ definitions:
             type: string
         type: object
     title: endpointuuid response
+    type: object
+  exchange-provider:
+    properties:
+      approved_requests_count:
+        description: Number of requests provider has approved
+        example: 0
+        type: integer
+      is_provider:
+        type: boolean
+      is_public:
+        description: 'If true, provider is listed in Global Exchange'
+        type: boolean
+      pending_requests_count:
+        description: Number of requests awaiting provider approval
+        example: 4
+        type: integer
+      pops:
+        description: Locations for which exchange requests can be made to this provider
+        items:
+          $ref: '#/definitions/pop'
+        type: array
+      uuid:
+        description: UUID of the exchange provider
+        example: 9faa4e3a-e33d-4639-bc3f-cc1a5cf37b1e
+        type: string
+      visit_card_uuid:
+        description: UUID of the visit card
+        example: c88b60d1-c848-4d6b-9ba4-68b606b187db
+        type: string
     type: object
   flavor:
     properties:
@@ -1810,6 +2468,21 @@ definitions:
       total_count:
         type: integer
     type: object
+  pop:
+    properties:
+      datacentercode:
+        description: Four-letter code unique to the data centre
+        example: AMLS
+        type: string
+      datacentername:
+        description: Name of the data centre
+        example: Melbourne (NextDC)
+        type: string
+      datacenteruuid:
+        description: UUID of the data centre
+        example: 8c6fd1fa-df58-416b-937d-a82d8ecc9d7b
+        type: string
+    type: object
   price:
     example: 259
     type: integer
@@ -1956,7 +2629,7 @@ definitions:
         example: USA
         type: string
       useruuid:
-        example: Ms
+        example: 77cc6685-54a9-41f0-a714-2a76aa17f02a
         type: string
     required:
       - useruuid
@@ -1966,6 +2639,58 @@ definitions:
   version:
     example: 20431
     type: integer
+  visitcard:
+    properties:
+      contact_name:
+        example: Person Name
+        type: string
+      contact_number:
+        example: +1 (555) 123-4567
+        type: string
+      description:
+        description: Detailed description of the organisation
+        example: Excellent provider of services
+        type: string
+      email:
+        example: sales@example.com
+        type: string
+      image:
+        description: URL for an image to be displayed on Global Exchange for this provider
+        example: 'https://url.storage.com/images/04223e36-2215a6df9513.png'
+        type: string
+      name:
+        description: Short name by which to describe the provider
+        example: Vendor Name
+        type: string
+      profile:
+        example: Our company provides everything and so much more!
+        type: string
+      provided_services:
+        items:
+          example: exchange
+          type: string
+        type: array
+      provider_category:
+        example: exchange
+        type: string
+      provider_type:
+        type: string
+      services_offered:
+        description: Brief description of the services available from this provider
+        example: 'Lightbulbs, Installation, Support, Maintenance'
+        type: string
+      uuid:
+        description: UUID of the Visit Card
+        example: 44aac063-3437-4781-96e9-63610d659afb
+        readOnly: true
+        type: string
+      website:
+        description: >-
+          Web site to redirect user to if they click on the provider in the
+          Global Exchange
+        example: 'http://www.example.com/'
+        type: string
+    type: object
   vlan:
     properties:
       id:
@@ -1990,6 +2715,22 @@ definitions:
         example: UNIX
         type: string
     type: object
+  vnfdelete:
+    properties:
+      error-auxiliary:
+        example: Error
+        type: string
+      error-code:
+        example: 1350003
+        type: integer
+      error-message:
+        example: Data not found
+        type: string
+      uuid:
+        description: UUID of backup image which was not successfully deleted
+        example: a0064351-d31e-4a76-afb4-81d510046f6f
+        type: string
+    type: object
   vport:
     properties:
       bandwidth:
@@ -2008,10 +2749,7 @@ definitions:
         example: e62716f5-cc68-40e7-b97e-f1e3d1bda9a8
         type: string
       vportvalue:
-        properties:
-          vlan:
-            $ref: '#/definitions/vlan'
-        type: object
+        $ref: '#/definitions/Vportvalue'
     type: object
 securityDefinitions:
   oAuth2:
@@ -2109,8 +2847,7 @@ x-components:
       in: path
       name: backupuuid
       required: true
-      schema:
-        type: string
+      type: string
     contractid:
       description: Unique identifier representing a specific contract
       in: path
@@ -2141,6 +2878,12 @@ x-components:
       description: Unique identifier representing a specific endpoint
       in: path
       name: endpointuuid
+      required: true
+      type: string
+    exprovuuid:
+      description: Unique identifier representing a specific exchange provider
+      in: path
+      name: exprovuuid
       required: true
       type: string
     exrequuid:
@@ -2203,8 +2946,7 @@ x-components:
       in: path
       name: visitcarduuid
       required: true
-      schema:
-        type: string
+      type: string
     vnfuuid:
       description: Unique identifier representing a specific virtual network function
       in: path
@@ -2219,32 +2961,38 @@ x-components:
       type: string
   responses:
     contractgetresponse:
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/contractgetres'
       description: Success
-      schema:
-        $ref: '#/definitions/contractgetres'
     datacenterinventorygetresponse:
       description: array of data center objects
       schema:
         $ref: '#/definitions/datacenterget'
     endpointlist:
+      content:
+        application/json:
+          schema:
+            $ref: '#/definitions/endpointone'
       description: Success
-      schema:
-        $ref: '#/definitions/endpointone'
     forbidden:
       description: Authorization Failed
       schema:
         $ref: '#/definitions/Error'
     getmarketplaceimg:
+      content:
+        application/json:
+          schema:
+            properties:
+              meta:
+                $ref: '#/definitions/meta'
+              objects:
+                items:
+                  $ref: '#/definitions/image'
+                type: array
+            type: object
       description: Success
-      schema:
-        properties:
-          meta:
-            $ref: '#/definitions/meta'
-          objects:
-            items:
-              $ref: '#/definitions/image'
-            type: array
-        type: object
     internalerror:
       description: Backend Error
       schema:
@@ -2254,41 +3002,45 @@ x-components:
       schema:
         $ref: '#/definitions/Error'
     invlinkscustomer:
-      description: Success
-      schema:
-        items:
-          $ref: '#/definitions/link'
-        type: array
-    linkhistoryget:
-      description: Success
-      schema:
-        properties:
-          billing-id:
-            example: 9c1ffab1-d037-4cf7-a19d-d213a05f5e6a
-            type: string
-          connections:
-            $ref: '#/definitions/connections'
-          contracts:
+      content:
+        application/json:
+          schema:
             items:
-              $ref: '#/definitions/contract'
+              $ref: '#/definitions/link'
             type: array
-          description:
-            example: '"Replication link between Equinix SYD and NextDC MEL"'
-            type: string
-          latency:
-            $ref: '#/definitions/latency'
-          linkStatus:
-            example: 1
-            type: integer
-          linkid:
-            $ref: '#/definitions/linkid'
-          tag:
-            example: prod
-            type: string
-          type:
-            example: '0'
-            type: string
-        type: object
+      description: Success
+    linkhistoryget:
+      content:
+        application/json:
+          schema:
+            properties:
+              billing-id:
+                example: 9c1ffab1-d037-4cf7-a19d-d213a05f5e6a
+                type: string
+              connections:
+                $ref: '#/definitions/connections'
+              contracts:
+                items:
+                  $ref: '#/definitions/contract'
+                type: array
+              description:
+                example: '"Replication link between Equinix SYD and NextDC MEL"'
+                type: string
+              latency:
+                $ref: '#/definitions/latency'
+              linkStatus:
+                example: 1
+                type: integer
+              linkid:
+                $ref: '#/definitions/linkid'
+              tag:
+                example: prod
+                type: string
+              type:
+                example: '0'
+                type: string
+            type: object
+      description: Success
     methodnotallowed:
       description: Method Not Allowed
       schema:
@@ -2319,3 +3071,18 @@ x-components:
       description: Request is invalid
       schema:
         $ref: '#/definitions/Error'
+    vnfdel:
+      description: Accepted
+      schema:
+        properties:
+          errormsg:
+            items:
+              $ref: '#/definitions/vnfdelete'
+            type: array
+          success:
+            items:
+              description: UUID of backup images which was successfully deleted
+              example: 9480d560-f21e-4be1-bf8a-212a15525553
+              type: string
+            type: array
+        type: object

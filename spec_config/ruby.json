@@ -3,7 +3,7 @@
   "gitRepoId": "Programmable-Network-SDK-ruby",
   "gemName": "TelstraTPN",
   "moduleName": "TelstraTPN",
-  "gemVersion": "1.0.0",
+  "gemVersion": "1.0.3",
   "gemAuthor": "Telstra",
   "gemHomepage": "https://dev.telstra.com",
   "gemLicense": "Apache2"

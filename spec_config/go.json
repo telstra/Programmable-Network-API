@@ -1,5 +1,6 @@
 {
   "gitUserId": "Telstra",
   "gitRepoId": "Programmable-network-SDK-go",
-  "packageName": "TelstraTPN"
+  "packageName": "TelstraTPN",
+  "packageVersion": "1.0.3"
 }
