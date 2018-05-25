@@ -16,7 +16,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.4.0
+  version: 2.4.1
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -1779,7 +1779,6 @@ paths:
                     type: string
                     example: "success"
         '404':
-          description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
   '/1.0.0/marketplace/image/{imageid}/remove_from_my_images/':
     parameters:
@@ -1806,10 +1805,8 @@ paths:
                     type: string
                     example: "success"
         '404':
-          description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
         '422':
-          description: Image is not in 'my images'
           $ref: '#/components/responses/validationerror'
 
 
@@ -2347,7 +2344,109 @@ paths:
                 items:
                   $ref: '#/components/schemas/user'
 
-
+  '/1.0.0/inventory/links-stats/endpoint/{endpointuuid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get statistics for endpoint
+      description: Get statistics related to the specified endpoint
+      tags:
+        - statistics
+        - endpoints
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    dps:
+                      type: object
+                      additionalProperties:
+                        type: number
+                      example:
+                        1514765460: 1.5
+                    metric:
+                      type: string
+                      example: "endpoint.rx-bytes"
+  '/1.0.0/inventory/links-stats/flow/{linkid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/linkid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get statistics for flow
+      description: Get statistics related to the specified flow
+      tags:
+        - statistics
+        - links
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    dps:
+                      type: object
+                      additionalProperties:
+                        type: number
+                      example:
+                        1514765460: 0.5
+                    metric:
+                      type: string
+                      example: "flow.packets"
+                    tags:
+                      type: object
+                      properties:
+                        flowid:
+                          type: string
+                        direction:
+                          type: string
+                          example: "forward"
+                    aggregateTags:
+                      type: array
+                      items:
+                        type: string
+  '/1.0.0/inventory/links-stats/endpointstate/{endpointuuid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get state statistics for endpoint
+      description: >-
+        Get statistics related to the state of the specified endpoint
+      tags:
+        - statistics
+        - endpoints
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    dps:
+                      type: object
+                      additionalProperties:
+                        type: number
+                      example:
+                        1514765460: 0
+                    metric:
+                      type: string
+                      example: "endpoint.state"
   /bms/1.0.0/backup:
     post:
       summary: Create backup of specified VNF
@@ -2495,71 +2594,51 @@ tags:
     externalDocs:
       url: >-
         https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
-  - name: endpoints
-    description: Endpoints
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
-  - name: internet
-    description: Internet
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
-  - name: links
-    description: Links
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#link
   - name: contracts
     description: Contracts
     externalDocs:
       url: >-
         https://dev.telstra.com/content/programmable-network-api/key-concepts#contract
-  - name: vports
-    description: Virtual Ports (VPorts)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-ports-vport
-  - name: vnfs
-    description: Virtual Network Functions (Marketplace)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-network-functions-marketplace
-  - name: datacentres
-    description: Data Centres
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#data-centre
-  - name: exchange
-    description: Global Exchange
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#global-exchange
-  - name: ipvpn
-    description: Telstra Global IPVPN
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-global-ipvpn
-  - name: nextip
-    description: Telstra Australian IPVPN (Next IP)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-next-ip
-  - name: topologies
-    description: Topologies
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#topology-and-tag
   - name: customers
     description: Customers
     externalDocs:
       url: >-
         https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
-  - name: users
-    description: Users
+  - name: datacentres
+    description: Data Centres
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#data-centre
+  - name: endpoints
+    description: Endpoints
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
+  - name: exchange
+    description: Global Exchange
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#global-exchange
+  - name: internet
+    description: Internet
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
+  - name: ipvpn
+    description: Telstra Global IPVPN
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-global-ipvpn
+  - name: links
+    description: Links
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#link
+  - name: nextip
+    description: Telstra Australian IPVPN (Next IP)
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-next-ip
   - name: pricing
     description: Pricing
     externalDocs:
@@ -2570,3 +2649,23 @@ tags:
     externalDocs:
       url: >-
         https://dev.telstra.com/content/programmable-network-api/key-concepts#statistics
+  - name: topologies
+    description: Topologies
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#topology-and-tag
+  - name: users
+    description: Users
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+  - name: vnfs
+    description: Virtual Network Functions (Marketplace)
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-network-functions-marketplace
+  - name: vports
+    description: Virtual Ports (VPorts)
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-ports-vport
