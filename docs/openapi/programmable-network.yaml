@@ -2712,25 +2712,6 @@ paths:
           $ref: '#/components/responses/unauthenticated'
         '403':
           $ref: '#/components/responses/forbidden'
-x-tagGroups:
-  - name: Base Entities
-    tags:
-      - links
-      - endpoints
-      - contracts
-      - vports
-      - topologies
-  - name: Endpoints
-    tags:
-      - datacentres
-      - endpoints
-      - exchange
-      - vnfs
-  - name: Authentication and Authorisation
-    tags:
-      - authentication
-      - customers
-      - users
 tags:
   - name: authentication
     description: Authentication
