@@ -16,7 +16,7 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.3.3
+  version: 2.4.2
   contact:
     name: Telstra Corporation - Programmable Network API
     url: 'https://dev.telstra.com/content/programmable-network-api'
@@ -34,6 +34,180 @@ components:
           tokenUrl: https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken
           scopes: {}
   schemas:
+    contractresponse-fragment:
+      type: object
+      properties:
+        params:
+          type: object
+          properties:
+            duration:
+              $ref: '#/components/schemas/duration.mins'
+            bandwidth:
+              $ref: '#/components/schemas/bandwidth.kbs'
+            linkid:
+              $ref: '#/components/schemas/linkid'
+            contractid:
+              $ref: '#/components/schemas/contractid'
+            currencyId:
+              $ref: '#/components/schemas/currencyID'
+            price:
+              $ref: '#/components/schemas/price'
+            renewal-option:
+              $ref: '#/components/schemas/renewal-option'
+    backuprequest:
+      required:
+        - vnf_uuid
+        - backup_name
+      type: object
+      properties:
+        vnf_uuid:
+          type: string
+          example: "303c6928-f9de-4e4c-a563-4772775f2316"
+        backup_name:
+          type: string
+          example: "prior to production network reconfiguration"
+        replace_backup_uuid:
+          type: string
+          example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
+    topotagupdateresponse:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Production WAN Updated Name"
+        description:
+          type: string
+          example: "Updated topology for WAN"
+    topotagcreaterequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "Production WAN"
+        description:
+          type: string
+          example: "Main topology for WAN"
+    rebootrequest:
+      type: object
+      properties:
+        reboot_type:
+          type: string
+          example: "warm"
+    regvportrequest:
+      type: object
+      properties:
+        vporttype:
+          type: string
+          example: "vlan"
+        endpointuuid:
+          type: string
+          example: "9a04a7ff-0a82-4259-9f2b-c384b6d720ab"
+        vportvalue:
+          type: object
+          properties:
+            vlan:
+              $ref: '#/components/schemas/vlan'
+    vportrequest:
+      type: object
+      properties:
+        customeruuid:
+          type: string
+          example: "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9"
+        vnfuuid:
+          type: string
+          example: "9da748fb-9044-4909-95c2-4245d7592bec"
+        management_port:
+          type: boolean
+    createcontractrequest:
+      type: object
+      properties:
+        duration:
+          $ref: '#/components/schemas/duration.hrs'
+        bandwidth:
+          $ref: '#/components/schemas/bandwidth.mbs'
+        renewal-option:
+          $ref: '#/components/schemas/renewal-option'
+    createlinkrequest:
+      type: object
+      properties:
+        billing-id:
+          type: string
+          example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
+        description:
+          type: string
+          example: >-
+            "Replication link between Equinix SYD and NextDC MEL"
+        connections:
+          $ref: '#/components/schemas/connections'
+        tag:
+          type: string
+          example: "prod"
+        latency:
+          $ref: '#/components/schemas/latency'
+        duration:
+          $ref: '#/components/schemas/duration.mins'
+        bandwidth:
+          $ref: '#/components/schemas/bandwidth.kbs'
+        renewal-option:
+          $ref: '#/components/schemas/renewal-option'
+        link-type:
+          description: "1=VLAN, 2=VNF"
+          type: integer
+          example: 1
+        topology_tag_uuid:
+          type: string
+          example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
+    endpointupdaterequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "My Endpoint"
+    assigntopotagrequest:
+      type: object
+      properties:
+        topology_tag:
+          type: string
+          example: "38d17228-0179-491f-9e84-36ddd078b8e6"
+    regendpointrequest:
+      type: object
+      properties:
+        customeruuid:
+          type: string
+          example: "6a607f5f-25c9-45a1-a960-a34245509208"
+        datacenteruuid:
+          type: string
+          example: "dc8f4a57-4621-4b17-87bd-e5a7e508bf7a"
+        interfacetype:
+          type: string
+          example: "1000Base-TX"
+    vnfendpointrequest:
+      required:
+        - customeruuid
+        - imageuuid
+        - flavoruuid
+        - datacenteruuid
+        - config
+      type: object
+      properties:
+        customeruuid:
+          type: string
+          example: "e66546d2-eb85-442f-a4d4-a4f6f4cee6bc"
+        imageuuid:
+          type: integer
+          example: 21
+        flavoruuid:
+          type: integer
+          example: 22
+        datacenteruuid:
+          type: string
+          example: "2e5ff2d1-da1b-4e5d-81a8-58f1780b1031"
+        config:
+          description: "Boot configuration for VNF, base64 encoded"
+          type: string
+        topology_tag_uuid:
+          type: string
+          example: "f6c14b31-f29f-4be2-919b-5b7f463e4a3c"
     Error:
       type: object
       properties:
@@ -73,24 +247,35 @@ components:
       type: object
       properties:
         cabletype:
+          description: "Physical cable medium required to connect to this port"
           type: string
           example: "SMF"
         connectortype:
+          description: >-
+            Type of phyisical connector required to connect to this port
           type: string
           example: "LC"
         cfa:
+          description: >-
+            Customer Facility Assignment, or the reference ID for the
+            physical port within the DC for interconnect
           type: string
           example: "10GBase-LR SMF/LC"
         endpointuuid:
+          description: "Unique identifier for this endpoint"
           type: string
           example: "8843fd24-4ef6-4a7d-8241-aed3778d6f07"
         interfacespeed:
+          description: "Speed at which the physical interface operates"
           type: string
           example: "100"
         interfacetype:
+          description: "Common name for the standard used on this port"
           type: string
           example: "10GBase-LR"
         vport:
+          description: >-
+            List of Virtual Ports (or VLANs) which exist on this endpoint
           type: array
           items:
             $ref: '#/components/schemas/vport'
@@ -324,6 +509,106 @@ components:
           $ref: '#/components/schemas/contract-start-time'
         contract-end-time:
           $ref: '#/components/schemas/contract-end-time'
+    visitcard:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "44aac063-3437-4781-96e9-63610d659afb"
+          readOnly: true
+          description: UUID of the Visit Card
+        provided_services:
+          type: array
+          items:
+            type: string
+            example: "exchange"
+        name:
+          type: string
+          example: "Vendor Name"
+          description: Short name by which to describe the provider
+        website:
+          type: string
+          example: "http://www.example.com/"
+          description: >-
+            Web site to redirect user to if they click on the provider in
+            the Global Exchange
+        contact_name:
+          type: string
+          example: "Person Name"
+        contact_number:
+          type: string
+          example: "+1 (555) 123-4567"
+        email:
+          type: string
+          example: "sales@example.com"
+        profile:
+          type: string
+          example: "Our company provides everything and so much more!"
+        services_offered:
+          type: string
+          example: "Lightbulbs, Installation, Support, Maintenance"
+          description: >-
+            Brief description of the services available from this provider
+        description:
+          type: string
+          example: "Excellent provider of services"
+          description: Detailed description of the organisation
+        image:
+          type: string
+          example: "https://url.storage.com/images/04223e36-2215a6df9513.png"
+          description: >-
+            URL for an image to be displayed on Global Exchange for this
+            provider
+        provider_category:
+          type: string
+          example: "exchange"
+        provider_type:
+          type: string
+    pop:
+      type: object
+      properties:
+        datacentername:
+          type: string
+          example: "Melbourne (NextDC)"
+          description: Name of the data centre
+        datacenteruuid:
+          type: string
+          example: "8c6fd1fa-df58-416b-937d-a82d8ecc9d7b"
+          description: UUID of the data centre
+        datacentercode:
+          type: string
+          example: "AMLS"
+          description: Four-letter code unique to the data centre
+    exchange-provider:
+      type: object
+      properties:
+        uuid:
+          type: string
+          example: "9faa4e3a-e33d-4639-bc3f-cc1a5cf37b1e"
+          description: UUID of the exchange provider
+        is_provider:
+          type: boolean
+        visit_card_uuid:
+          type: string
+          example: "c88b60d1-c848-4d6b-9ba4-68b606b187db"
+          description: UUID of the visit card
+        is_public:
+          type: boolean
+          description: If true, provider is listed in Global Exchange
+        pops:
+          type: array
+          items:
+            $ref: '#/components/schemas/pop'
+          description: >-
+            Locations for which exchange requests can be made to this provider
+        pending_requests_count:
+          type: integer
+          example: 4
+          description: Number of requests awaiting provider approval
+        approved_requests_count:
+          type: integer
+          example: 0
+          description: Number of requests provider has approved
     image:
       type: object
       properties:
@@ -520,6 +805,66 @@ components:
         vcpus:
           type: integer
           example: 2
+    backup:
+      type: object
+      properties:
+        backup_name:
+          type: string
+          example: "prior to production network reconfiguration"
+          description: User-defined name referring to the backup
+        uuid:
+          type: string
+          example: "d3141ea0-7379-4959-966a-61e430428220"
+          description: UUID of the backup instance
+        vnf_uuid:
+          type: string
+          example: "303c6928-f9de-4e4c-a563-4772775f2316"
+          description: UUID of the VNF being backed up
+        glance_image_id:
+          type: string
+          example: "ce36d53a-6b72-4a4b-ad2d-efd04a8a29ab"
+          description: UUID of the underlying image id for the backup
+        backup_schedule_uuid:
+          type: string
+          example: "null"
+        total_interfaces:
+          type: integer
+          example: 2
+          description: >-
+            Number of virtual interfaces active when the VNF was backed up
+        backup_started_at:
+          type: string
+          example: "2019-08-02 01:17:49.0"
+          description: Time at which backup was started YYYY-MM-DD HH:MM:SS.S
+        backup_completed_at:
+          type: string
+          example: "null"
+          description: Time at which backup was completed YYYY-MM-DD HH:MM:SS.S
+        backup_restored_at:
+          type: string
+          example: "null"
+          description: >-
+            Time at which backup was most recently restored
+            YYYY-MM-DD HH:MM:SS.S
+        backup_restored_by:
+          type: string
+          example: "null"
+          description: UUID of the user who most recently restored the backup
+        replace_backup_uuid:
+          type: string
+          example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
+          description: UUID of the backup that the current backup replaced
+        Status:
+          type: string
+          example: "Creating"
+          description: Description of the current state of the backup
+        status_code:
+          type: string
+          example: "CRG"
+          description: >-
+            "Unique code representing the current state of the backup:
+              CRG=Creating, CRE=Created, DLG=Deleting, DEL=Deleted,
+              REG=Restoring, ACT=Active/Restored"
     user:
       type: object
       required:
@@ -532,7 +877,7 @@ components:
           example: "Ms"
         useruuid:
           type: string
-          example: "Ms"
+          example: "77cc6685-54a9-41f0-a714-2a76aa17f02a"
         usercountry:
           type: string
           example: "USA"
@@ -614,6 +959,13 @@ components:
       schema:
         type: string
       required: true
+    exprovuuid:
+      in: path
+      name: exprovuuid
+      description: Unique identifier representing a specific exchange provider
+      schema:
+        type: string
+      required: true
     exrequuid:
       in: path
       name: exrequuid
@@ -676,7 +1028,7 @@ components:
       in: path
       name: service_uuid
       description: >-
-        Unique identifier representing a specific IPVPN or Next IP service (?)
+        Unique identifier representing a specific IPVPN or Next IP service (TBC)
       schema:
         type: string
       required: true
@@ -688,6 +1040,860 @@ components:
         type: string
       required: true
   responses:
+    backuprestoreresponse:
+      description: Accepted
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/backup'
+    backupmultideleteresponse:
+      description: Accepted
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: array
+                items:
+                  type: string
+                  example: "9480d560-f21e-4be1-bf8a-212a15525553"
+                  description: >-
+                    UUID of backup images which was successfully deleted
+              Errormsg:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    uuid:
+                      type: string
+                      example: "a0064351-d31e-4a76-afb4-81d510046f6f"
+                      description: >-
+                        UUID of backup image which was not
+                        successfully deleted
+                    error-code:
+                      type: integer
+                      example: 1350003
+                    error-message:
+                      type: string
+                      example: "Data not found"
+                    error-auxiliary:
+                      type: string
+                      example: "Error"
+    backuplistresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/backup'
+    backupdeleteresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/backup'
+    backupdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/backup'
+    backupresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/backup'
+    endpointstatestatsresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dps:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    1514765460: 0
+                metric:
+                  type: string
+                  example: "endpoint.state"
+    flowstatsresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dps:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    1514765460: 0.5
+                metric:
+                  type: string
+                  example: "flow.packets"
+                tags:
+                  type: object
+                  properties:
+                    flowid:
+                      type: string
+                    direction:
+                      type: string
+                      example: "forward"
+                aggregateTags:
+                  type: array
+                  items:
+                    type: string
+    linkstatsresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                dps:
+                  type: object
+                  additionalProperties:
+                    type: number
+                  example:
+                    1514765460: 1.5
+                metric:
+                  type: string
+                  example: "endpoint.rx-bytes"
+    userlistresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/user'
+    customerdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              phone:
+                type: string
+                example: "7026661954"
+              city:
+                type: string
+                example: "Dallas"
+              fax:
+                type: string
+                example: null
+              country:
+                type: string
+                example: "USA"
+              address:
+                type: string
+                example: "555 Paularino Avenue"
+              state:
+                type: string
+                example: "Texas"
+              website:
+                type: string
+                example: "http://dummy.com"
+              companyuuid:
+                type: string
+                example: "a6cef301-de34-4654-8933-ceafc7d2ae6e"
+              companyname:
+                type: string
+                example: "customer.pen.10"
+              postalcode:
+                type: string
+                example: "75024"
+              customertype:
+                type: string
+                example: ""
+              status:
+                type: string
+                example: "1"
+              customeraccountid:
+                type: string
+                example: "71234010"
+    validatetokenresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              app-name:
+                type: string
+                example: "API_TPN"
+              company-name:
+                type: string
+                example: "Acme Corporation"
+              userid:
+                type: string
+                example: "321a5016-00a5-44ed-a749-4531ed89979a"
+              username:
+                type: string
+                example: "19385949023/user.name"
+              domain-name:
+                type: string
+                example: "domain7"
+              internalid:
+                type: integer
+                example: 353
+              customerid:
+                type: string
+                example: "bae254c1-3d78-4d68-8948-8b929c48e576"
+              customer-account:
+                type: string
+                example: "70012345"
+              billings:
+                type: array
+                items:
+                  $ref: '#/components/schemas/billing'
+              roles:
+                type: array
+                items:
+                  $ref: '#/components/schemas/role'
+    topotaglistresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoints:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    endpoint_uuid:
+                      type: string
+                      example: "c36a6a66-6b1c-47c4-866e-6e4657388557"
+                    vports:
+                      type: array
+                      items:
+                        type: string
+                        example: "82626f13-af0b-4fb2-9b36-68176602dc4f"
+              sharedvports:
+                type: array
+                items:
+                  type: string
+                  example: "a51c471c-36d7-44cc-914e-60886f0f810a"
+              'topology-id':
+                type: string
+                example: "2ecaa946-848f-4f57-a000-bc15e64bd141"
+    topotagobjectsresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpoints:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    endpoint_uuid:
+                      type: string
+                      example: "88a86c13-9a71-4ea8-b4ed-f4d0d9ecb606"
+                    vports:
+                      type: array
+                      items:
+                        type: string
+                        example: "7d5c7594-34fe-4b71-8b8b-b0bd919f5d0d"
+              links:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    linkid:
+                      $ref: '#/components/schemas/linkid'
+                    vport:
+                      type: array
+                      items:
+                        type: string
+                        example: "63cd1f6d-8a0a-4ec5-aae2-65f31add9d6a"
+              sharedvports:
+                type: array
+                items:
+                  type: string
+                  example: "03b39458-8938-4ef1-a2c7-826b2566873e"
+              topology_tag:
+                type: string
+                example: "7a09af3d-d4e5-4538-a1e6-9f83d751e163"
+    topotagupdateresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/topology'
+    topotagdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/topology'
+    topotagcreateresponse:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/topology'
+    topotagresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/topology'
+    profileresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuid:
+                type: string
+                example: "70441cd3-a191-4f8a-8dc2-c5dad54c608c"
+              is_provider:
+                type: boolean
+                example: true
+              visit_card_uuid:
+                type: string
+                example: "aff13faf-a4e5-48b7-973f-ad99e6bf85d6"
+              is_public:
+                type: boolean
+                example: true
+              pops:
+                type: array
+                description: XXX fix me
+                items:
+                  type: string
+              pending_requests_count:
+                type: integer
+                example: 0
+              approved_requests_count:
+                type: integer
+                example: 0
+    visitcardupdateresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/visitcard'
+    visitcarddetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/visitcard'
+    visitcardresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/visitcard'
+    exprovresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/exchange-provider'
+    exchangeresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/exchange-provider'
+    vnfstatusresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "ACTIVE"
+    removeimageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "success"
+    addimageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "success"
+    my_imagesresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/meta'
+              objects:
+                type: array
+                items:
+                  $ref: '#/components/schemas/image'
+    imagedetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/image'
+    imageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: '#/components/schemas/meta'
+              objects:
+                type: array
+                items:
+                  $ref: '#/components/schemas/image'
+    vportdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/endpoint-port'
+    regvportresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - type: object
+                properties:
+                  vportuuid:
+                    type: string
+                    example: "251a54f9-f534-4d92-86b9-77e73bd4ede4"
+    vportresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              vnfuuid:
+                description: vnfuuid which was passed in the request
+                type: string
+                example: "9da748fb-9044-4909-95c2-4245d7592bec"
+              vnportuuid:
+                description: uuid of the newly-created vport
+                type: string
+                example: "1402ed53-4693-40e0-aa1e-5d5b85052f3d"
+    createcontractresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - $ref: '#/components/schemas/contractresponse-fragment'
+    linkdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                example: "MEL-SYD"
+              latency:
+                $ref: '#/components/schemas/latency'
+              linkid:
+                $ref: '#/components/schemas/linkid'
+              contracts:
+                type: array
+                items:
+                  $ref: '#/components/schemas/contract'
+              tag:
+                type: string
+                example: "prod"
+              connections:
+                $ref: '#/components/schemas/connections'
+              type:
+                type: string
+                example: "0"
+              linkStatus:
+                type: integer
+                example: 1
+              topology_tag_uuid:
+                type: string
+                example: "5f02ee19-8de3-4a0d-8baf-823e4aa16780"
+              billing-id:
+                type: string
+                example: "d04544ba-6c9c-4e84-bd60-848e56a116c4"
+    updatecontractresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - type: object
+                properties:
+                  params:
+                    type: object
+                    properties:
+                      duration:
+                        $ref: '#/components/schemas/duration.mins'
+                      linkid:
+                        $ref: '#/components/schemas/linkid'
+                      contractid:
+                        $ref: '#/components/schemas/contractid'
+                      price:
+                        $ref: '#/components/schemas/price'
+                      renewal-option:
+                        $ref: '#/components/schemas/renewal-option'
+    activecontractresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              params:
+                type: object
+                properties:
+                  description:
+                    type: string
+                    example: >-
+                      "Replication link between Equinix SYD and NextDC MEL"
+                  duration:
+                    $ref: '#/components/schemas/duration.mins'
+                  bandwidth:
+                    $ref: '#/components/schemas/bandwidth.kbs'
+                  latency:
+                    $ref: '#/components/schemas/latency'
+                  linkid:
+                    $ref: '#/components/schemas/linkid'
+                  contractid:
+                    $ref: '#/components/schemas/contractid'
+                  price:
+                    $ref: '#/components/schemas/price'
+                  contractStatus:
+                    $ref: '#/components/schemas/contractStatus'
+                  version:
+                    $ref: '#/components/schemas/version'
+                  deletedtimestamp:
+                    $ref: '#/components/schemas/deletedtimestamp'
+                  tag:
+                    type: string
+                    example: "prod"
+                  connection:
+                    $ref: '#/components/schemas/connections'
+                  type:
+                    type: string
+                    example: "0"
+                  billing-id:
+                    type: string
+                    example: "3ba35364-226f-405b-a162-0689ac239b18"
+                  renewal-option:
+                    $ref: '#/components/schemas/renewal-option'
+                  contract-start-time:
+                    $ref: '#/components/schemas/contract-start-time'
+                  contract-end-time:
+                    $ref: '#/components/schemas/contract-end-time'
+    linkhistoryresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+                example: >-
+                  "Replication link between Equinix SYD and NextDC MEL"
+              latency:
+                $ref: '#/components/schemas/latency'
+              linkid:
+                $ref: '#/components/schemas/linkid'
+              contracts:
+                type: array
+                items:
+                  $ref: '#/components/schemas/contract'
+              tag:
+                type: string
+                example: "prod"
+              connections:
+                $ref: '#/components/schemas/connections'
+              type:
+                type: string
+                example: "0"
+              linkStatus:
+                type: integer
+                example: 1
+              billing-id:
+                type: string
+                example: "9c1ffab1-d037-4cf7-a19d-d213a05f5e6a"
+    activelinksresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/link'
+    createlinkresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - type: object
+                properties:
+                  params:
+                    type: object
+                    properties:
+                      description:
+                        type: string
+                        example: >-
+                          Replication link between Equinix SYD and
+                          NextDC MEL
+                      duration:
+                        $ref: '#/components/schemas/duration.mins'
+                      bandwidth:
+                        $ref: '#/components/schemas/bandwidth.kbs'
+                      latency:
+                        $ref: '#/components/schemas/latency'
+                      linkid:
+                        $ref: '#/components/schemas/linkid'
+                      contractid:
+                        $ref: '#/components/schemas/contractid'
+                      price:
+                        $ref: '#/components/schemas/price'
+                      tag:
+                        type: string
+                        example: "prod"
+                      connections:
+                        $ref: '#/components/schemas/connections'
+                      topology_tag_uuid:
+                        type: string
+                        example: "4830beab-2950-47be-a5f9-e3cfeee0eed9"
+                      billing-id:
+                        type: string
+                        example: "3ba35364-226f-405b-a162-0689ac239b18"
+                      renewal-option:
+                        $ref: '#/components/schemas/renewal-option'
+                      latency-sla:
+                        type: string
+                      linkstatus:
+                        type: integer
+                        example: 6
+                      link-type:
+                        type: string
+                        example: "1"
+    endpointupdateresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/success-fragment'
+    endpointstatusresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              customeruuid:
+                type: string
+                example: "bc42dfce-d542-467f-acb9-2442c8a609ee"
+              endpointTypeuuid:
+                type: string
+                example: "32eea883-16cf-11e8-902e-000c293805b1"
+              description:
+                type: string
+                example: "An optional description"
+              endpointuuid:
+                type: string
+                example: "83762e08-ddad-43d9-a378-336bf43dbc57"
+              name:
+                type: string
+                example: "My Endpoint"
+              status:
+                type: string
+                example: "deployed"
+    assigntopotagresponse:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/success-fragment'
+    regendpointresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - type: object
+                properties:
+                  endpointuuid:
+                    type: string
+                    example: "c6b5c04f-c968-432e-a70f-b929437ea6e4"
+    vnfdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              compute_hostname:
+                type: string
+                example: "dc3_node1@node-9.domain.tld"
+              customeruuid:
+                type: string
+                example: "ffe7eae8-4782-49ac-a66e-8515032f6678"
+              datacenteruuid:
+                type: string
+                example: "43f91af6-e4aa-4037-8c48-33ac74719615"
+              flavoruuid:
+                type: integer
+                example: 2
+              floating_ip:
+                type: string
+                example: ""
+              imageuuid:
+                type: integer
+                example: 10
+              instance_uuid:
+                type: string
+                example: "0aaae62e-c5b0-4a44-9e47-22974dfa4982"
+              status:
+                type: string
+                example: "deleted"
+              vnfuuid:
+                type: string
+                example: "69418457-66e9-4bea-9dc5-6fbe18ebac9a"
+              vportcount:
+                type: integer
+                example: 0
+    vnfendpointresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/success-fragment'
+              - type: object
+                properties:
+                  customeruuid:
+                    type: string
+                    example: "9a6c0b09-6864-4f1b-bc03-842268ca1061"
+                  vnfuuid:
+                    type: string
+                    example: "37449aab-0aa2-44ae-929b-7616549ee20e"
+    endpointresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              datacenter:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    datacenteruuid:
+                      type: string
+                      example: "fb089004-53c9-476e-b7b2-3cc91829e0d1"
+                    port:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/endpoint-port'
+    endpointlistresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              endpointlist:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    datacenteruuid:
+                      type: string
+                      example: "7d89a3e0-ea82-4970-82f3-359d15d364b2"
+                    endpointuuid:
+                      type: string
+                      example: "ebe5a688-2a87-40ba-8303-049b1855271c"
+    datacentreresponse:
+      description: array of data center objects
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              datacenters:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    cityname:
+                      type: string
+                      example: "Melbourne"
+                    countryname:
+                      type: string
+                      example: "Australia"
+                    datacentername:
+                      type: string
+                      example: "Melbourne (NextDC)"
+                    datacentercode:
+                      type: string
+                      example: "amls"
+                    datacenteruuid:
+                      type: string
+                      example: "61f6522f-83e4-4c71-b638-63808240ef88"
+                    interfacetypes:
+                      type: array
+                      items:
+                        type: string
+                    operatorname:
+                      type: string
     unauthenticated:
       description: Missing Token
       content:
@@ -780,38 +1986,7 @@ paths:
         - datacentres
       responses:
         '200':
-          description: array of data center objects
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  datacenters:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        cityname:
-                          type: string
-                          example: "Melbourne"
-                        countryname:
-                          type: string
-                          example: "Australia"
-                        datacentername:
-                          type: string
-                          example: "Melbourne (NextDC)"
-                        datacentercode:
-                          type: string
-                          example: "amls"
-                        datacenteruuid:
-                          type: string
-                          example: "61f6522f-83e4-4c71-b638-63808240ef88"
-                        interfacetypes:
-                          type: array
-                          items:
-                            type: string
-                        operatorname:
-                          type: string
+          $ref: '#/components/responses/datacentreresponse'
         '400':
           $ref: '#/components/responses/invalidrequest'
         '401':
@@ -837,23 +2012,7 @@ paths:
         - endpoints
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  endpointlist:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        datacenteruuid:
-                          type: string
-                          example: "7d89a3e0-ea82-4970-82f3-359d15d364b2"
-                        endpointuuid:
-                          type: string
-                          example: "ebe5a688-2a87-40ba-8303-049b1855271c"
+          $ref: '#/components/responses/endpointlistresponse'
   '/1.0.0/inventory/endpoint/{endpointuuid}':
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
@@ -863,24 +2022,7 @@ paths:
         - endpoints
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  datacenter:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        datacenteruuid:
-                          type: string
-                          example: "fb089004-53c9-476e-b7b2-3cc91829e0d1"
-                        port:
-                          type: array
-                          items:
-                            $ref: '#/components/schemas/endpoint-port'
+          $ref: '#/components/responses/endpointresponse'
 
   /1.0.0/inventory/vnfendpoint:
     post:
@@ -892,48 +2034,21 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - customeruuid
-                - imageuuid
-                - flavoruuid
-                - datacenteruuid
-                - config
-              type: object
-              properties:
-                customeruuid:
-                  type: string
-                  example: "e66546d2-eb85-442f-a4d4-a4f6f4cee6bc"
-                imageuuid:
-                  type: integer
-                  example: 21
-                flavoruuid:
-                  type: integer
-                  example: 22
-                datacenteruuid:
-                  type: string
-                  example: "2e5ff2d1-da1b-4e5d-81a8-58f1780b1031"
-                config:
-                  description: "Boot configuration for VNF, base64 encoded"
-                  type: string
-                topology_tag_uuid:
-                  type: string
-                  example: "f6c14b31-f29f-4be2-919b-5b7f463e4a3c"
+              $ref: '#/components/schemas/vnfendpointrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      customeruuid:
-                        type: string
-                        example: "9a6c0b09-6864-4f1b-bc03-842268ca1061"
-                      vnfuuid:
-                        type: string
-                        example: "37449aab-0aa2-44ae-929b-7616549ee20e"
+          $ref: '#/components/responses/vnfendpointresponse'
+  '/eis/1.0.0/vnfendpoint/vnfuuid/{vnfuuid}':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    get:
+      summary: Get details of a specific VNF
+      tags:
+        - endpoints
+        - vnfs
+      responses:
+        '200':
+          $ref: '#/components/responses/vnfdetailresponse'
   /1.0.0/inventory/regularendpoint:
     post:
       summary: Create Physical (Port) Endpoint
@@ -943,30 +2058,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                customeruuid:
-                  type: string
-                  example: "6a607f5f-25c9-45a1-a960-a34245509208"
-                datacenteruuid:
-                  type: string
-                  example: "dc8f4a57-4621-4b17-87bd-e5a7e508bf7a"
-                interfacetype:
-                  type: string
-                  example: "1000Base-TX"
+              $ref: '#/components/schemas/regendpointrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      endpointuuid:
-                        type: string
-                        example: "c6b5c04f-c968-432e-a70f-b929437ea6e4"
+          $ref: '#/components/responses/regendpointresponse'
   '/eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag':
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
@@ -979,18 +2074,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                topology_tag:
-                  type: string
-                  example: "38d17228-0179-491f-9e84-36ddd078b8e6"
+              $ref: '#/components/schemas/assigntopotagrequest'
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/success-fragment'
+          $ref: '#/components/responses/assigntopotagresponse'
   '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}':
     parameters:
       - $ref: '#/components/parameters/topotaguuid'
@@ -1007,6 +2094,13 @@ paths:
   '/eis/1.0.0/endpoint/endpointuuid/{endpointuuid}':
     parameters:
       - $ref: '#/components/parameters/endpointuuid'
+    get:
+      summary: Get Endpoint name and status
+      tags:
+        - endpoints
+      responses:
+        '200':
+          $ref: '#/components/responses/endpointstatusresponse'
     put:
       summary: Update Endpoint name
       tags:
@@ -1015,18 +2109,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "My Endpoint"
+              $ref: '#/components/schemas/endpointupdaterequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/success-fragment'
+          $ref: '#/components/responses/endpointupdateresponse'
         '400':
           $ref: '#/components/responses/invalidrequest'
   /1.0.0/inventory/link:
@@ -1038,86 +2124,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                billing-id:
-                  type: string
-                  example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
-                description:
-                  type: string
-                  example: >-
-                    "Replication link between Equinix SYD and NextDC MEL"
-                connections:
-                  $ref: '#/components/schemas/connections'
-                tag:
-                  type: string
-                  example: "prod"
-                latency:
-                  $ref: '#/components/schemas/latency'
-                duration:
-                  $ref: '#/components/schemas/duration.mins'
-                bandwidth:
-                  $ref: '#/components/schemas/bandwidth.kbs'
-                renewal-option:
-                  $ref: '#/components/schemas/renewal-option'
-                link-type:
-                  description: "1=VLAN, 2=VNF"
-                  type: integer
-                  example: 1
-                topology_tag_uuid:
-                  type: string
-                  example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
+              $ref: '#/components/schemas/createlinkrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      params:
-                        type: object
-                        properties:
-                          description:
-                            type: string
-                            example: >-
-                              Replication link between Equinix SYD and
-                              NextDC MEL
-                          duration:
-                            $ref: '#/components/schemas/duration.mins'
-                          bandwidth:
-                            $ref: '#/components/schemas/bandwidth.kbs'
-                          latency:
-                            $ref: '#/components/schemas/latency'
-                          linkid:
-                            $ref: '#/components/schemas/linkid'
-                          contractid:
-                            $ref: '#/components/schemas/contractid'
-                          price:
-                            $ref: '#/components/schemas/price'
-                          tag:
-                            type: string
-                            example: "prod"
-                          connections:
-                            $ref: '#/components/schemas/connections'
-                          topology_tag_uuid:
-                            type: string
-                            example: "4830beab-2950-47be-a5f9-e3cfeee0eed9"
-                          billing-id:
-                            type: string
-                            example: "3ba35364-226f-405b-a162-0689ac239b18"
-                          renewal-option:
-                            $ref: '#/components/schemas/renewal-option'
-                          latency-sla:
-                            type: string
-                          linkstatus:
-                            type: integer
-                            example: 6
-                          link-type:
-                            type: string
-                            example: "1"
+          $ref: '#/components/responses/createlinkresponse'
   '/1.0.0/inventory/links/customer/{customeruuid}':
     parameters:
       - $ref: '#/components/parameters/customeruuid'
@@ -1127,13 +2137,7 @@ paths:
         - links
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/link'
+          $ref: '#/components/responses/activelinksresponse'
   '/1.0.0/inventory/links/history/{linkid}':
     parameters:
       - $ref: '#/components/parameters/linkid'
@@ -1143,38 +2147,7 @@ paths:
         - links
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  description:
-                    type: string
-                    example: >-
-                      "Replication link between Equinix SYD and NextDC MEL"
-                  latency:
-                    $ref: '#/components/schemas/latency'
-                  linkid:
-                    $ref: '#/components/schemas/linkid'
-                  contracts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/contract'
-                  tag:
-                    type: string
-                    example: "prod"
-                  connections:
-                    $ref: '#/components/schemas/connections'
-                  type:
-                    type: string
-                    example: "0"
-                  linkStatus:
-                    type: integer
-                    example: 1
-                  billing-id:
-                    type: string
-                    example: "9c1ffab1-d037-4cf7-a19d-d213a05f5e6a"
+          $ref: '#/components/responses/linkhistoryresponse'
   '/1.0.0/inventory/links/{linkid}/contract/{contractid}':
     parameters:
       - $ref: '#/components/parameters/linkid'
@@ -1185,54 +2158,7 @@ paths:
         - contracts
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  params:
-                    type: object
-                    properties:
-                      description:
-                        type: string
-                        example: >-
-                          "Replication link between Equinix SYD and NextDC MEL"
-                      duration:
-                        $ref: '#/components/schemas/duration.mins'
-                      bandwidth:
-                        $ref: '#/components/schemas/bandwidth.kbs'
-                      latency:
-                        $ref: '#/components/schemas/latency'
-                      linkid:
-                        $ref: '#/components/schemas/linkid'
-                      contractid:
-                        $ref: '#/components/schemas/contractid'
-                      price:
-                        $ref: '#/components/schemas/price'
-                      contractStatus:
-                        $ref: '#/components/schemas/contractStatus'
-                      version:
-                        $ref: '#/components/schemas/version'
-                      deletedtimestamp:
-                        $ref: '#/components/schemas/deletedtimestamp'
-                      tag:
-                        type: string
-                        example: "prod"
-                      connection:
-                        $ref: '#/components/schemas/connections'
-                      type:
-                        type: string
-                        example: "0"
-                      billing-id:
-                        type: string
-                        example: "3ba35364-226f-405b-a162-0689ac239b18"
-                      renewal-option:
-                        $ref: '#/components/schemas/renewal-option'
-                      contract-start-time:
-                        $ref: '#/components/schemas/contract-start-time'
-                      contract-end-time:
-                        $ref: '#/components/schemas/contract-end-time'
+          $ref: '#/components/responses/activecontractresponse'
     put:
       summary: Update active Contract by ContractID
       tags:
@@ -1247,27 +2173,7 @@ paths:
                   $ref: '#/components/schemas/renewal-option'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      params:
-                        type: object
-                        properties:
-                          duration:
-                            $ref: '#/components/schemas/duration.mins'
-                          linkid:
-                            $ref: '#/components/schemas/linkid'
-                          contractid:
-                            $ref: '#/components/schemas/contractid'
-                          price:
-                            $ref: '#/components/schemas/price'
-                          renewal-option:
-                            $ref: '#/components/schemas/renewal-option'
+          $ref: '#/components/responses/updatecontractresponse'
   '/1.0.0/inventory/links/{linkid}':
     parameters:
       - $ref: '#/components/parameters/linkid'
@@ -1277,40 +2183,7 @@ paths:
         - links
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  description:
-                    type: string
-                    example: "MEL-SYD"
-                  latency:
-                    $ref: '#/components/schemas/latency'
-                  linkid:
-                    $ref: '#/components/schemas/linkid'
-                  contracts:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/contract'
-                  tag:
-                    type: string
-                    example: "prod"
-                  connections:
-                    $ref: '#/components/schemas/connections'
-                  type:
-                    type: string
-                    example: "0"
-                  linkStatus:
-                    type: integer
-                    example: 1
-                  topology_tag_uuid:
-                    type: string
-                    example: "5f02ee19-8de3-4a0d-8baf-823e4aa16780"
-                  billing-id:
-                    type: string
-                    example: "d04544ba-6c9c-4e84-bd60-848e56a116c4"
+          $ref: '#/components/responses/linkdetailresponse'
   '/1.0.0/inventory/links/{linkid}/contract':
     parameters:
       - $ref: '#/components/parameters/linkid'
@@ -1322,41 +2195,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                duration:
-                  $ref: '#/components/schemas/duration.hrs'
-                bandwidth:
-                  $ref: '#/components/schemas/bandwidth.mbs'
-                renewal-option:
-                  $ref: '#/components/schemas/renewal-option'
+              $ref: '#/components/schemas/createcontractrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      params:
-                        type: object
-                        properties:
-                          duration:
-                            $ref: '#/components/schemas/duration.mins'
-                          bandwidth:
-                            $ref: '#/components/schemas/bandwidth.kbs'
-                          linkid:
-                            $ref: '#/components/schemas/linkid'
-                          contractid:
-                            $ref: '#/components/schemas/contractid'
-                          currencyId:
-                            $ref: '#/components/schemas/currencyID'
-                          price:
-                            $ref: '#/components/schemas/price'
-                          renewal-option:
-                            $ref: '#/components/schemas/renewal-option'
+          $ref: '#/components/responses/createcontractresponse'
   /1.0.0/inventory/vnf/vport:
     post:
       summary: Create VNF VPort
@@ -1367,32 +2209,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                customeruuid:
-                  type: string
-                  example: "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9"
-                vnfuuid:
-                  type: string
-                  example: "9da748fb-9044-4909-95c2-4245d7592bec"
-                management_port:
-                  type: boolean
+              $ref: '#/components/schemas/vportrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  vnfuuid:
-                    description: vnfuuid which was passed in the request
-                    type: string
-                    example: "9da748fb-9044-4909-95c2-4245d7592bec"
-                  vnportuuid:
-                    description: uuid of the newly-created vport
-                    type: string
-                    example: "1402ed53-4693-40e0-aa1e-5d5b85052f3d"
+          $ref: '#/components/responses/vportresponse'
 
   /1.0.0/inventory/regularvport:
     post:
@@ -1405,32 +2225,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                vporttype:
-                  type: string
-                  example: "vlan"
-                endpointuuid:
-                  type: string
-                  example: "9a04a7ff-0a82-4259-9f2b-c384b6d720ab"
-                vportvalue:
-                  type: object
-                  properties:
-                    vlan:
-                      $ref: '#/components/schemas/vlan'
+              $ref: '#/components/schemas/regvportrequest'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/success-fragment'
-                  - type: object
-                    properties:
-                      vportuuid:
-                        type: string
-                        example: "251a54f9-f534-4d92-86b9-77e73bd4ede4"
+          $ref: '#/components/responses/regvportresponse'
   '/1.0.0/inventory/vport/{vportuuid}':
     parameters:
       - $ref: '#/components/parameters/vportuuid'
@@ -1440,12 +2238,7 @@ paths:
         - vports
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/endpoint-port'
-
+          $ref: '#/components/responses/vportdetailresponse'
   /1.0.0/marketplace/image:
     get:
       summary: List images in the Marketplace
@@ -1453,18 +2246,7 @@ paths:
         - vnfs
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/meta'
-                  objects:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/image'
+          $ref: '#/components/responses/imageresponse'
   '/1.0.0/marketplace/image/{imageid}/':
     parameters:
       - $ref: '#/components/parameters/imageid'
@@ -1475,11 +2257,7 @@ paths:
         - vnfs
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/image'
+          $ref: '#/components/responses/imagedetailresponse'
   /1.0.0/marketplace/image/my_images/:
     get:
       summary: List images in "My Images"
@@ -1488,18 +2266,7 @@ paths:
         - vnfs
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  meta:
-                    $ref: '#/components/schemas/meta'
-                  objects:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/image'
+          $ref: '#/components/responses/my_imagesresponse'
   '/1.0.0/marketplace/image/{imageid}/add_to_my_images/':
     parameters:
       - $ref: '#/components/parameters/imageid'
@@ -1515,17 +2282,8 @@ paths:
               type: object
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "success"
+          $ref: '#/components/responses/addimageresponse'
         '404':
-          description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
   '/1.0.0/marketplace/image/{imageid}/remove_from_my_images/':
     parameters:
@@ -1542,20 +2300,10 @@ paths:
               type: object
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "success"
+          $ref: '#/components/responses/removeimageresponse'
         '404':
-          description: The image specified does not exist
           $ref: '#/components/responses/objectnotfound'
         '422':
-          description: Image is not in 'my images'
           $ref: '#/components/responses/validationerror'
 
 
@@ -1593,11 +2341,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                reboot_type:
-                  type: string
-                  example: "warm"
+              $ref: '#/components/schemas/rebootrequest'
       responses:
         '200':
           description: Success
@@ -1626,15 +2370,70 @@ paths:
         - vnfs
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  status:
-                    type: string
-                    example: "ACTIVE"
+          $ref: '#/components/responses/vnfstatusresponse'
+  /1.0.0/exchange:
+    get:
+      summary: List all Exchange providers, with POPs
+      tags:
+        - exchange
+      responses:
+        '200':
+          $ref: '#/components/responses/exchangeresponse'
+  '/1.0.0/exchange/{exprovuuid}':
+    parameters:
+      - $ref: '#/components/parameters/exprovuuid'
+    get:
+      summary: Exchange provider details
+      tags:
+        - exchange
+      description: Get information about the specified Exchange provider
+      responses:
+        '200':
+          $ref: '#/components/responses/exprovresponse'
+  /1.0.0/visitcard:
+    get:
+      summary: Get list of Visit Cards
+      tags:
+        - exchange
+      responses:
+        '200':
+          $ref: '#/components/responses/visitcardresponse'
+  '/1.0.0/visitcard/{visitcarduuid}':
+    parameters:
+      - $ref: '#/components/parameters/visitcarduuid'
+    get:
+      summary: View details of the specified Visit Card
+      tags:
+        - exchange
+      responses:
+        '200':
+          $ref: '#/components/responses/visitcarddetailresponse'
+    put:
+      summary: Update details of the specified Visit Card
+      tags:
+        - exchange
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/visitcard'
+                - required:
+                    - contact_name
+                    - provider_category
+                    - services_offered
+                    - email
+      responses:
+        '200':
+          $ref: '#/components/responses/visitcardupdateresponse'
+  /1.0.0/account/profile/exchange:
+    get:
+      summary: Get the current account's Exchange profile
+      tags:
+        - exchange
+      responses:
+        '200':
+          $ref: '#/components/responses/profileresponse'
 
   /ttms/1.0.0/topology_tag:
     get:
@@ -1643,13 +2442,7 @@ paths:
         - topologies
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/topology'
+          $ref: '#/components/responses/topotagresponse'
     post:
       summary: Create a named topology tag
       tags:
@@ -1658,21 +2451,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "Production WAN"
-                description:
-                  type: string
-                  example: "Main topology for WAN"
+              $ref: '#/components/schemas/topotagcreaterequest'
       responses:
         '201':
-          description: Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/topology'
+          $ref: '#/components/responses/topotagcreateresponse'
   '/ttms/1.0.0/topology_tag/{topotaguuid}/':
     parameters:
       - $ref: '#/components/parameters/topotaguuid'
@@ -1682,11 +2464,7 @@ paths:
         - topologies
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/topology'
+          $ref: '#/components/responses/topotagdetailresponse'
     put:
       summary: Update a topology tag's name and/or description
       tags:
@@ -1695,21 +2473,10 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "Production WAN Updated Name"
-                description:
-                  type: string
-                  example: "Updated topology for WAN"
+              $ref: '#/components/schemas/topotagupdateresponse'
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/topology'
+          $ref: '#/components/responses/topotagupdateresponse'
     delete:
       summary: Delete a topology tag
       tags:
@@ -1729,45 +2496,7 @@ paths:
         - topologies
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  endpoints:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        endpoint_uuid:
-                          type: string
-                          example: "88a86c13-9a71-4ea8-b4ed-f4d0d9ecb606"
-                        vports:
-                          type: array
-                          items:
-                            type: string
-                            example: "7d5c7594-34fe-4b71-8b8b-b0bd919f5d0d"
-                  links:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        linkid:
-                          $ref: '#/components/schemas/linkid'
-                        vport:
-                          type: array
-                          items:
-                            type: string
-                            example: "63cd1f6d-8a0a-4ec5-aae2-65f31add9d6a"
-                  sharedvports:
-                    type: array
-                    items:
-                      type: string
-                      example: "03b39458-8938-4ef1-a2c7-826b2566873e"
-                  topology_tag:
-                    type: string
-                    example: "7a09af3d-d4e5-4538-a1e6-9f83d751e163"
+          $ref: '#/components/responses/topotagobjectsresponse'
   '/eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}':
     parameters:
       - $ref: '#/components/parameters/topotaguuid'
@@ -1780,33 +2509,7 @@ paths:
         - topologies
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  endpoints:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        endpoint_uuid:
-                          type: string
-                          example: "c36a6a66-6b1c-47c4-866e-6e4657388557"
-                        vports:
-                          type: array
-                          items:
-                            type: string
-                            example: "82626f13-af0b-4fb2-9b36-68176602dc4f"
-                  sharedvports:
-                    type: array
-                    items:
-                      type: string
-                      example: "a51c471c-36d7-44cc-914e-60886f0f810a"
-                  'topology-id':
-                    type: string
-                    example: "2ecaa946-848f-4f57-a000-bc15e64bd141"
+          $ref: '#/components/responses/topotaglistresponse'
   /1.0.0/auth/generatetoken:
     post:
       summary: Create an authentication token
@@ -1863,35 +2566,8 @@ paths:
         - authentication
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  company-name:
-                    type: string
-                    example: "Acme Corporation"
-                  userid:
-                    type: string
-                    example: "321a5016-00a5-44ed-a749-4531ed89979a"
-                  internalid:
-                    type: integer
-                    example: 353
-                  customerid:
-                    type: string
-                    example: "bae254c1-3d78-4d68-8948-8b929c48e576"
-                  customer-account:
-                    type: string
-                    example: "70012345"
-                  billings:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/billing'
-                  roles:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/role'
+          $ref: '#/components/responses/validatetokenresponse'
+
 
   '/1.0.0/account/{customeruuid}':
     parameters:
@@ -1903,51 +2579,7 @@ paths:
         - customers
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  phone:
-                    type: string
-                    example: "7026661954"
-                  city:
-                    type: string
-                    example: "Dallas"
-                  fax:
-                    type: string
-                    example: null
-                  country:
-                    type: string
-                    example: "USA"
-                  address:
-                    type: string
-                    example: "555 Paularino Avenue"
-                  state:
-                    type: string
-                    example: "Texas"
-                  website:
-                    type: string
-                    example: "http://dummy.com"
-                  companyuuid:
-                    type: string
-                    example: "a6cef301-de34-4654-8933-ceafc7d2ae6e"
-                  companyname:
-                    type: string
-                    example: "customer.pen.10"
-                  postalcode:
-                    type: string
-                    example: "75024"
-                  customertype:
-                    type: string
-                    example: ""
-                  status:
-                    type: string
-                    example: "1"
-                  customeraccountid:
-                    type: string
-                    example: "71234010"
+          $ref: '#/components/responses/customerdetailresponse'
         '401':   # should be 403 Forbidden
           $ref: '#/components/responses/forbidden'
   '/1.0.0/account/{customeruuid}/user':
@@ -1961,91 +2593,183 @@ paths:
         - users
       responses:
         '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/user'
+          $ref: '#/components/responses/userlistresponse'
+
+  '/1.0.0/inventory/links-stats/endpoint/{endpointuuid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get statistics for endpoint
+      description: Get statistics related to the specified endpoint
+      tags:
+        - statistics
+        - endpoints
+      responses:
+        '200':
+          $ref: '#/components/responses/linkstatsresponse'
+  '/1.0.0/inventory/links-stats/flow/{linkid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/linkid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get statistics for flow
+      description: Get statistics related to the specified flow
+      tags:
+        - statistics
+        - links
+      responses:
+        '200':
+          $ref: '#/components/responses/flowstatsresponse'
+  '/1.0.0/inventory/links-stats/endpointstate/{endpointuuid}/{startdate}/{enddate}':
+    parameters:
+      - $ref: '#/components/parameters/endpointuuid'
+      - $ref: '#/components/parameters/startdate'
+      - $ref: '#/components/parameters/enddate'
+    get:
+      summary: Get state statistics for endpoint
+      description: >-
+        Get statistics related to the state of the specified endpoint
+      tags:
+        - statistics
+        - endpoints
+      responses:
+        '200':
+          $ref: '#/components/responses/endpointstatestatsresponse'
+  /bms/1.0.0/backup:
+    post:
+      summary: Create backup of specified VNF
+      description: >-
+        'Note: if a second backup creation is attempted while one is
+        already active, an error will be returned indicating that
+        the VNF is invalid. If replace_backup_uuid is provided, this
+        backup is deleted once the new backup is successfully completed'
+      tags:
+        - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/backuprequest'
+      responses:
+        '200':
+          $ref: '#/components/responses/backupresponse'
+  '/bms/1.0.0/backup/{backupuuid}':
+    parameters:
+      - $ref: '#/components/parameters/backupuuid'
+    get:
+      summary: Get information about the specified backup
+      tags:
+        - vnfs
+      responses:
+        '200':
+          $ref: '#/components/responses/backupdetailresponse'
+    delete:
+      summary: Delete specified backup
+      tags:
+        - vnfs
+      responses:
+        '200':
+          $ref: '#/components/responses/backupdeleteresponse'
+  '/bms/1.0.0/backup/vnf/{vnfuuid}':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    get:
+      summary: List backups
+      description: List available backups for the specified VNF
+      tags:
+        - vnfs
+      responses:
+        '200':
+          $ref: '#/components/responses/backuplistresponse'
+  '/bms/1.0.0/backup/vnf/{vnfuuid}/delete':
+    parameters:
+      - $ref: '#/components/parameters/vnfuuid'
+    post:
+      summary: Delete multiple backups
+      description: Delete list of backups associated with specified VNF
+      tags:
+        - vnfs
+      responses:
+        '202':
+          $ref: '#/components/responses/backupmultideleteresponse'
+  '/bms/1.0.0/backup/{backupuuid}/restore':
+    parameters:
+      - $ref: '#/components/parameters/backupuuid'
+    post:
+      summary: Restore VNF from backup
+      description: Restore VNF from specified backup
+      tags:
+        - vnfs
+      responses:
+        '202':
+          $ref: '#/components/responses/backuprestoreresponse'
+        '400':
+          $ref: '#/components/responses/invalidrequest'
+        '401':
+          $ref: '#/components/responses/unauthenticated'
+        '403':
+          $ref: '#/components/responses/forbidden'
 tags:
   - name: authentication
     description: Authentication
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
-  - name: endpoints
-    description: Endpoints
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
-  - name: internet
-    description: Internet
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#endpoint
-  - name: links
-    description: Links
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#link
+        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
   - name: contracts
     description: Contracts
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#contract
-  - name: vports
-    description: Virtual Ports (VPorts)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-ports-vport
-  - name: vnfs
-    description: Virtual Network Functions (Marketplace)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#virtual-network-functions-marketplace
-  - name: datacentres
-    description: Data Centres
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#data-centre
-  - name: exchange
-    description: Global Exchange
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#global-exchange
-  - name: ipvpn
-    description: Telstra Global IPVPN
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-global-ipvpn
-  - name: nextip
-    description: Telstra Australian IPVPN (Next IP)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#telstra-next-ip
-  - name: topologies
-    description: Topologies
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#topology-and-tag
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Contract
   - name: customers
     description: Customers
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
-  - name: users
-    description: Users
+        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
+  - name: datacentres
+    description: Data Centres
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
-  - name: pricing
-    description: Pricing
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Data-Centre
+  - name: endpoints
+    description: Endpoints
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#customer-user-account
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Endpoint
+  - name: exchange
+    description: Global Exchange
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Exchange
+  - name: links
+    description: Links
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Link
   - name: statistics
     description: Statistics
     externalDocs:
       url: >-
-        https://dev.telstra.com/content/programmable-network-api/key-concepts#statistics
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Statistics
+  - name: topologies
+    description: Topologies
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Topology
+  - name: users
+    description: Users
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
+  - name: vnfs
+    description: Virtual Network Functions (Marketplace)
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/VNF
+  - name: vports
+    description: Virtual Ports (VPorts)
+    externalDocs:
+      url: >-
+        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/VPorts
