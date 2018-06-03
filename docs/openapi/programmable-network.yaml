@@ -1368,7 +1368,7 @@ components:
               approved_requests_count:
                 type: integer
                 example: 0
-    visitcardudpateresponse:
+    visitcardupdateresponse:
       description: Success
       content:
         application/json:
