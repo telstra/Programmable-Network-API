@@ -12,7 +12,7 @@ do
 
     	mkdir -p ../../test/$fname
 
-		eval swagger-codegen generate -i ../docs/openapi/programmable-network-swagger20.yaml -l $fname -c $file -o $folder/$fname 
+		eval openapi-generator generate -i ../docs/openapi/programmable-network.yaml -l $fname -c $file -o $folder/$fname 
     fi
 done
 
