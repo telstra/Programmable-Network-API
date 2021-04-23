@@ -263,7 +263,7 @@ components:
           example: "Default"
         createdon:
           example: 1535956880000
-          type: int
+          type: integer
         nonconsenting:
           type: string
           description: Internal use
