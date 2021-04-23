@@ -3436,9 +3436,7 @@ paths:
         - endpoints
       responses:
         "200":
-          allOf:
-            - description: Success
-            - $ref: "#/components/responses/ipvpnfnnresponse"
+          $ref: "#/components/responses/ipvpnfnnresponse"
         "401":
           $ref: "#/components/responses/unauthenticated"
         "403":
