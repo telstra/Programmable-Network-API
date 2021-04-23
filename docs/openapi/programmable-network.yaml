@@ -130,6 +130,144 @@ components:
           description: >-
             Web URL to be associated with the company/division/group
             this customer tenancy represents
+    customerdetails:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: >-
+            Phone number associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "null"
+        city:
+          type: string
+          description: >-
+            City associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "Melbourne"
+        fax:
+          type: string
+          description: >-
+            Fax number associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "null"
+        country:
+          type: string
+          description: >-
+            Country code associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "AUS"
+        address:
+          type: string
+          description: >-
+            Address associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "150 Lonsdale St."
+        website:
+          type: string
+          description: >-
+            Web site associated with this customer tenancy (used for
+            display/reference purposes only)
+          example: "http://www.example.com"
+        billingaccountuuid:
+          type: string
+          example: "3008ef0b-7f5e-44c0-9ab5-13d07a4acee8"
+          description: >-
+            Unique identifier for the billing account used by this
+            customer tenancy
+        enforce2FA:
+          type: boolean
+          description: >-
+            Flag indicating whether two-factor authentication is
+            enforced for the users of this customer tenancy
+          example: false
+        currency:
+          type: string
+          description: >-
+            Currency in which billing will be calculated for
+            this customer tenancy
+          example: "AUD"
+        companyuuid:
+          type: string
+          description: >-
+            Unique identifier for this customer tenancy
+          example: "9bbfc3a8-f32c-4658-8a81-513274ae25f0"
+        companyname:
+          type: string
+          description: >-
+            Company Name associated with this customer tenancy
+            (used for display/reference purposes only)
+          example: "Engineering"
+        countryname:
+          type: string
+          description: >-
+            Country Name associated with this customer tenancy
+          example: "Australia"
+        postalcode:
+          type: string
+          description: >-
+            Postal Code associated with this customer tenancy
+          example: "3000"
+        customertype:
+          type: string
+          description: Internal use
+          example: "External paying"
+        status:
+          type: string
+          description: Internal use
+          example: "1"
+        customeraccountid:
+          type: string
+          description: >-
+            Account identifier used for billing purposes
+          example: "4099099282"
+        parentcompanyuuid:
+          type: string
+          description: >-
+            Unique identifier for the parent of this customer tenancy
+          example: "c2d7358d-d46f-4e2b-8472-0882d6edda1c"
+        parentcustomeraccountid:
+          type: string
+          description: >-
+            Account identifier for the parent customer of this
+            customer tenancy, used for billing purposes
+          example: "1234"
+        domainid:
+          type: string
+          description: >-
+            The domain identifier for this customer tenancy, used
+            for authenticating users to this customer tenancy
+          example: "714635132656"
+        parentcompanyname:
+          type: string
+          description: >-
+            Company Name associated with the parent customer tenancy
+            for this customer tenancy (provided for convenience and
+            used for display/reference purposes only)
+          example: "TPN Demo"
+        billingaccountid:
+          type: string
+          description: >-
+            Billing account identifier for the parent customer of this
+            customer tenancy, used for billing purposes
+          example: "4099099282"
+        idp_type:
+          type: string
+          description: >-
+            "Indicates the Identity Provider type. Currently, the
+            possible values are: 'Default' for the Programmable
+            Network Identity Provider, 'saml' for an external
+            Identity Provider using the SAML standard, and 'oauth'
+            for an external Identity Provider using the OAuth
+            standard"
+          example: "Default"
+        createdon:
+          example: 1535956880000
+          type: int
+        nonconsenting:
+          type: string
+          description: Internal use
+          example: "null"
     topotagupdaterequest:
       type: object
       properties:
@@ -1325,143 +1463,7 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              phone:
-                type: string
-                description: >-
-                  Phone number associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "null"
-              city:
-                type: string
-                description: >-
-                  City associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "Melbourne"
-              fax:
-                type: string
-                description: >-
-                  Fax number associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "null"
-              country:
-                type: string
-                description: >-
-                  Country code associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "AUS"
-              address:
-                type: string
-                description: >-
-                  Address associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "150 Lonsdale St."
-              website:
-                type: string
-                description: >-
-                  Web site associated with this customer tenancy (used for
-                  display/reference purposes only)
-                example: "http://www.example.com"
-              billingaccountuuid:
-                type: string
-                example: "3008ef0b-7f5e-44c0-9ab5-13d07a4acee8"
-                description: >-
-                  Unique identifier for the billing account used by this
-                  customer tenancy
-              enforce2FA:
-                type: boolean
-                description: >-
-                  Flag indicating whether two-factor authentication is
-                  enforced for the users of this customer tenancy
-                example: false
-              currency:
-                type: string
-                description: >-
-                  Currency in which billing will be calculated for
-                  this customer tenancy
-                example: "AUD"
-              companyuuid:
-                type: string
-                description: >-
-                  Unique identifier for this customer tenancy
-                example: "9bbfc3a8-f32c-4658-8a81-513274ae25f0"
-              companyname:
-                type: string
-                description: >-
-                  Company Name associated with this customer tenancy
-                  (used for display/reference purposes only)
-                example: "Engineering"
-              countryname:
-                type: string
-                description: >-
-                  Country Name associated with this customer tenancy
-                example: "Australia"
-              postalcode:
-                type: string
-                description: >-
-                  Postal Code associated with this customer tenancy
-                example: "3000"
-              customertype:
-                type: string
-                description: Internal use
-                example: "External paying"
-              status:
-                type: string
-                description: Internal use
-                example: "1"
-              customeraccountid:
-                type: string
-                description: >-
-                  Account identifier used for billing purposes
-                example: "4099099282"
-              parentcompanyuuid:
-                type: string
-                description: >-
-                  Unique identifier for the parent of this customer tenancy
-                example: "c2d7358d-d46f-4e2b-8472-0882d6edda1c"
-              parentcustomeraccountid:
-                type: string
-                description: >-
-                  Account identifier for the parent customer of this
-                  customer tenancy, used for billing purposes
-                example: "1234"
-              domainid:
-                type: string
-                description: >-
-                  The domain identifier for this customer tenancy, used
-                  for authenticating users to this customer tenancy
-                example: "714635132656"
-              parentcompanyname:
-                type: string
-                description: >-
-                  Company Name associated with the parent customer tenancy
-                  for this customer tenancy (provided for convenience and
-                  used for display/reference purposes only)
-                example: "TPN Demo"
-              billingaccountid:
-                type: string
-                description: >-
-                  Billing account identifier for the parent customer of this
-                  customer tenancy, used for billing purposes
-                example: "4099099282"
-              idp_type:
-                type: string
-                description: >-
-                  "Indicates the Identity Provider type. Currently, the
-                  possible values are: 'Default' for the Programmable
-                  Network Identity Provider, 'saml' for an external
-                  Identity Provider using the SAML standard, and 'oauth'
-                  for an external Identity Provider using the OAuth
-                  standard"
-                example: "Default"
-              createdon:
-                example: 1535956880000
-                type: int
-              nonconsenting:
-                type: string
-                description: Internal use
-                example: "null"
+            $ref: "#/components/schemas/customerdetails"
     customerdetailsarray:
       description: Success
       content:
@@ -1469,7 +1471,7 @@ components:
           schema:
             type: array
             items:
-              $ref: "#/components/responses/customerdetails"
+              $ref: "#/components/schemas/customerdetails"
     backuprestoreresponse:
       description: Accepted
       content:
