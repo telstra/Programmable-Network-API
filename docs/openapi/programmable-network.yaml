@@ -1171,7 +1171,9 @@ components:
             behind another appliance. See link for more details
             on DIA (Internet) topologies.
           example: "A"
-          externalDocs: https://dev.telstra.com/content/programmable-network-api/#section/Extra-Detail/Internet-Topologies
+          externalDocs:
+            url: >-
+              https://dev.telstra.com/content/programmable-network-api/#section/Extra-Detail/Internet-Topologies
         serviceid:
           type: string
           description: UUID of the requested DIA (Internet) service
