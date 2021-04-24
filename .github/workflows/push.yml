@@ -1,0 +1,31 @@
+name: validate OAS
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install dependencies
+        run: |
+          npm install -g ibm-openapi-validator
+          lint-openapi --version
+          pip install yamllint
+          yamllint --version
+      - name: Lint
+        run: |
+          cd docs/openapi
+          yamllint -c yamllint-config.yml programmable-network.yaml
+          yamllint -c yamllint-config.yml programmable-network-codegen.yaml
+          lint-openapi -c .validaterc --colors -v programmable-network.yaml
+          lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml

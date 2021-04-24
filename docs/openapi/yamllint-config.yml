@@ -4,5 +4,7 @@ extends: default
 rules:
   document-start: disable
   document-end: disable
+  line-length:
+    level: warning
 
 # vim: et:ai:ts=2:sw=2

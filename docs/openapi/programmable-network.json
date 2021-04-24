@@ -251,7 +251,7 @@
           },
           "createdon": {
             "example": 1535956880000,
-            "type": "int"
+            "type": "integer"
           },
           "nonconsenting": {
             "type": "string",
@@ -1437,7 +1437,9 @@
             "type": "string",
             "description": "Routing topology for the DIA (Internet) service. Can be either 'A' (peer routing only) or 'B' (subnet routed behind another appliance. See link for more details on DIA (Internet) topologies.",
             "example": "A",
-            "url": "https://dev.telstra.com/content/programmable-network-api/#section/Extra-Detail/Internet-Topologies"
+            "externalDocs": {
+              "url": "https://dev.telstra.com/content/programmable-network-api/#section/Extra-Detail/Internet-Topologies"
+            }
           },
           "serviceid": {
             "type": "string",
@@ -3229,7 +3231,7 @@
               "properties": {
                 "vnc_console": {
                   "type": "string",
-                  "example": "https://ap-north3.nfv.pn.telstra.com/vnc_auto.html?token=0b7507db-b475-420f-8eb0-9291b4cd2d7a"
+                  "example": "\"https://ap-north3.nfv.pn.telstra.com/vnc_auto.html?token=0b7507db-b475-420f-8eb0-9291b4cd2d7a\""
                 }
               }
             }
@@ -4885,13 +4887,6 @@
       "description": "Internet",
       "externalDocs": {
         "url": "https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Endpoint"
-      }
-    },
-    {
-      "name": "ipvpn",
-      "description": "Telstra Global IPVPN",
-      "externalDocs": {
-        "url": "https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/IPVPN"
       }
     },
     {

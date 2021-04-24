@@ -1,6 +1,5 @@
 <!-- Title: "Programmble Network API" -->
-[![Build Status](https://travis-ci.org/telstra/Programmable-Network-API.svg?branch=master)](https://travis-ci.org/telstra/Programmable-Network-API)
-
+![master build](https://img.shields.io/github/workflow/status/telstra/Programmable-Network-API/validate%20OAS?label=validation%20status)
 
 <table style="border:none;box-shadow:none;padding:0 0 0 0;margin:0">
 <tr><td style="border:none;padding:0 0 0 0">
