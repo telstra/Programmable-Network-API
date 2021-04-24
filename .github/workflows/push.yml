@@ -12,13 +12,17 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v2
+      - name: Set up Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          npm install ibm-openapi-validator
+          npm install -g ibm-openapi-validator
           npm lint-openapi --version
           pip install yamllint
           yamllint --version
@@ -27,5 +31,5 @@ jobs:
           cd docs/openapi
           yamllint -c yamllint-config.yml programmable-network.yaml
           yamllint -c yamllint-config.yml programmable-network-codegen.yaml
-          node_modules/.bin/lint-openapi -c .validaterc --colors -v programmable-network.yaml
-          node_modules/.bin/lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml
+          lint-openapi -c .validaterc --colors -v programmable-network.yaml
+          lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml
