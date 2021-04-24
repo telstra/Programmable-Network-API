@@ -18,8 +18,8 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
-          npm install -g ibm-openapi-validator
-          lint-openapi --version
+          npm install ibm-openapi-validator
+          npm lint-openapi --version
           pip install yamllint
           yamllint --version
       - name: Lint
@@ -27,5 +27,5 @@ jobs:
           cd docs/openapi
           yamllint -c yamllint-config.yml programmable-network.yaml
           yamllint -c yamllint-config.yml programmable-network-codegen.yaml
-          lint-openapi -c .validaterc --colors -v programmable-network.yaml
-          lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml
+          node_modules/.bin/lint-openapi -c .validaterc --colors -v programmable-network.yaml
+          node_modules/.bin/lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml
