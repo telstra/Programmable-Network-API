@@ -29,7 +29,8 @@ jobs:
       - name: Lint
         run: |
           cd docs/openapi
-          yamllint -c yamllint-config.yml programmable-network.yaml
-          yamllint -c yamllint-config.yml programmable-network-codegen.yaml
+          set -x
+          yamllint -c yamllint-config.yml -v programmable-network.yaml
+          yamllint -c yamllint-config.yml -v programmable-network-codegen.yaml
           lint-openapi -c .validaterc --colors -v programmable-network.yaml
           lint-openapi -c .validaterc --colors -v programmable-network-codegen.yaml

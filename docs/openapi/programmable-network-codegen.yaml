@@ -2,14 +2,17 @@ openapi: 3.0.0
 info:
   title: Telstra Programmable Network API
   description: >-
-    Telstra Programmable Network is a self-provisioning platform that allows its users
-    to create on-demand connectivity services between multiple end-points and add
-    various network functions to those services. Programmable Network enables to connectivity
-    to a global ecosystem of networking services as well as public and private cloud
-    services. Once you are connected to the platform on one or more POPs (points of
-    presence), you can start creating those services based on the use case that you
-    want to accomplish. The Programmable Network API is available to all customers
-    who have registered to use the Programmable Network.
+    Telstra Programmable Network is a self-provisioning platform
+    that allows its users to create on-demand connectivity services
+    between multiple end-points and add various network functions
+    to those services. Programmable Network enables to connectivity
+    to a global ecosystem of networking services as well as public
+    and private cloud services. Once you are connected to the
+    platform on one or more POPs (points of presence), you can
+    start creating those services based on the use case that you
+    want to accomplish. The Programmable Network API is available
+    to all customers who have registered to use the Programmable
+    Network.
 
     To register, please contact your account representative.
   version: 2.5.1
@@ -67,15 +70,18 @@ components:
         companyname:
           type: string
           description: >-
-            Name of the company/division/group this customer tenancy represents
+            Name of the company/division/group this customer tenancy
+            represents
           example: "Engineering Division"
         parentcompanyuuid:
           type: string
-          description: Unique identifier of the parent customer tenancy
+          description: Unique identifier of the parent customer
+            tenancy
         address:
           type: string
           description: >-
-            Primary address for the company/division/group this customer tenancy represents
+            Primary address for the company/division/group this
+            customer tenancy represents
         country:
           type: string
           description: >-
@@ -85,8 +91,8 @@ components:
         city:
           type: string
           description: >-
-            The city for the location of the company/division/group this customer
-            tenancy represents
+            The city for the location of the company/division/group
+            this customer tenancy represents
           example: "Melbourne"
         customeraccountid:
           type: string
@@ -96,7 +102,8 @@ components:
         currency:
           type: string
           description: >-
-            Currency in which resources created in this customer tenancy will be billed
+            Currency in which resources created in this customer
+            tenancy will be billed
           example: "AUD"
         billingaccountid:
           type: string
@@ -106,77 +113,79 @@ components:
         phone:
           type: string
           description: >-
-            Phone number to be associated with the company/division/group this customer
-            tenancy represents
+            Phone number to be associated with the company/division/group
+            this customer tenancy represents
         fax:
           type: string
           description: >-
-            Fax number to be associated with the company/division/group this customer
-            tenancy represents
+            Fax number to be associated with the company/division/group
+            this customer tenancy represents
         postalcode:
           type: string
           description: >-
-            Postal code of the location of the company/division/group this customer
-            tenancy represents
+            Postal code of the location of the company/division/group
+            this customer tenancy represents
         website:
           type: string
           description: >-
-            Web URL to be associated with the company/division/group this customer
-            tenancy represents
+            Web URL to be associated with the company/division/group
+            this customer tenancy represents
     customerdetails:
       type: object
       properties:
         phone:
           type: string
           description: >-
-            Phone number associated with this customer tenancy (used for display/reference
-            purposes only)
+            Phone number associated with this customer tenancy
+            (used for display/reference purposes only)
           example: "null"
         city:
           type: string
           description: >-
-            City associated with this customer tenancy (used for display/reference
-            purposes only)
+            City associated with this customer tenancy (used for
+            display/reference purposes only)
           example: "Melbourne"
         fax:
           type: string
           description: >-
-            Fax number associated with this customer tenancy (used for display/reference
-            purposes only)
+            Fax number associated with this customer tenancy (used
+            for display/reference purposes only)
           example: "null"
         country:
           type: string
           description: >-
-            Country code associated with this customer tenancy (used for display/reference
-            purposes only)
+            Country code associated with this customer tenancy
+            (used for display/reference purposes only)
           example: "AUS"
         address:
           type: string
           description: >-
-            Address associated with this customer tenancy (used for display/reference
-            purposes only)
+            Address associated with this customer tenancy (used
+            for display/reference purposes only)
           example: "150 Lonsdale St."
         website:
           type: string
           description: >-
-            Web site associated with this customer tenancy (used for display/reference
-            purposes only)
+            Web site associated with this customer tenancy (used
+            for display/reference purposes only)
           example: "http://www.example.com"
         billingaccountuuid:
           type: string
           example: "3008ef0b-7f5e-44c0-9ab5-13d07a4acee8"
           description: >-
-            Unique identifier for the billing account used by this customer tenancy
+            Unique identifier for the billing account used by
+            this customer tenancy
         enforce2FA:
           type: boolean
           description: >-
-            Flag indicating whether two-factor authentication is enforced for the
-            users of this customer tenancy
+            Flag indicating whether two-factor authentication
+            is enforced for the users of this customer tenancy
           example: false
         currency:
           type: string
           description: >-
-            Currency in which billing will be calculated for this customer tenancy
+            Currency in which billing will be calculated for this
+            customer tenancy
           example: "AUD"
         companyuuid:
           type: string
@@ -186,8 +195,8 @@ components:
         companyname:
           type: string
           description: >-
-            Company Name associated with this customer tenancy (used for display/reference
-            purposes only)
+            Company Name associated with this customer tenancy
+            (used for display/reference purposes only)
           example: "Engineering"
         countryname:
           type: string
@@ -215,40 +224,43 @@ components:
         parentcompanyuuid:
           type: string
           description: >-
-            Unique identifier for the parent of this customer tenancy
+            Unique identifier for the parent of this customer
+            tenancy
           example: "c2d7358d-d46f-4e2b-8472-0882d6edda1c"
         parentcustomeraccountid:
           type: string
           description: >-
-            Account identifier for the parent customer of this customer tenancy, used
-            for billing purposes
+            Account identifier for the parent customer of this
+            customer tenancy, used for billing purposes
           example: "1234"
         domainid:
           type: string
           description: >-
-            The domain identifier for this customer tenancy, used for authenticating
-            users to this customer tenancy
+            The domain identifier for this customer tenancy, used
+            for authenticating users to this customer tenancy
           example: "714635132656"
         parentcompanyname:
           type: string
           description: >-
-            Company Name associated with the parent customer tenancy for this customer
-            tenancy (provided for convenience and used for display/reference purposes
-            only)
+            Company Name associated with the parent customer tenancy
+            for this customer tenancy (provided for convenience
+            and used for display/reference purposes only)
           example: "TPN Demo"
         billingaccountid:
           type: string
           description: >-
-            Billing account identifier for the parent customer of this customer tenancy,
-            used for billing purposes
+            Billing account identifier for the parent customer
+            of this customer tenancy, used for billing purposes
           example: "4099099282"
         idp_type:
           type: string
           description: >-
-            "Indicates the Identity Provider type. Currently, the possible values
-            are: 'Default' for the Programmable Network Identity Provider, 'saml'
-            for an external Identity Provider using the SAML standard, and 'oauth'
-            for an external Identity Provider using the OAuth standard"
+            "Indicates the Identity Provider type. Currently,
+            the possible values are: 'Default' for the Programmable
+            Network Identity Provider, 'saml' for an external
+            Identity Provider using the SAML standard, and 'oauth'
+            for an external Identity Provider using the OAuth
+            standard"
           example: "Default"
         createdon:
           example: 1535956880000
@@ -263,12 +275,13 @@ components:
         name:
           type: string
           description: >-
-            A short human-friendly name which is visible in the UI to select the topology
+            A short human-friendly name which is visible in the
+            UI to select the topology
           example: "Production WAN Updated Name"
         description:
           description: >-
-            A longer human-friendly description which is visible in the UI when looking
-            at the topology detail.
+            A longer human-friendly description which is visible
+            in the UI when looking at the topology detail.
           type: string
           example: "Updated topology for WAN"
     backuprequest:
@@ -291,13 +304,14 @@ components:
       properties:
         name:
           description: >-
-            A short human-friendly name which is visible in the UI to select the topology
+            A short human-friendly name which is visible in the
+            UI to select the topology
           type: string
           example: "Production WAN"
         description:
           description: >-
-            A longer human-friendly description which is visible in the UI when looking
-            at the topology detail.
+            A longer human-friendly description which is visible
+            in the UI when looking at the topology detail.
           type: string
           example: "Main topology for WAN"
     rebootrequest:
@@ -327,7 +341,8 @@ components:
           type: string
           example: "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9"
           description: >-
-            Unique identifier representing the customer who owns the VNF
+            Unique identifier representing the customer who owns
+            the VNF
         vnfuuid:
           type: string
           example: "9da748fb-9044-4909-95c2-4245d7592bec"
@@ -350,8 +365,8 @@ components:
           example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
         description:
           description: >-
-            A human-friendly description which is visible in the UI when looking at
-            the link detail.
+            A human-friendly description which is visible in the
+            UI when looking at the link detail.
           type: string
           example: >-
             "Replication link between Equinix SYD and NextDC MEL"
@@ -380,8 +395,8 @@ components:
       properties:
         name:
           description: >-
-            A short human-friendly name which is visible in the UI under the endpoint
-            icon
+            A short human-friendly name which is visible in the
+            UI under the endpoint icon
           type: string
           example: "My Endpoint"
     assigntopotagrequest:
@@ -397,12 +412,14 @@ components:
           type: string
           example: "6a607f5f-25c9-45a1-a960-a34245509208"
           description: >-
-            Unique identifier representing the customer who will own the endpoint
+            Unique identifier representing the customer who will
+            own the endpoint
         datacenteruuid:
           type: string
           example: "dc8f4a57-4621-4b17-87bd-e5a7e508bf7a"
           description: >-
-            UUID of the data centre which the port is to be allocated from
+            UUID of the data centre which the port is to be allocated
+            from
         interfacetype:
           type: string
           example: "1000Base-TX"
@@ -419,7 +436,8 @@ components:
           type: string
           example: "e66546d2-eb85-442f-a4d4-a4f6f4cee6bc"
           description: >-
-            Unique identifier representing the customer who will own the endpoint
+            Unique identifier representing the customer who will
+            own the endpoint
         imageuuid:
           type: integer
           example: 21
@@ -430,7 +448,8 @@ components:
           type: string
           example: "2e5ff2d1-da1b-4e5d-81a8-58f1780b1031"
           description: >-
-            UUID of the data centre which the VNF is to be deployed in
+            UUID of the data centre which the VNF is to be deployed
+            in
         config:
           description: "Boot configuration for VNF, base64 encoded"
           type: string
@@ -476,18 +495,20 @@ components:
       type: object
       properties:
         cabletype:
-          description: "Physical cable medium required to connect to this port"
+          description: "Physical cable medium required to connect\
+            \ to this port"
           type: string
           example: "SMF"
         connectortype:
           description: >-
-            Type of phyisical connector required to connect to this port
+            Type of phyisical connector required to connect to
+            this port
           type: string
           example: "LC"
         cfa:
           description: >-
-            Customer Facility Assignment, or the reference ID for the physical port
-            within the DC for interconnect
+            Customer Facility Assignment, or the reference ID
+            for the physical port within the DC for interconnect
           type: string
           example: "10GBase-LR SMF/LC"
         endpointuuid:
@@ -495,16 +516,19 @@ components:
           type: string
           example: "8843fd24-4ef6-4a7d-8241-aed3778d6f07"
         interfacespeed:
-          description: "Speed at which the physical interface operates"
+          description: "Speed at which the physical interface\
+            \ operates"
           type: string
           example: "100"
         interfacetype:
-          description: "Common name for the standard used on this port"
+          description: "Common name for the standard used on this\
+            \ port"
           type: string
           example: "10GBase-LR"
         vport:
           description: >-
-            List of Virtual Ports (or VLANs) which exist on this endpoint
+            List of Virtual Ports (or VLANs) which exist on this
+            endpoint
           type: array
           items:
             $ref: "#/components/schemas/vport"
@@ -540,7 +564,8 @@ components:
         - "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
       items:
         type: string
-        description: "two vport uuids identified the endpoints of the link"
+        description: "two vport uuids identified the endpoints\
+          \ of the link"
     billing:
       type: object
       properties:
@@ -594,13 +619,14 @@ components:
         name:
           type: string
           description: >-
-            A short human-friendly name which is visible in the UI to select the topology
+            A short human-friendly name which is visible in the
+            UI to select the topology
           example: "Production WAN"
         description:
           type: string
           description: >-
-            A longer human-friendly description which is visible in the UI when looking
-            at the topology detail.
+            A longer human-friendly description which is visible
+            in the UI when looking at the topology detail.
           example: "Main topology for WAN"
         status:
           type: string
@@ -677,7 +703,8 @@ components:
     renewal-option:
       type: integer
       description: >-
-        "Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay per hour"
+        "Renewal Option: 0=Auto Disconnect, 1=Auto Renew, 2=Pay
+        per hour"
       example: 0
     linkid:
       type: string
@@ -764,8 +791,8 @@ components:
           type: string
           example: "http://www.example.com/"
           description: >-
-            Web site to redirect user to if they click on the provider in the Global
-            Exchange
+            Web site to redirect user to if they click on the
+            provider in the Global Exchange
         contact_name:
           type: string
           example: "Person Name"
@@ -777,12 +804,14 @@ components:
           example: "sales@example.com"
         profile:
           type: string
-          example: "Our company provides everything and so much more!"
+          example: "Our company provides everything and so much\
+            \ more!"
         services_offered:
           type: string
           example: "Lightbulbs, Installation, Support, Maintenance"
           description: >-
-            Brief description of the services available from this provider
+            Brief description of the services available from this
+            provider
         description:
           type: string
           example: "Excellent provider of services"
@@ -791,7 +820,8 @@ components:
           type: string
           example: "https://url.storage.com/images/04223e36-2215a6df9513.png"
           description: >-
-            URL for an image to be displayed on Global Exchange for this provider
+            URL for an image to be displayed on Global Exchange
+            for this provider
         provider_category:
           type: string
           example: "exchange"
@@ -833,7 +863,8 @@ components:
           items:
             $ref: "#/components/schemas/pop"
           description: >-
-            Locations for which exchange requests can be made to this provider
+            Locations for which exchange requests can be made
+            to this provider
         pending_requests_count:
           type: integer
           example: 4
@@ -1056,7 +1087,8 @@ components:
         glance_image_id:
           type: string
           example: "ce36d53a-6b72-4a4b-ad2d-efd04a8a29ab"
-          description: UUID of the underlying image id for the backup
+          description: UUID of the underlying image id for the
+            backup
         backup_schedule_uuid:
           type: string
           example: "null"
@@ -1064,37 +1096,45 @@ components:
           type: integer
           example: 2
           description: >-
-            Number of virtual interfaces active when the VNF was backed up
+            Number of virtual interfaces active when the VNF was
+            backed up
         backup_started_at:
           type: string
           example: "2019-08-02 01:17:49.0"
-          description: Time at which backup was started YYYY-MM-DD HH:MM:SS.S
+          description: Time at which backup was started YYYY-MM-DD
+            HH:MM:SS.S
         backup_completed_at:
           type: string
           example: "null"
-          description: Time at which backup was completed YYYY-MM-DD HH:MM:SS.S
+          description: Time at which backup was completed YYYY-MM-DD
+            HH:MM:SS.S
         backup_restored_at:
           type: string
           example: "null"
           description: >-
-            Time at which backup was most recently restored YYYY-MM-DD HH:MM:SS.S
+            Time at which backup was most recently restored YYYY-MM-DD
+            HH:MM:SS.S
         backup_restored_by:
           type: string
           example: "null"
-          description: UUID of the user who most recently restored the backup
+          description: UUID of the user who most recently restored
+            the backup
         replace_backup_uuid:
           type: string
           example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
-          description: UUID of the backup that the current backup replaced
+          description: UUID of the backup that the current backup
+            replaced
         Status:
           type: string
           example: "Creating"
-          description: Description of the current state of the backup
+          description: Description of the current state of the
+            backup
         status_code:
           type: string
           example: "CRG"
           description: >-
-            "Unique code representing the current state of the backup:
+            "Unique code representing the current state of the
+            backup:
               CRG=Creating, CRE=Created, DLG=Deleting, DEL=Deleted,
               REG=Restoring, ACT=Active/Restored"
     user:
@@ -1148,9 +1188,10 @@ components:
         topology:
           type: string
           description: >-
-            Routing topology for the DIA (Internet) service. Can be either 'A' (peer
-            routing only) or 'B' (subnet routed behind another appliance. See link
-            for more details on DIA (Internet) topologies.
+            Routing topology for the DIA (Internet) service. Can
+            be either 'A' (peer routing only) or 'B' (subnet routed
+            behind another appliance. See link for more details
+            on DIA (Internet) topologies.
           example: "A"
           externalDocs:
             url: >-
@@ -1166,20 +1207,22 @@ components:
         customername:
           type: string
           description: >-
-            Human-friendly name for the customer tenancy owning the DIA (Internet)
-            service
+            Human-friendly name for the customer tenancy owning
+            the DIA (Internet) service
           example: "Internet Service"
         gateway:
           type: string
           description: >-
-            Device code for the Internet gateway device. This can be used to determine
-            if a single point of failure exists when building redundant solutions.
+            Device code for the Internet gateway device. This
+            can be used to determine if a single point of failure
+            exists when building redundant solutions.
           example: "agw1.khg8"
         gatewayint:
           type: string
           description: >-
-            Interface name for the Internet gateway device. This can be used to determine
-            if a single point of failure exists when building redundant solutions.
+            Interface name for the Internet gateway device. This
+            can be used to determine if a single point of failure
+            exists when building redundant solutions.
           example: "xe-0/0/44"
         vlan:
           type: string
@@ -1192,7 +1235,8 @@ components:
         ipv4:
           type: boolean
           description: >-
-            Flag identifying whether this DIA (Internet) service support IPv4.
+            Flag identifying whether this DIA (Internet) service
+            support IPv4.
       discriminator:
         propertyName: topology
         mapping:
@@ -1209,17 +1253,20 @@ components:
                 gatewayip:
                   type: string
                   description: >-
-                    IP address of the Internet gateway. This is the address which
-                    can be used to specify a static route next-hop address.
+                    IP address of the Internet gateway. This is
+                    the address which can be used to specify a
+                    static route next-hop address.
                   example: "61.87.145.29"
                 gatewaycidr:
                   type: integer
                   description: >-
-                    CIDR subnet length for the transit subnet for the Internet gateway.
+                    CIDR subnet length for the transit subnet
+                    for the Internet gateway.
                   example: 30
                 addroute:
                   type: boolean
-                  description: Always 'false' for Topology type A
+                  description: Always 'false' for Topology type
+                    A
     B-routed_subnet:
       allOf:
         - $ref: "#/components/schemas/imsdetailresponsecommon"
@@ -1231,34 +1278,38 @@ components:
                 gatewayip:
                   type: string
                   description: >-
-                    IP address of the Internet gateway. This is the address which
-                    can be used to specify a static route next-hop address.
+                    IP address of the Internet gateway. This is
+                    the address which can be used to specify a
+                    static route next-hop address.
                   example: "61.87.145.29"
                 gatewaycidr:
                   type: integer
                   description: >-
-                    CIDR subnet length for the transit subnet for the Internet gateway.
+                    CIDR subnet length for the transit subnet
+                    for the Internet gateway.
                   example: 30
                 addroute:
                   type: array
                   description: >-
-                    List of routes configured at the DIA (Internet) gateway
+                    List of routes configured at the DIA (Internet)
+                    gateway
                   items:
                     type: object
                     properties:
                       nexthopip:
                         type: string
                         description: >-
-                          IP Address of the next hop for the route configured in the
-                          DIA (Internet) gateway
+                          IP Address of the next hop for the route
+                          configured in the DIA (Internet) gateway
                         example: "61.87.145.30"
                       subnet:
                         type: array
                         items:
                           type: string
                           description: >-
-                            Subnets routed to the 'nexthop' by the DIA (Internet)
-                            gateway in CIDR format.
+                            Subnets routed to the 'nexthop' by
+                            the DIA (Internet) gateway in CIDR
+                            format.
                           example: "61.87.177.88/29"
   parameters:
     customeruuid:
@@ -1278,7 +1329,8 @@ components:
     diauuid:
       in: path
       name: diauuid
-      description: Unique identifier representing a specific DIA endpoint
+      description: Unique identifier representing a specific DIA
+        endpoint
       schema:
         type: string
       required: true
@@ -1299,7 +1351,8 @@ components:
     vportuuid:
       in: path
       name: vportuuid
-      description: Unique identifier representing a specific virtual port
+      description: Unique identifier representing a specific virtual
+        port
       schema:
         type: string
       required: true
@@ -1314,21 +1367,24 @@ components:
       in: path
       name: vnfuuid
       description: >-
-        Unique identifier representing a specific virtual network function
+        Unique identifier representing a specific virtual network
+        function
       schema:
         type: string
       required: true
     exprovuuid:
       in: path
       name: exprovuuid
-      description: Unique identifier representing a specific exchange provider
+      description: Unique identifier representing a specific exchange
+        provider
       schema:
         type: string
       required: true
     exrequuid:
       in: path
       name: exrequuid
-      description: Unique identifier representing a specific exchange request
+      description: Unique identifier representing a specific exchange
+        request
       schema:
         type: string
       required: true
@@ -1336,21 +1392,24 @@ components:
       in: path
       name: visitcarduuid
       description: >-
-        Unique identifier representing a specific exchange visit card (provider description)
+        Unique identifier representing a specific exchange visit
+        card (provider description)
       schema:
         type: string
       required: true
     taguuid:
       in: path
       name: taguuid
-      description: Unique identifier representing a specific customer tag
+      description: Unique identifier representing a specific customer
+        tag
       schema:
         type: string
       required: true
     topotaguuid:
       in: path
       name: topotaguuid
-      description: Unique identifier representing a specific topology tag
+      description: Unique identifier representing a specific topology
+        tag
       schema:
         type: string
       required: true
@@ -1378,7 +1437,8 @@ components:
     backupuuid:
       in: path
       name: backupuuid
-      description: Unique identifier representing a specific VNF backup
+      description: Unique identifier representing a specific VNF
+        backup
       schema:
         type: string
       required: true
@@ -1386,8 +1446,9 @@ components:
       in: path
       name: serviceuuid
       description: >-
-        Unique identifier representing a type of service provided at an endpoint.  The
-        list of possible service UUIDs can be found via /eis/1.0.0/service.
+        Unique identifier representing a type of service provided
+        at an endpoint.  The list of possible service UUIDs can
+        be found via /eis/1.0.0/service.
       schema:
         type: string
       required: true
@@ -1464,7 +1525,8 @@ components:
                   type: string
                   example: "9480d560-f21e-4be1-bf8a-212a15525553"
                   description: >-
-                    UUID of backup images which was successfully deleted
+                    UUID of backup images which was successfully
+                    deleted
               Errormsg:
                 type: array
                 items:
@@ -1474,7 +1536,8 @@ components:
                       type: string
                       example: "a0064351-d31e-4a76-afb4-81d510046f6f"
                       description: >-
-                        UUID of backup image which was not successfully deleted
+                        UUID of backup image which was not successfully
+                        deleted
                     error-code:
                       type: integer
                       example: 1350003
@@ -1785,7 +1848,8 @@ components:
               pops:
                 type: array
                 description: >-
-                  Data centres in which this customer tenancy offers Exchange services
+                  Data centres in which this customer tenancy
+                  offers Exchange services
                 items:
                   type: object
                   properties:
@@ -1796,10 +1860,12 @@ components:
                     Notes:
                       type: string
                       description: >-
-                        Optional notes associated with this data centre
+                        Optional notes associated with this data
+                        centre
                     datacentercode:
                       type: string
-                      description: Four-letter code unique to the data centre
+                      description: Four-letter code unique to
+                        the data centre
                       example: "AMLS"
                     datacenteruuid:
                       type: string
@@ -2018,7 +2084,8 @@ components:
                   description:
                     type: string
                     example: >-
-                      "Replication link between Equinix SYD and NextDC MEL"
+                      "Replication link between Equinix SYD and
+                      NextDC MEL"
                   duration:
                     $ref: "#/components/schemas/duration.mins"
                   bandwidth:
@@ -2064,7 +2131,8 @@ components:
               description:
                 type: string
                 example: >-
-                  "Replication link between Equinix SYD and NextDC MEL"
+                  "Replication link between Equinix SYD and NextDC
+                  MEL"
               latency:
                 $ref: "#/components/schemas/latency"
               linkid:
@@ -2110,7 +2178,8 @@ components:
                       description:
                         type: string
                         example: >-
-                          Replication link between Equinix SYD and NextDC MEL
+                          Replication link between Equinix SYD
+                          and NextDC MEL
                       duration:
                         $ref: "#/components/schemas/duration.mins"
                       bandwidth:
@@ -2161,7 +2230,8 @@ components:
                 type: string
                 example: "bc42dfce-d542-467f-acb9-2442c8a609ee"
                 description: >-
-                  Unique identifier representing the customer who owns the endpoint
+                  Unique identifier representing the customer
+                  who owns the endpoint
               endpointTypeuuid:
                 type: string
                 example: "32eea883-16cf-11e8-902e-000c293805b1"
@@ -2209,11 +2279,13 @@ components:
                 type: string
                 example: "ffe7eae8-4782-49ac-a66e-8515032f6678"
                 description: >-
-                  Unique identifier representing the customer who owns the VNF
+                  Unique identifier representing the customer
+                  who owns the VNF
               datacenteruuid:
                 type: string
                 example: "43f91af6-e4aa-4037-8c48-33ac74719615"
-                description: UUID of the data centre hosting the VNF
+                description: UUID of the data centre hosting the
+                  VNF
               flavoruuid:
                 type: integer
                 example: 2
@@ -2248,7 +2320,8 @@ components:
                     type: string
                     example: "9a6c0b09-6864-4f1b-bc03-842268ca1061"
                     description: >-
-                      Unique identifier representing the customer who owns the VNF
+                      Unique identifier representing the customer
+                      who owns the VNF
                   vnfuuid:
                     type: string
                     example: "37449aab-0aa2-44ae-929b-7616549ee20e"
@@ -2267,7 +2340,8 @@ components:
                     datacenteruuid:
                       type: string
                       example: "fb089004-53c9-476e-b7b2-3cc91829e0d1"
-                      description: UUID of the data centre hosting the endpoint
+                      description: UUID of the data centre hosting
+                        the endpoint
                     port:
                       type: array
                       items:
@@ -2287,7 +2361,8 @@ components:
                     datacenteruuid:
                       type: string
                       example: "7d89a3e0-ea82-4970-82f3-359d15d364b2"
-                      description: UUID of the data centre hosting the endpoint
+                      description: UUID of the data centre hosting
+                        the endpoint
                     endpointuuid:
                       type: string
                       example: "ebe5a688-2a87-40ba-8303-049b1855271c"
@@ -2306,11 +2381,13 @@ components:
                   properties:
                     cityname:
                       type: string
-                      description: City the data centre is located in
+                      description: City the data centre is located
+                        in
                       example: "Melbourne"
                     countryname:
                       type: string
-                      description: Country the data centre is located in
+                      description: Country the data centre is
+                        located in
                       example: "Australia"
                     datacentername:
                       type: string
@@ -2318,7 +2395,8 @@ components:
                       example: "Melbourne (NextDC)"
                     datacentercode:
                       type: string
-                      description: Four-letter code unique to the data centre
+                      description: Four-letter code unique to
+                        the data centre
                       example: "AMLS"
                     datacenteruuid:
                       type: string
@@ -2343,12 +2421,14 @@ components:
               properties:
                 endpointTypename:
                   description: >-
-                    Name of the endpoint type this service is associated with
+                    Name of the endpoint type this service is
+                    associated with
                   type: string
                   example: "IPVPN"
                 endpointTypeuuid:
                   description: >-
-                    UUID of the endpoint type this service is associated with
+                    UUID of the endpoint type this service is
+                    associated with
                   type: string
                   example: "d630970e-f33c-11e6-be1f-000c293805b1"
                 name:
@@ -2361,10 +2441,12 @@ components:
                   example: "1203379f-f35b-11e6-be1f-000c293805b1"
     ipvpnfnnresponse:
       description: >-
-        Array of Full National Numbers (FNNs). In Telstra's Australian network, an
-        'FNN' refers to the 'Full National Number', which is a unique identifier for
-        the network service. If the required Next IP service is not returned in this
-        list, then the user is not able to create connections to this Next IP service.
+        Array of Full National Numbers (FNNs). In Telstra's Australian
+        network, an 'FNN' refers to the 'Full National Number',
+        which is a unique identifier for the network service.
+        If the required Next IP service is not returned in this
+        list, then the user is not able to create connections
+        to this Next IP service.
       content:
         application/json:
           schema:
@@ -2538,9 +2620,9 @@ paths:
       operationId: getServices
       summary: Get endpoint services
       description: >-
-        Get list of endpoint service UUIDs. Endpoint service uuids are returned by
-        calls such as /eis/1.0.0/endpoint/endpointuuid. This call provides service
-        type names for these uuids.
+        Get list of endpoint service UUIDs. Endpoint service uuids
+        are returned by calls such as /eis/1.0.0/endpoint/endpointuuid.
+        This call provides service type names for these uuids.
       tags:
         - endpoints
       responses:
@@ -2752,7 +2834,8 @@ paths:
     post:
       operationId: createVNFPort
       summary: Create VNF VPort
-      description: Create virtual interface (VPort) on Virtual Network Function.
+      description: Create virtual interface (VPort) on Virtual
+        Network Function.
       tags:
         - vports
         - vnfs
@@ -2768,7 +2851,8 @@ paths:
     post:
       operationId: createPhysicalVPort
       summary: Create VLAN
-      description: Create VPort representing a VLAN on a Physical Ethernet Port
+      description: Create VPort representing a VLAN on a Physical
+        Ethernet Port
       tags:
         - vports
         - endpoints
@@ -2809,7 +2893,8 @@ paths:
       operationId: getImage
       summary: Get image
       description: >-
-        Get information about the specified image. Note that trailing / is required
+        Get information about the specified image. Note that trailing
+        / is required
       tags:
         - vnfs
       responses:
@@ -2819,7 +2904,8 @@ paths:
     get:
       operationId: getMyImages
       summary: Get MyImages
-      description: List images in "My Images. "Note that trailing / is required
+      description: List images in "My Images. "Note that trailing
+        / is required
       tags:
         - vnfs
       responses:
@@ -2832,8 +2918,8 @@ paths:
       operationId: createMyImage
       summary: Create MyImage
       description: >-
-        Add specified image to "My Images". 'Note that trailing / is required, body
-        must be {}'
+        Add specified image to "My Images". 'Note that trailing
+        / is required, body must be {}'
       tags:
         - vnfs
       requestBody:
@@ -2853,8 +2939,8 @@ paths:
       operationId: deleteMyImage
       summary: Delete MyImage
       description: >-
-        Remove specified image from "My Images". 'Note that trailing / is required,
-        body must be {}'
+        Remove specified image from "My Images". 'Note that trailing
+        / is required, body must be {}'
       tags:
         - vnfs
       requestBody:
@@ -2876,7 +2962,8 @@ paths:
       operationId: getVNFConsole
       summary: Get VNF Console
       description: >-
-        Gets the URL for the VNC console of a Virtual Network Function
+        Gets the URL for the VNC console of a Virtual Network
+        Function
       tags:
         - vnfs
       responses:
@@ -2889,7 +2976,8 @@ paths:
       operationId: suspendVNF
       summary: Suspend VNF
       description: >-
-        Suspend the specified Virtual Network Function. 'Note that body must be {}'
+        Suspend the specified Virtual Network Function. 'Note
+        that body must be {}'
       tags:
         - vnfs
       responses:
@@ -2902,7 +2990,8 @@ paths:
       operationId: resumeVNF
       summary: Resume VNF
       description: >-
-        Resume the specified Virtual Network Function. 'Note that body must be {}'
+        Resume the specified Virtual Network Function. 'Note that
+        body must be {}'
       tags:
         - vnfs
       responses:
@@ -2915,7 +3004,8 @@ paths:
       operationId: rebootVNF
       summary: Reboot VNF
       description: >-
-        Reboot the specified Virtual Network Function. reboot_type is 'warm' or 'cold'
+        Reboot the specified Virtual Network Function. reboot_type
+        is 'warm' or 'cold'
       tags:
         - vnfs
       requestBody:
@@ -2935,8 +3025,8 @@ paths:
       operationId: getVNFStatus
       summary: Get VNF Status
       description: >-
-        Get status information about the specified Virtual Network Function. 'Possible
-        return values:
+        Get status information about the specified Virtual Network
+        Function. 'Possible return values:
           ACTIVE,
           BUILD,
           SHUTOFF,
@@ -2958,7 +3048,8 @@ paths:
     get:
       operationId: getExchProviders
       summary: Get Exchange providers
-      description: List all Exchange providers, with supported POPs
+      description: List all Exchange providers, with supported
+        POPs
       tags:
         - exchange
       responses:
@@ -2970,7 +3061,8 @@ paths:
     get:
       operationId: getExchProvider
       summary: Get Exchange provider
-      description: Get information about the specified Exchange provider
+      description: Get information about the specified Exchange
+        provider
       tags:
         - exchange
       responses:
@@ -3058,7 +3150,8 @@ paths:
     get:
       operationId: getTopoTag
       summary: Get Topology Tag
-      description: Get information about the specified topology tag
+      description: Get information about the specified topology
+        tag
       tags:
         - topologies
       responses:
@@ -3094,8 +3187,8 @@ paths:
       operationId: getObjectsByTopoTag
       summary: Get Objects by Topology Tag
       description: >-
-        List all objects (Endpoints, Links, VPorts, etc.) associated with the topology
-        tag.
+        List all objects (Endpoints, Links, VPorts, etc.) associated
+        with the topology tag.
       tags:
         - topologies
       responses:
@@ -3171,8 +3264,8 @@ paths:
       operationId: validateToken
       summary: Validate token
       description: >-
-        Validate the authentication token and get information about the user (roles,
-        permissions, etc.)
+        Validate the authentication token and get information
+        about the user (roles, permissions, etc.)
       tags:
         - authentication
       responses:
@@ -3232,7 +3325,8 @@ paths:
     get:
       operationId: getAccount
       summary: Get account information details
-      description: Get the account information for the specified customer
+      description: Get the account information for the specified
+        customer
       tags:
         - customers
       responses:
@@ -3246,7 +3340,8 @@ paths:
     get:
       operationId: getUsers
       summary: List users
-      description: List all users associated with the specified customer
+      description: List all users associated with the specified
+        customer
       tags:
         - customers
         - users
@@ -3304,9 +3399,11 @@ paths:
       operationId: createVNFBackup
       summary: Create backup of specified VNF
       description: >-
-        'Note: if a second backup creation is attempted while one is already active,
-        an error will be returned indicating that the VNF is invalid. If replace_backup_uuid
-        is provided, this backup is deleted once the new backup is successfully completed'
+        'Note: if a second backup creation is attempted while
+        one is already active, an error will be returned indicating
+        that the VNF is invalid. If replace_backup_uuid is provided,
+        this backup is deleted once the new backup is successfully
+        completed'
       tags:
         - vnfs
       requestBody:
@@ -3356,7 +3453,8 @@ paths:
     post:
       operationId: deleteVNFBackups
       summary: Delete multiple backups
-      description: Delete all backups associated with specified VNF
+      description: Delete all backups associated with specified
+        VNF
       tags:
         - vnfs
       responses:
@@ -3387,14 +3485,16 @@ paths:
       operationId: getCustomerIpvpnList
       summary: Get list of Next IP services
       description: >-
-        Get a list of the customer's available Next IP services. In Telstra's Australian
-        network, an 'FNN' refers to the 'Full National Number', which is a unique
-        identifier for the network service. If the required Next IP service is not
-        returned in this list, then the user will be unable to create connections
-        to this Next IP service. The serviceuuid in this call should be set to the
-        UUID of the service returned by /eis/1.0.0/service which has the name 'NextIP'.
-        If this endpoint does not return a service which you expected to be able to
-        connect to, please email support@pn.telstra.com
+        Get a list of the customer's available Next IP services.
+        In Telstra's Australian network, an 'FNN' refers to the
+        'Full National Number', which is a unique identifier for
+        the network service. If the required Next IP service is
+        not returned in this list, then the user will be unable
+        to create connections to this Next IP service. The serviceuuid
+        in this call should be set to the UUID of the service
+        returned by /eis/1.0.0/service which has the name 'NextIP'.
+        If this endpoint does not return a service which you expected
+        to be able to connect to, please email support@pn.telstra.com
       tags:
         - nextip
         - endpoints
