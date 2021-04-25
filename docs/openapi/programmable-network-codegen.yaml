@@ -2557,8 +2557,6 @@ paths:
       operationId: getDatacentres
       summary: Get data centres
       description: Get list of all the data centers
-      tags:
-        - datacentres
       responses:
         '200':
           $ref: "#/components/responses/datacentreresponse"
@@ -2585,8 +2583,6 @@ paths:
       operationId: getEndpointsByCustomeruuid
       summary: Get endpoints by customer
       description: Get list of endpoints owned by a customeruuid
-      tags:
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/endpointlistresponse"
@@ -2597,8 +2593,6 @@ paths:
       operationId: getEndpoint
       summary: Get endpoint
       description: Get information about the specified endpoint
-      tags:
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/endpointresponse"
@@ -2609,9 +2603,6 @@ paths:
       description: Get details of DIA (Internet) Endpoint
       parameters:
         - $ref: "#/components/parameters/diauuid"
-      tags:
-        - endpoints
-        - internet
       responses:
         '200':
           $ref: "#/components/responses/imsdetailresponse"
@@ -2623,8 +2614,6 @@ paths:
         Get list of endpoint service UUIDs. Endpoint service uuids
         are returned by calls such as /eis/1.0.0/endpoint/endpointuuid.
         This call provides service type names for these uuids.
-      tags:
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/serviceresponse"
@@ -2633,9 +2622,6 @@ paths:
       operationId: createVNF
       summary: Create VNF
       description: Instantiate Virtual Network Function
-      tags:
-        - endpoints
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -2651,9 +2637,6 @@ paths:
       operationId: getVNF
       summary: Get VNF
       description: Get details of a specific VNF
-      tags:
-        - endpoints
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/vnfdetailresponse"
@@ -2662,8 +2645,6 @@ paths:
       operationId: createPort
       summary: Create Port
       description: Create Physical (Port) Endpoint
-      tags:
-        - endpoints
       requestBody:
         content:
           application/json:
@@ -2679,9 +2660,6 @@ paths:
       operationId: assignEndpointToTopology
       summary: Assign Endpoint to Topology
       description: Assign an Endpoint to a Topology
-      tags:
-        - endpoints
-        - topologies
       requestBody:
         content:
           application/json:
@@ -2698,9 +2676,6 @@ paths:
       operationId: unassignEndpointFromTopology
       summary: Unassign Endpoint from Topology
       description: Remove and Endpoint from a Topology
-      tags:
-        - endpoints
-        - topologies
       responses:
         '204':
           description: No Content
@@ -2711,8 +2686,6 @@ paths:
       operationId: getEndpointSummary
       summary: Get Endpoint name and status
       description: Get Endpoint name and status
-      tags:
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/endpointstatusresponse"
@@ -2720,8 +2693,6 @@ paths:
       operationId: updateEndpoint
       summary: Update Endpoint
       description: Update Endpoint name
-      tags:
-        - endpoints
       requestBody:
         content:
           application/json:
@@ -2737,8 +2708,6 @@ paths:
       operationId: createLink
       summary: Create Link
       description: Create a Link and its initial Contract
-      tags:
-        - links
       requestBody:
         content:
           application/json:
@@ -2754,8 +2723,6 @@ paths:
       operationId: getLinks
       description: Get Links by customer
       summary: Get active Links by customer UUID
-      tags:
-        - links
       responses:
         '200':
           $ref: "#/components/responses/activelinksresponse"
@@ -2766,8 +2733,6 @@ paths:
       operationId: getLinkHistory
       summary: Get Link history
       description: Get history of contracts assigned to a link
-      tags:
-        - links
       responses:
         '200':
           $ref: "#/components/responses/linkhistoryresponse"
@@ -2779,8 +2744,6 @@ paths:
       operationId: getContract
       summary: Get Contract
       description: Get active Contract by ContractID
-      tags:
-        - contracts
       responses:
         '200':
           $ref: "#/components/responses/activecontractresponse"
@@ -2788,8 +2751,6 @@ paths:
       operationId: updateContract
       summary: Update Contract
       description: Update active Contract by ContractID
-      tags:
-        - contracts
       requestBody:
         content:
           application/json:
@@ -2808,8 +2769,6 @@ paths:
       operationId: getLink
       summary: Get link
       description: Get details of specified link
-      tags:
-        - links
       responses:
         '200':
           $ref: "#/components/responses/linkdetailresponse"
@@ -2820,8 +2779,6 @@ paths:
       operationId: createContract
       summary: Create Contract
       description: Create new Contract on specified link
-      tags:
-        - contracts
       requestBody:
         content:
           application/json:
@@ -2836,9 +2793,6 @@ paths:
       summary: Create VNF VPort
       description: Create virtual interface (VPort) on Virtual
         Network Function.
-      tags:
-        - vports
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -2853,9 +2807,6 @@ paths:
       summary: Create VLAN
       description: Create VPort representing a VLAN on a Physical
         Ethernet Port
-      tags:
-        - vports
-        - endpoints
       requestBody:
         content:
           application/json:
@@ -2871,8 +2822,6 @@ paths:
       operationId: getVPort
       summary: Get VPort
       description: Get information about the specified VPort
-      tags:
-        - vports
       responses:
         '200':
           $ref: "#/components/responses/vportdetailresponse"
@@ -2881,8 +2830,6 @@ paths:
       operationId: getImages
       summary: Get Images
       description: List images in the VNF Marketplace
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/imageresponse"
@@ -2895,8 +2842,6 @@ paths:
       description: >-
         Get information about the specified image. Note that trailing
         / is required
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/imagedetailresponse"
@@ -2906,8 +2851,6 @@ paths:
       summary: Get MyImages
       description: List images in "My Images. "Note that trailing
         / is required
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/my_imagesresponse"
@@ -2920,8 +2863,6 @@ paths:
       description: >-
         Add specified image to "My Images". 'Note that trailing
         / is required, body must be {}'
-      tags:
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -2941,8 +2882,6 @@ paths:
       description: >-
         Remove specified image from "My Images". 'Note that trailing
         / is required, body must be {}'
-      tags:
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -2964,8 +2903,6 @@ paths:
       description: >-
         Gets the URL for the VNC console of a Virtual Network
         Function
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/getconsoleresponse"
@@ -2978,8 +2915,6 @@ paths:
       description: >-
         Suspend the specified Virtual Network Function. 'Note
         that body must be {}'
-      tags:
-        - vnfs
       responses:
         '200':
           description: Success
@@ -2992,8 +2927,6 @@ paths:
       description: >-
         Resume the specified Virtual Network Function. 'Note that
         body must be {}'
-      tags:
-        - vnfs
       responses:
         '200':
           description: Success
@@ -3006,8 +2939,6 @@ paths:
       description: >-
         Reboot the specified Virtual Network Function. reboot_type
         is 'warm' or 'cold'
-      tags:
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -3039,8 +2970,6 @@ paths:
           SOFT_DELETED,
           SHELVED,
           SHELVED_OFFLOADED'
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/vnfstatusresponse"
@@ -3050,8 +2979,6 @@ paths:
       summary: Get Exchange providers
       description: List all Exchange providers, with supported
         POPs
-      tags:
-        - exchange
       responses:
         '200':
           $ref: "#/components/responses/exchangeresponse"
@@ -3063,8 +2990,6 @@ paths:
       summary: Get Exchange provider
       description: Get information about the specified Exchange
         provider
-      tags:
-        - exchange
       responses:
         '200':
           $ref: "#/components/responses/exprovresponse"
@@ -3073,8 +2998,6 @@ paths:
       operationId: getVisitCards
       summary: Get Visit Cards
       description: Get list of Visit Cards
-      tags:
-        - exchange
       responses:
         '200':
           $ref: "#/components/responses/visitcardresponse"
@@ -3085,8 +3008,6 @@ paths:
       operationId: getVisitCard
       summary: Get Visit Card
       description: Get details of the specified Visit Card
-      tags:
-        - exchange
       responses:
         '200':
           $ref: "#/components/responses/visitcarddetailresponse"
@@ -3094,8 +3015,6 @@ paths:
       operationId: updateVisitCard
       summary: Update Visit Card
       description: Update details of the specified Visit Card
-      tags:
-        - exchange
       requestBody:
         content:
           application/json:
@@ -3115,8 +3034,6 @@ paths:
       operationId: getExchangeProfile
       summary: Get Exchange profile
       description: Get the current account's Exchange profile
-      tags:
-        - exchange
       responses:
         '200':
           $ref: "#/components/responses/profileresponse"
@@ -3125,8 +3042,6 @@ paths:
       operationId: getTopoTags
       summary: Get Topology Tags
       description: List all topology tags
-      tags:
-        - topologies
       responses:
         '200':
           $ref: "#/components/responses/topotagresponse"
@@ -3134,8 +3049,6 @@ paths:
       operationId: createTopoTag
       summary: Create Topology Tag
       description: Create a named topology tag
-      tags:
-        - topologies
       requestBody:
         content:
           application/json:
@@ -3152,8 +3065,6 @@ paths:
       summary: Get Topology Tag
       description: Get information about the specified topology
         tag
-      tags:
-        - topologies
       responses:
         '200':
           $ref: "#/components/responses/topotagdetailresponse"
@@ -3161,8 +3072,6 @@ paths:
       operationId: updateTopoTag
       summary: Update topology tag
       description: Update a topology tag's name and/or description
-      tags:
-        - topologies
       requestBody:
         content:
           application/json:
@@ -3175,8 +3084,6 @@ paths:
       operationId: deleteTopoTag
       summary: Delete Topology Tag
       description: Delete a topology tag
-      tags:
-        - topologies
       responses:
         '204':
           description: No Content
@@ -3189,8 +3096,6 @@ paths:
       description: >-
         List all objects (Endpoints, Links, VPorts, etc.) associated
         with the topology tag.
-      tags:
-        - topologies
       responses:
         '200':
           $ref: "#/components/responses/topotagobjectsresponse"
@@ -3202,9 +3107,6 @@ paths:
       summary: Get Endpoints by Topology Tag
       description: >-
         List all Endpoints associated with the topology tag.
-      tags:
-        - endpoints
-        - topologies
       responses:
         '200':
           $ref: "#/components/responses/topotaglistresponse"
@@ -3213,8 +3115,6 @@ paths:
       operationId: createToken
       summary: Create token
       description: Create an authentication token
-      tags:
-        - authentication
       security: []
       requestBody:
         content:
@@ -3266,8 +3166,6 @@ paths:
       description: >-
         Validate the authentication token and get information
         about the user (roles, permissions, etc.)
-      tags:
-        - authentication
       responses:
         '200':
           $ref: "#/components/responses/validatetokenresponse"
@@ -3276,8 +3174,6 @@ paths:
       operationId: createCustomer
       summary: Create customer
       description: Create a new customer
-      tags:
-        - customers
       requestBody:
         content:
           application/json:
@@ -3293,8 +3189,6 @@ paths:
       operationId: getCustomer
       summary: Get Customer
       description: Get details of the specified customer
-      tags:
-        - customers
       responses:
         '200':
           $ref: "#/components/responses/customerdetails"
@@ -3302,8 +3196,6 @@ paths:
       operationId: updateCustomer
       summary: Update Customer
       description: Update details of the specified customer
-      tags:
-        - customers
       responses:
         '200':
           $ref: "#/components/responses/customerdetails"
@@ -3314,8 +3206,6 @@ paths:
       operationId: getChildCustomers
       summary: List child customers
       description: List all child customers of the specified customer
-      tags:
-        - customers
       responses:
         '200':
           $ref: "#/components/responses/customerdetailsarray"
@@ -3327,8 +3217,6 @@ paths:
       summary: Get account information details
       description: Get the account information for the specified
         customer
-      tags:
-        - customers
       responses:
         '200':
           $ref: "#/components/responses/customerdetailresponse"
@@ -3342,9 +3230,6 @@ paths:
       summary: List users
       description: List all users associated with the specified
         customer
-      tags:
-        - customers
-        - users
       responses:
         '200':
           $ref: "#/components/responses/userlistresponse"
@@ -3357,9 +3242,6 @@ paths:
       operationId: getEndpointStats
       summary: Get statistics for endpoint
       description: Get statistics related to the specified endpoint
-      tags:
-        - statistics
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/linkstatsresponse"
@@ -3372,9 +3254,6 @@ paths:
       operationId: getFlowStats
       summary: Get statistics for flow
       description: Get statistics related to the specified flow
-      tags:
-        - statistics
-        - links
       responses:
         '200':
           $ref: "#/components/responses/flowstatsresponse"
@@ -3388,9 +3267,6 @@ paths:
       summary: Get state statistics for endpoint
       description: >-
         Get statistics related to the state of the specified endpoint
-      tags:
-        - statistics
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/endpointstatestatsresponse"
@@ -3404,8 +3280,6 @@ paths:
         that the VNF is invalid. If replace_backup_uuid is provided,
         this backup is deleted once the new backup is successfully
         completed'
-      tags:
-        - vnfs
       requestBody:
         content:
           application/json:
@@ -3421,8 +3295,6 @@ paths:
       operationId: getVNFBackup
       summary: Get backup
       description: Get information about the specified backup
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/backupdetailresponse"
@@ -3430,8 +3302,6 @@ paths:
       operationId: deleteVNFBackup
       summary: Delete backup
       description: Delete the specified backup
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/backupdeleteresponse"
@@ -3442,8 +3312,6 @@ paths:
       operationId: getVNFBackups
       summary: List backups
       description: List available backups for the specified VNF
-      tags:
-        - vnfs
       responses:
         '200':
           $ref: "#/components/responses/backuplistresponse"
@@ -3455,8 +3323,6 @@ paths:
       summary: Delete multiple backups
       description: Delete all backups associated with specified
         VNF
-      tags:
-        - vnfs
       responses:
         '202':
           $ref: "#/components/responses/backupmultideleteresponse"
@@ -3467,8 +3333,6 @@ paths:
       operationId: restoreVNFBackup
       summary: Restore VNF from backup
       description: Restore VNF from specified backup
-      tags:
-        - vnfs
       responses:
         '202':
           $ref: "#/components/responses/backuprestoreresponse"
@@ -3495,9 +3359,6 @@ paths:
         returned by /eis/1.0.0/service which has the name 'NextIP'.
         If this endpoint does not return a service which you expected
         to be able to connect to, please email support@pn.telstra.com
-      tags:
-        - nextip
-        - endpoints
       responses:
         '200':
           $ref: "#/components/responses/ipvpnfnnresponse"
@@ -3515,74 +3376,3 @@ paths:
           $ref: "#/components/responses/validationerror"
         '500':
           $ref: "#/components/responses/internalerror"
-tags:
-  - name: authentication
-    description: Authentication
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
-  - name: contracts
-    description: Contracts
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Contract
-  - name: customers
-    description: Customers
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
-  - name: datacentres
-    description: Data Centres
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Data-Centre
-  - name: endpoints
-    description: Endpoints
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Endpoint
-  - name: exchange
-    description: Global Exchange
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Exchange
-  - name: internet
-    description: Internet
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Endpoint
-  - name: links
-    description: Links
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Link
-  - name: nextip
-    description: Telstra Australian IPVPN (Next IP)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/NextIP
-  - name: statistics
-    description: Statistics
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Statistics
-  - name: topologies
-    description: Topologies
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/Topology
-  - name: users
-    description: Users
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api#section/Key-Concepts/Customer-Account-User
-  - name: vnfs
-    description: Virtual Network Functions (Marketplace)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/VNF
-  - name: vports
-    description: Virtual Ports (VPorts)
-    externalDocs:
-      url: >-
-        https://dev.telstra.com/content/programmable-network-api/#section/Key-Concepts/VPorts
