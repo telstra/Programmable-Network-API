@@ -1,4 +1,4 @@
-openapi: 3.0.0
+openapi: 3.0.3
 # This is an automatically-generated document. Please submit changes to
 # pnapi-support@team.telstra.com
 info:
@@ -15,13 +15,13 @@ info:
     Programmable Network.
 
     To register, please contact your account representative.
-  version: 2.5.1
+  version: 2.5.3
   contact:
     name: Telstra Corporation - Programmable Network API
     url: "https://dev.telstra.com/content/programmable-network-api"
     email: pnapi-support@team.telstra.com
 servers:
-  - url: "https://penapi.pacnetconnect.com"
+  - url: "https://api.pn.telstra.com"
     description: Production Public API
 components:
   securitySchemes:
@@ -30,7 +30,7 @@ components:
       description: OAuth 2 with password grant flow
       flows:
         password:
-          tokenUrl: https://penapi.pacnetconnect.com/1.0.0/auth/generatetoken
+          tokenUrl: https://api.pn.telstra.com/1.0.0/auth/generatetoken
           scopes: {}
   schemas:
     contractresponse-fragment:
@@ -40,7 +40,7 @@ components:
           type: object
           properties:
             duration:
-              $ref: "#/components/schemas/duration.mins"
+              $ref: '#/components/schemas/duration.secs'
             bandwidth:
               $ref: "#/components/schemas/bandwidth.kbs"
             linkid:
@@ -53,203 +53,132 @@ components:
               $ref: "#/components/schemas/price"
             renewal-option:
               $ref: "#/components/schemas/renewal-option"
-    createcustomerrequest:
-      required:
-        - companyname
-        - parentcompanyuuid
-        - address
-        - country
-        - city
-        - customeraccountid
-        - customertype
-        - currency
-        - billingaccountid
-        - parentcustomeraccountid
+
+    custacct-base:
+      allOf:
+        - type: object
+          properties:
+            phone:
+              type: string
+              description: >-
+                Phone number to be associated with the company/division/group
+                this customer tenancy represents
+            address:
+              type: string
+              description: >-
+                Primary address for the company/division/group this customer
+                tenancy represents
+              example: "150 Lonsdale St."
+            city:
+              type: string
+              description: >-
+                The city for the location of the company/division/group
+                this customer tenancy represents
+              example: "Melbourne"
+            fax:
+              type: string
+              description: >-
+                Fax number to be associated with the company/division/group
+                this customer tenancy represents
+            website:
+              type: string
+              description: >-
+                Web URL to be associated with the company/division/group
+                this customer tenancy represents
+              example: "http://www.example.com"
+            enforce2FA:
+              type: boolean
+              description: >-
+                Flag indicating whether two-factor authentication is
+                enforced for the users of this customer tenancy
+              example: false
+            customertype:
+              type: string
+              description: >-
+                A description of the billing status of this customer
+              example: "External Paying"
+            postalcode:
+              type: string
+              description: >-
+                Postal code of the location of the company/division/group
+                this customer tenancy represents
+            partnercode:
+              type: string
+              description: >-
+                Code referring to the partner through which the customer
+                tenancy was purchased
+              example: "ACME"
+        - $ref: "#/components/schemas/custacct-nonconsenting"
+        - $ref: "#/components/schemas/custacct-companyname"
+
+    custacct-robase:
+      allOf:
+        - type: object
+          properties:
+            currency:
+              type: string
+              description: >-
+                Currency in which resources created in this customer tenancy
+                will be billed
+              example: "AUD"
+            status:
+              type: string
+              description: Internal use
+              example: "1"
+            parentcompanyuuid:
+              type: string
+              description: Unique identifier of the parent customer tenancy
+              example: "c2d7358d-d46f-4e2b-8472-0882d6edda1c"
+            parentcustomeraccountid:
+              description: >-
+                Account identifier of the parent customer
+              type: string
+              example: "1234"
+            parentcompanyname:
+              type: string
+              description: >-
+                Company Name associated with the parent customer tenancy
+                for this customer tenancy (provided for convenience and
+                used for display/reference purposes only)
+              example: "TPN Demo"
+            createdon:
+              description: Date on which this customer was created
+              example: 1535956880000
+              type: integer
+        - $ref: "#/components/schemas/custacct-companyuuid"
+        - $ref: "#/components/schemas/custacct-customeraccountid"
+        - $ref: "#/components/schemas/custacct-domainid"
+
+    custacct-countrystate:
       type: object
       properties:
-        companyname:
+        state:
           type: string
           description: >-
-            Name of the company/division/group this customer tenancy
-            represents
-          example: "Engineering Division"
-        parentcompanyuuid:
-          type: string
-          description: Unique identifier of the parent customer tenancy
-        address:
-          type: string
-          description: >-
-            Primary address for the company/division/group this customer
-            tenancy represents
+            Abbreviation for the political state associated with the
+            company/division/group this customer tenancy represents
+          example: "VIC"
         country:
           type: string
           description: >-
             Three-letter country code of the location of the
             company/division/group this customer tenancy represents
           example: "AUS"
-        city:
+        statename:
           type: string
           description: >-
-            The city for the location of the company/division/group
-            this customer tenancy represents
-          example: "Melbourne"
-        customeraccountid:
-          type: string
-        customertype:
-          type: string
-          example: "External Paying"
-        currency:
-          type: string
-          description: >-
-            Currency in which resources created in this customer tenancy
-            will be billed
-          example: "AUD"
-        billingaccountid:
-          type: string
-          example: "3488394955"
-        parentcustomeraccountid:
-          type: string
-        phone:
-          type: string
-          description: >-
-            Phone number to be associated with the company/division/group
-            this customer tenancy represents
-        fax:
-          type: string
-          description: >-
-            Fax number to be associated with the company/division/group
-            this customer tenancy represents
-        postalcode:
-          type: string
-          description: >-
-            Postal code of the location of the company/division/group
-            this customer tenancy represents
-        website:
-          type: string
-          description: >-
-            Web URL to be associated with the company/division/group
-            this customer tenancy represents
-    customerdetails:
-      type: object
-      properties:
-        phone:
-          type: string
-          description: >-
-            Phone number associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "null"
-        city:
-          type: string
-          description: >-
-            City associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "Melbourne"
-        fax:
-          type: string
-          description: >-
-            Fax number associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "null"
-        country:
-          type: string
-          description: >-
-            Country code associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "AUS"
-        address:
-          type: string
-          description: >-
-            Address associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "150 Lonsdale St."
-        website:
-          type: string
-          description: >-
-            Web site associated with this customer tenancy (used for
-            display/reference purposes only)
-          example: "http://www.example.com"
-        billingaccountuuid:
-          type: string
-          example: "3008ef0b-7f5e-44c0-9ab5-13d07a4acee8"
-          description: >-
-            Unique identifier for the billing account used by this
-            customer tenancy
-        enforce2FA:
-          type: boolean
-          description: >-
-            Flag indicating whether two-factor authentication is
-            enforced for the users of this customer tenancy
-          example: false
-        currency:
-          type: string
-          description: >-
-            Currency in which billing will be calculated for
-            this customer tenancy
-          example: "AUD"
-        companyuuid:
-          type: string
-          description: >-
-            Unique identifier for this customer tenancy
-          example: "9bbfc3a8-f32c-4658-8a81-513274ae25f0"
-        companyname:
-          type: string
-          description: >-
-            Company Name associated with this customer tenancy
-            (used for display/reference purposes only)
-          example: "Engineering"
+            Name of the political state associated with the
+            company/division/group this customer tenancy represents
+          example: "Victoria"
         countryname:
           type: string
           description: >-
             Country Name associated with this customer tenancy
           example: "Australia"
-        postalcode:
-          type: string
-          description: >-
-            Postal Code associated with this customer tenancy
-          example: "3000"
-        customertype:
-          type: string
-          description: Internal use
-          example: "External paying"
-        status:
-          type: string
-          description: Internal use
-          example: "1"
-        customeraccountid:
-          type: string
-          description: >-
-            Account identifier used for billing purposes
-          example: "4099099282"
-        parentcompanyuuid:
-          type: string
-          description: >-
-            Unique identifier for the parent of this customer tenancy
-          example: "c2d7358d-d46f-4e2b-8472-0882d6edda1c"
-        parentcustomeraccountid:
-          type: string
-          description: >-
-            Account identifier for the parent customer of this
-            customer tenancy, used for billing purposes
-          example: "1234"
-        domainid:
-          type: string
-          description: >-
-            The domain identifier for this customer tenancy, used
-            for authenticating users to this customer tenancy
-          example: "714635132656"
-        parentcompanyname:
-          type: string
-          description: >-
-            Company Name associated with the parent customer tenancy
-            for this customer tenancy (provided for convenience and
-            used for display/reference purposes only)
-          example: "TPN Demo"
-        billingaccountid:
-          type: string
-          description: >-
-            Billing account identifier for the parent customer of this
-            customer tenancy, used for billing purposes
-          example: "4099099282"
+
+    custacct-custextra:
+      type: object
+      properties:
         idp_type:
           type: string
           description: >-
@@ -260,13 +189,137 @@ components:
             for an external Identity Provider using the OAuth
             standard"
           example: "Default"
-        createdon:
-          example: 1535956880000
-          type: integer
+        partnerchannel:
+          type: string
+          description: >-
+            Channel that the customer tenancy belongs to
+          example: "International"
+
+    custacct-companyuuid:
+      type: object
+      properties:
+        companyuuid:
+          type: string
+          description: >-
+            Unique identifier for this customer tenancy
+          example: "9bbfc3a8-f32c-4658-8a81-513274ae25f0"
+
+    custacct-companyname:
+      type: object
+      properties:
+        companyname:
+          type: string
+          description: >-
+            Name of the company/division/group this customer tenancy
+            represents
+          example: "Engineering Division"
+
+    custacct-customeraccountid:
+      type: object
+      properties:
+        customeraccountid:
+          type: string
+          description: >-
+            An account identifier provided by the creator of the customer
+
+    custacct-domainid:
+      type: object
+      properties:
+        domainid:
+          type: string
+          description: >-
+            The domain identifier for this customer tenancy, used
+            for authenticating users to this customer tenancy
+          example: "714635132656"
+
+    custacct-nonconsenting:
+      type: object
+      properties:
         nonconsenting:
           type: string
           description: Internal use
           example: "null"
+
+    custacct-billingaccountid:
+      type: object
+      properties:
+          billingaccountid:
+            type: string
+            description: >-
+              Billing account identifier for the parent customer of this
+              customer tenancy, used for billing purposes
+            example: "4099099282"
+
+    custacct-billingaccountuuid:
+      type: object
+      properties:
+        billingaccountuuid:
+          type: string
+          example: "3008ef0b-7f5e-44c0-9ab5-13d07a4acee8"
+          description: >-
+            Unique identifier for the billing account used by this
+            customer tenancy
+
+    createcustomerrequest:
+      allOf:
+        - $ref: "#/components/schemas/custacct-base"
+        - $ref: "#/components/schemas/custacct-billingaccountid"
+        - $ref: "#/components/schemas/custacct-countrystate"
+        - required:
+          - address
+          - city
+          - country
+          - currency
+          - companyname
+          - customertype
+          - customeraccountid
+          - parentcompanyuuid
+          - billingaccountid
+
+    updatecustomerrequest:
+      allOf:
+        - $ref: "#/components/schemas/custacct-base"
+        - $ref: "#/components/schemas/custacct-countrystate"
+        - $ref: "#/components/schemas/custacct-custextra"
+
+    customerdetails:
+      allOf:
+        - $ref: "#/components/schemas/custacct-base"
+        - $ref: "#/components/schemas/custacct-robase"
+        - $ref: "#/components/schemas/custacct-countrystate"
+        - $ref: "#/components/schemas/custacct-custextra"
+        - $ref: "#/components/schemas/custacct-billingaccountid"
+        - $ref: "#/components/schemas/custacct-billingaccountuuid"
+
+    accountdetails:
+      allOf:
+        - $ref: "#/components/schemas/custacct-base"
+        - $ref: "#/components/schemas/custacct-robase"
+        - $ref: "#/components/schemas/custacct-countrystate"
+
+    childcustomerdetails:
+      allOf:
+        - $ref: "#/components/schemas/custacct-base"
+        - $ref: "#/components/schemas/custacct-robase"
+
+    childcustomer:
+      allOf:
+        - $ref: "#/components/schemas/custacct-companyuuid"
+        - $ref: "#/components/schemas/custacct-companyname"
+        - $ref: "#/components/schemas/custacct-customeraccountid"
+        - $ref: "#/components/schemas/custacct-domainid"
+        - $ref: "#/components/schemas/custacct-nonconsenting"
+        - type: object
+          properties:
+            tags:
+              type: array
+              items: 
+                type: string
+            childs:
+              type: array
+              items:
+                $ref: "#/components/schemas/childcustomer"
+
     topotagupdaterequest:
       type: object
       properties:
@@ -289,12 +342,16 @@ components:
       type: object
       properties:
         vnf_uuid:
+          description: UUID of the VNF to back up
           type: string
           example: "303c6928-f9de-4e4c-a563-4772775f2316"
         backup_name:
+          description: Name of the backup to display to the end user
           type: string
           example: "prior to production network reconfiguration"
         replace_backup_uuid:
+          description: >-
+            UUID of an existing backup to replace, if this backup is successful
           type: string
           example: "736848ab-d4dc-4f94-a255-35f9984f8a42"
     topotagcreaterequest:
@@ -316,18 +373,24 @@ components:
       type: object
       properties:
         reboot_type:
+          description: Identifies whether a warm or cold reboot is required
           type: string
-          example: "warm"
+          example: "cold"
     regvportrequest:
       type: object
       properties:
         vporttype:
+          description: >-
+            Identifies whether the vport relates to a full port
+            (i.e. no VLANs) or a single VLAN. Values=vlan|port
           type: string
           example: "vlan"
         endpointuuid:
+          description: UUID of the endpoint for which the VPORT is to be created
           type: string
           example: "9a04a7ff-0a82-4259-9f2b-c384b6d720ab"
         vportvalue:
+          description: if the vporttype is "VLAN", provides the VLAN details
           type: object
           properties:
             vlan:
@@ -336,14 +399,18 @@ components:
       type: object
       properties:
         customeruuid:
-          type: string
-          example: "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9"
           description: >-
             Unique identifier representing the customer who owns the VNF
+          type: string
+          example: "e58af39b-4a89-43f2-b1ed-1816b6d1f8e9"
         vnfuuid:
+          description: >-
+            UUID representing the VNF on which the vport will be created
           type: string
           example: "9da748fb-9044-4909-95c2-4245d7592bec"
         management_port:
+          description: >-
+            TBC
           type: boolean
     createcontractrequest:
       type: object
@@ -358,6 +425,8 @@ components:
       type: object
       properties:
         billing-id:
+          description: >-
+            UUID of the billing account the link will be charged to
           type: string
           example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
         description:
@@ -370,12 +439,14 @@ components:
         connections:
           $ref: "#/components/schemas/connections"
         tag:
+          description: >-
+            A short label specified by customer
           type: string
           example: "prod"
         latency:
           $ref: "#/components/schemas/latency"
         duration:
-          $ref: "#/components/schemas/duration.mins"
+          $ref: '#/components/schemas/duration.secs'
         bandwidth:
           $ref: "#/components/schemas/bandwidth.kbs"
         renewal-option:
@@ -385,6 +456,8 @@ components:
           type: integer
           example: 1
         topology_tag_uuid:
+          description: >-
+            UUID representing the topology tag to be assigned to the link
           type: string
           example: "684903a3-78b0-4005-9bfe-eece54ad42f3"
     endpointupdaterequest:
@@ -400,6 +473,8 @@ components:
       type: object
       properties:
         topology_tag:
+          description: >-
+            UUID representing the topology tag to be assigned to the endpoint
           type: string
           example: "38d17228-0179-491f-9e84-36ddd078b8e6"
     regendpointrequest:
@@ -417,10 +492,15 @@ components:
           description: >-
             UUID of the data centre which the port is to be allocated from
         interfacetype:
+          description: Type of physical port required
+          externalDocs:
+            description: List of port types
+            url: "https://dev.telstra.com/content/programmable-network-api/#section/Master-Data/Interface-Types"
           type: string
           example: "1000Base-TX"
     vnfendpointrequest:
       required:
+        - name
         - customeruuid
         - imageuuid
         - flavoruuid
@@ -428,6 +508,10 @@ components:
         - config
       type: object
       properties:
+        name:
+          description: Label describing the VNF to display to the end user
+          type: string
+          example: "Border Firewall"
         customeruuid:
           type: string
           example: "e66546d2-eb85-442f-a4d4-a4f6f4cee6bc"
@@ -435,9 +519,13 @@ components:
             Unique identifier representing the customer who will own
             the endpoint
         imageuuid:
+          description: >-
+            Identifier from image list representing the VNF image
           type: integer
           example: 21
         flavoruuid:
+          description: >-
+            Identifier from image list representing the VNF instance type
           type: integer
           example: 22
         datacenteruuid:
@@ -448,7 +536,10 @@ components:
         config:
           description: "Boot configuration for VNF, base64 encoded"
           type: string
+          example: ""
         topology_tag_uuid:
+          description: >-
+            UUID of the topology that should be tagged against the VNF
           type: string
           example: "f6c14b31-f29f-4be2-919b-5b7f463e4a3c"
     Error:
@@ -526,26 +617,42 @@ components:
       type: object
       properties:
         status:
+          description: Current status of the vport
+          externalDocs:
+            description: List of vport statuses
+            url: "https://dev.telstra.com/content/programmable-network-api/#section/Master-Data/Link-Contract-Status-Codes"
           type: string
           example: "deployed"
         bandwidth:
+          description: "Bandwidth [TODO: kb/s or mb/s?]"
           type: integer
           example: 0
         interfacesequence:
+          description: Sequence number of the interface on a VNF
           type: integer
           example: 0
+        customdisplayname:
+          description: A label to display to the end user
+          type: string
+          example: "0"
         vporttype:
+          description: >-
+            Identifies whether the vport relates to a full port
+            (i.e. no VLANs) or a single VLAN. Values=vlan|port
           type: string
           example: "vlan"
         vportuuid:
+          description: UUID of the vport
           type: string
           example: "e62716f5-cc68-40e7-b97e-f1e3d1bda9a8"
         vportvalue:
           type: object
+          description: if the vporttype is "VLAN", provides the VLAN details
           properties:
             vlan:
               $ref: "#/components/schemas/vlan"
     connections:
+      description: array of two endpoints for the link
       type: array
       minItems: 2
       maxItems: 2
@@ -554,7 +661,7 @@ components:
         - "e2f182ee-8c06-410d-b0fe-e21c9e7ee7bd"
       items:
         type: string
-        description: "two vport uuids identified the endpoints of the link"
+        description: UUID representing the vport associated with the endpoint
     billing:
       type: object
       properties:
@@ -594,9 +701,11 @@ components:
       type: object
       properties:
         id:
+          description: VLAN identifier
           type: string
           example: "101"
         mac:
+          description: TODO
           type: string
           example: ""
     topology:
@@ -667,13 +776,13 @@ components:
         billing-id:
           type: string
           example: "b41c4ec8-1825-404b-b740-feaeba96681d"
-    duration.mins:
-      description: "Duration of contract in minutes"
+    duration.secs:
+      description: "Duration of contract in seconds"
       type: integer
       example: 3600
       minimum: 3600
     duration.hrs:
-      description: "Duration of contract in hours (not minutes)"
+      description: "Duration of contract in hours (not seconds)"
       type: integer
       example: 1
       minimum: 1
@@ -737,7 +846,7 @@ components:
         contractid:
           $ref: "#/components/schemas/contractid"
         duration:
-          $ref: "#/components/schemas/duration.mins"
+          $ref: '#/components/schemas/duration.secs'
         bandwidth:
           $ref: "#/components/schemas/bandwidth.kbs"
         price:
@@ -1056,6 +1165,18 @@ components:
           example: 2
     backup:
       type: object
+      required:
+        - backup_name
+        - uuid
+        - vnf_uuid
+        - total_interfaces
+        - backup_started_at
+        - backup_completed_at
+        - backup_restored_at
+        - backup_restored_by
+        - replace_backup_uuid
+        - Status
+        - status_code
       properties:
         backup_name:
           type: string
@@ -1069,13 +1190,16 @@ components:
           type: string
           example: "303c6928-f9de-4e4c-a563-4772775f2316"
           description: UUID of the VNF being backed up
-        glance_image_id:
-          type: string
-          example: "ce36d53a-6b72-4a4b-ad2d-efd04a8a29ab"
-          description: UUID of the underlying image id for the backup
         backup_schedule_uuid:
           type: string
-          example: "null"
+          example: "ca065927-bf0a-4f3e-8da0-ce152b1f4a57"
+          description: >-
+            UUID of the backup schedule which created this backup
+            (not present when manually triggered)
+        boot_disk_uuid:
+          type: string
+          example: "058c8c0f-dc96-4ef3-9147-c7cb214f065e"
+          description: UUID of the boot disk of the VNF
         total_interfaces:
           type: integer
           example: 2
@@ -1097,7 +1221,7 @@ components:
             YYYY-MM-DD HH:MM:SS.S
         backup_restored_by:
           type: string
-          example: "null"
+          example: "752242b7-3fec-42e3-8717-e24e1d2bb94b"
           description: UUID of the user who most recently restored the backup
         replace_backup_uuid:
           type: string
@@ -1420,21 +1544,6 @@ components:
         type: string
       required: true
   responses:
-    imsdetailresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              "diaWtmpl:diaWtmpl":
-                type: array
-                items:
-                  oneOf:
-                    - $ref: "#/components/schemas/A-peer_routing_only"
-                    - $ref: "#/components/schemas/B-routed_subnet"
-                  discriminator:
-                    propertyName: topology
     createcustomerresponse:
       description: Success
       content:
@@ -1459,21 +1568,233 @@ components:
                       domainid:
                         type: string
                         example: "537819386389"
-    customerdetails:
+    updatecustomerresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/success-fragment"
+              - type: object
+                properties:
+                  params:
+                    type: object
+                    properties:
+                      customer-account-uuid:
+                        type: string
+                        example: "13200ba9-9fa1-46d5-bd98-befc0012d5d5"
+    accountdetailsresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/accountdetails"
+    customerdetailsresponse:
       description: Success
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/customerdetails"
-    customerdetailsarray:
+    childcustomerdetailsresponse:
       description: Success
       content:
         application/json:
           schema:
             type: array
             items:
-              $ref: "#/components/schemas/customerdetails"
-    backuprestoreresponse:
+              $ref: "#/components/schemas/childcustomerdetails"
+    childcustomerresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/childcustomer"
+
+    imsdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              "diaWtmpl:diaWtmpl":
+                type: array
+                items:
+                  oneOf:
+                    - $ref: "#/components/schemas/A-peer_routing_only"
+                    - $ref: "#/components/schemas/B-routed_subnet"
+                  discriminator:
+                    propertyName: topology
+
+    vnfdetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - compute_hostname
+              - customeruuid
+              - datacenteruuid
+              - flavouruuid
+              - floating_ip
+              - imageuuid
+              - status
+              - vnfuuid
+              - vportcount
+            properties:
+              compute_hostname:
+                type: string
+                example: "dc3_node1@node-9.domain.tld"
+              configuration:
+                type: object
+                description: >-
+                  Configuration of the VNF (only returned once deployed)
+                properties:
+                  first_disk:
+                    type: integer
+                    description: Size in GBs of the first disk on the VNF
+                  second_disk:
+                    type: integer
+                    description: Size in GBs of the second disk on the VNF
+                  ram:
+                    type: integer
+                    description: Size in MBs of the RAM allocated to the VNF
+                  vcpus:
+                    type: integer
+                    description: Number of virtual CPUs allocated to the VNF
+              currency:
+                type: string
+                description: >-
+                  Currency in which the charges for this VNF will be billed
+                  (only returned once deployed)
+                example: "AUD"
+              customeruuid:
+                type: string
+                example: "ffe7eae8-4782-49ac-a66e-8515032f6678"
+                description: >-
+                  Unique identifier representing the customer who owns the VNF
+              datacenteruuid:
+                type: string
+                example: "43f91af6-e4aa-4037-8c48-33ac74719615"
+                description: UUID of the data centre hosting the VNF
+              flavoruuid:
+                description: >-
+                  UUID of the flavour of VNF to deploy (from the image details)
+                type: integer
+                example: 2
+              floating_ip:
+                description: Not used
+                type: string
+                example: ""
+              imageuuid:
+                description: Identifier for the image to deploy on the VNF
+                type: integer
+                example: 10
+              instance_uuid:
+                description: >-
+                  Underlying instance identifier of the VNF (only returned once deployed)
+                type: string
+                example: "0aaae62e-c5b0-4a44-9e47-22974dfa4982"
+              price:
+                description: >-
+                  Hourly price being charged for this VNF (only returned once deployed)
+                type: number
+                example: 0.04
+              status:
+                description: Status of the VNF
+                externalDocs:
+                  description: List of VNF statuses
+                  url: "https://dev.telstra.com/content/programmable-network-api/#section/Master-Data/VNF-Status-Codes"
+                type: string
+                example: "deleted"
+              vnfuuid:
+                description: UUID of the VNF
+                type: string
+                example: "69418457-66e9-4bea-9dc5-6fbe18ebac9a"
+              vportcount:
+                description: Number of vports created on the VNF
+                type: integer
+                example: 0
+    vnfendpointresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              customeruuid:
+                type: string
+                example: "9a6c0b09-6864-4f1b-bc03-842268ca1061"
+                description: >-
+                  Unique identifier representing the customer who owns
+                  the VNF
+              vnfuuid:
+                type: string
+                example: "37449aab-0aa2-44ae-929b-7616549ee20e"
+    vnfstatusresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "ACTIVE"
+    removeimageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "success"
+    addimageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+                example: "success"
+    favoritesresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: "#/components/schemas/meta"
+              objects:
+                type: array
+                items:
+                  $ref: "#/components/schemas/image"
+    imagedetailresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/image"
+    imageresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              meta:
+                $ref: "#/components/schemas/meta"
+              objects:
+                type: array
+                items:
+                  $ref: "#/components/schemas/image"
+    backuprestore:
       description: Accepted
       content:
         application/json:
@@ -1505,12 +1826,15 @@ components:
                         UUID of backup image which was not
                         successfully deleted
                     error-code:
+                      description: short code representing the error
                       type: integer
                       example: 1350003
                     error-message:
+                      description: descriptive message for the error
                       type: string
                       example: "Data not found"
                     error-auxiliary:
+                      description: additional information about the error
                       type: string
                       example: "Error"
     backuplistresponse:
@@ -1539,6 +1863,19 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/backup"
+    getconsoleresponse:
+      description: >-
+        URL to access VNC console
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              vnc_console:
+                type: string
+                example: >-
+                  "https://ap-north3.nfv.pn.telstra.com/vnc_auto.html?token=0b7507db-b475-420f-8eb0-9291b4cd2d7a"
+
     endpointstatestatsresponse:
       description: Success
       content:
@@ -1613,52 +1950,7 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/user"
-    customerdetailresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              phone:
-                type: string
-                example: "7026661954"
-              city:
-                type: string
-                example: "Dallas"
-              fax:
-                type: string
-                example: ""
-              country:
-                type: string
-                example: "USA"
-              address:
-                type: string
-                example: "555 Paularino Avenue"
-              state:
-                type: string
-                example: "Texas"
-              website:
-                type: string
-                example: "http://dummy.com"
-              companyuuid:
-                type: string
-                example: "a6cef301-de34-4654-8933-ceafc7d2ae6e"
-              companyname:
-                type: string
-                example: "customer.pen.10"
-              postalcode:
-                type: string
-                example: "75024"
-              customertype:
-                type: string
-                example: ""
-              status:
-                type: string
-                example: "1"
-              customeraccountid:
-                type: string
-                example: "71234010"
+
     validatetokenresponse:
       description: Success
       content:
@@ -1698,6 +1990,25 @@ components:
                 type: array
                 items:
                   $ref: "#/components/schemas/role"
+
+    assigntopotagresponse:
+      description: Created
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/success-fragment"
+    regendpointresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: "#/components/schemas/success-fragment"
+              - type: object
+                properties:
+                  endpointuuid:
+                    type: string
+                    example: "c6b5c04f-c968-432e-a70f-b929437ea6e4"
     topotaglistresponse:
       description: Success
       content:
@@ -1792,6 +2103,50 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/topology"
+
+    serviceresponse:
+      description: array of service names
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                endpointTypename:
+                  description: >-
+                    Name of the endpoint type this service is associated with
+                  type: string
+                  example: "IPVPN"
+                endpointTypeuuid:
+                  description: >-
+                    UUID of the endpoint type this service is associated with
+                  type: string
+                  example: "d630970e-f33c-11e6-be1f-000c293805b1"
+                name:
+                  description: name of this service
+                  type: string
+                  example: "IPVPN"
+                serviceuuid:
+                  description: UUID of this service
+                  type: string
+                  example: "1203379f-f35b-11e6-be1f-000c293805b1"
+    ipvpnfnnresponse:
+      description: >-
+        Array of Full National Numbers (FNNs).
+        In Telstra's Australian network, an 'FNN' refers to the
+        'Full National Number', which is a unique identifier for
+        the network service. If the required Next IP service is
+        not returned in this list, then the user is not able to
+        create connections to this Next IP service.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              description: Full National Number (FNN)
+              type: string
+              example: "N1234567R"
     profileresponse:
       description: Success
       content:
@@ -1817,24 +2172,14 @@ components:
                   Data centres in which this customer tenancy
                   offers Exchange services
                 items:
-                  type: object
-                  properties:
-                    datacentername:
-                      type: string
-                      description: Name of the data centre
-                      example: "Melbourne (NextDC)"
-                    Notes:
-                      type: string
-                      description: >-
-                        Optional notes associated with this data centre
-                    datacentercode:
-                      type: string
-                      description: Four-letter code unique to the data centre
-                      example: "AMLS"
-                    datacenteruuid:
-                      type: string
-                      description: UUID of the data centre
-                      example: "61f6522f-83e4-4c71-b638-63808240ef88"
+                    allOf:
+                      - $ref: "#/components/schemas/pop"
+                      - type: object
+                        properties:
+                          Notes:
+                            type: string
+                            description: >-
+                              Optional notes associated with this data centre
               pending_requests_count:
                 type: integer
                 example: 0
@@ -1875,68 +2220,81 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/exchange-provider"
-    vnfstatusresponse:
+
+    endpointresponse:
       description: Success
       content:
         application/json:
           schema:
             type: object
             properties:
-              status:
-                type: string
-                example: "ACTIVE"
-    removeimageresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: "success"
-    addimageresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              status:
-                type: string
-                example: "success"
-    my_imagesresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              meta:
-                $ref: "#/components/schemas/meta"
-              objects:
+              datacenter:
                 type: array
                 items:
-                  $ref: "#/components/schemas/image"
-    imagedetailresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/image"
-    imageresponse:
+                  type: object
+                  properties:
+                    datacenteruuid:
+                      type: string
+                      example: "fb089004-53c9-476e-b7b2-3cc91829e0d1"
+                      description: UUID of the data centre hosting the endpoint
+                    port:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/endpoint-port"
+    endpointlistresponse:
       description: Success
       content:
         application/json:
           schema:
             type: object
             properties:
-              meta:
-                $ref: "#/components/schemas/meta"
-              objects:
+              endpointlist:
                 type: array
                 items:
-                  $ref: "#/components/schemas/image"
+                  type: object
+                  properties:
+                    datacenteruuid:
+                      type: string
+                      example: "7d89a3e0-ea82-4970-82f3-359d15d364b2"
+                      description: UUID of the data centre hosting the endpoint
+                    endpointuuid:
+                      type: string
+                      example: "ebe5a688-2a87-40ba-8303-049b1855271c"
+                      description: UUID of the endpoint
+    endpointupdateresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/success-fragment"
+    endpointstatusresponse:
+      description: Success
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              customeruuid:
+                type: string
+                example: "bc42dfce-d542-467f-acb9-2442c8a609ee"
+                description: >-
+                  Unique identifier representing the customer who owns
+                  the endpoint
+              endpointTypeuuid:
+                type: string
+                example: "32eea883-16cf-11e8-902e-000c293805b1"
+              description:
+                type: string
+                example: "An optional description"
+              endpointuuid:
+                type: string
+                example: "83762e08-ddad-43d9-a378-336bf43dbc57"
+              name:
+                type: string
+                example: "My Endpoint"
+              status:
+                type: string
+                example: "deployed"
     vportdetailresponse:
       description: Success
       content:
@@ -1953,6 +2311,7 @@ components:
               - type: object
                 properties:
                   vportuuid:
+                    description: UUID of the vport which was created
                     type: string
                     example: "251a54f9-f534-4d92-86b9-77e73bd4ede4"
     vportresponse:
@@ -1970,6 +2329,7 @@ components:
                 description: uuid of the newly-created vport
                 type: string
                 example: "1402ed53-4693-40e0-aa1e-5d5b85052f3d"
+
     createcontractresponse:
       description: Success
       content:
@@ -2026,7 +2386,7 @@ components:
                     type: object
                     properties:
                       duration:
-                        $ref: "#/components/schemas/duration.mins"
+                        $ref: '#/components/schemas/duration.secs'
                       linkid:
                         $ref: "#/components/schemas/linkid"
                       contractid:
@@ -2050,7 +2410,7 @@ components:
                     example: >-
                       "Replication link between Equinix SYD and NextDC MEL"
                   duration:
-                    $ref: "#/components/schemas/duration.mins"
+                    $ref: '#/components/schemas/duration.secs'
                   bandwidth:
                     $ref: "#/components/schemas/bandwidth.kbs"
                   latency:
@@ -2143,7 +2503,7 @@ components:
                           Replication link between Equinix SYD and
                           NextDC MEL
                       duration:
-                        $ref: "#/components/schemas/duration.mins"
+                        $ref: '#/components/schemas/duration.secs'
                       bandwidth:
                         $ref: "#/components/schemas/bandwidth.kbs"
                       latency:
@@ -2175,157 +2535,8 @@ components:
                       link-type:
                         type: string
                         example: "1"
-    endpointupdateresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/success-fragment"
-    endpointstatusresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              customeruuid:
-                type: string
-                example: "bc42dfce-d542-467f-acb9-2442c8a609ee"
-                description: >-
-                  Unique identifier representing the customer who owns
-                  the endpoint
-              endpointTypeuuid:
-                type: string
-                example: "32eea883-16cf-11e8-902e-000c293805b1"
-              description:
-                type: string
-                example: "An optional description"
-              endpointuuid:
-                type: string
-                example: "83762e08-ddad-43d9-a378-336bf43dbc57"
-              name:
-                type: string
-                example: "My Endpoint"
-              status:
-                type: string
-                example: "deployed"
-    assigntopotagresponse:
-      description: Created
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/success-fragment"
-    regendpointresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/success-fragment"
-              - type: object
-                properties:
-                  endpointuuid:
-                    type: string
-                    example: "c6b5c04f-c968-432e-a70f-b929437ea6e4"
-    vnfdetailresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              compute_hostname:
-                type: string
-                example: "dc3_node1@node-9.domain.tld"
-              customeruuid:
-                type: string
-                example: "ffe7eae8-4782-49ac-a66e-8515032f6678"
-                description: >-
-                  Unique identifier representing the customer who owns the VNF
-              datacenteruuid:
-                type: string
-                example: "43f91af6-e4aa-4037-8c48-33ac74719615"
-                description: UUID of the data centre hosting the VNF
-              flavoruuid:
-                type: integer
-                example: 2
-              floating_ip:
-                type: string
-                example: ""
-              imageuuid:
-                type: integer
-                example: 10
-              instance_uuid:
-                type: string
-                example: "0aaae62e-c5b0-4a44-9e47-22974dfa4982"
-              status:
-                type: string
-                example: "deleted"
-              vnfuuid:
-                type: string
-                example: "69418457-66e9-4bea-9dc5-6fbe18ebac9a"
-              vportcount:
-                type: integer
-                example: 0
-    vnfendpointresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/success-fragment"
-              - type: object
-                properties:
-                  customeruuid:
-                    type: string
-                    example: "9a6c0b09-6864-4f1b-bc03-842268ca1061"
-                    description: >-
-                      Unique identifier representing the customer who owns
-                      the VNF
-                  vnfuuid:
-                    type: string
-                    example: "37449aab-0aa2-44ae-929b-7616549ee20e"
-    endpointresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              datacenter:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    datacenteruuid:
-                      type: string
-                      example: "fb089004-53c9-476e-b7b2-3cc91829e0d1"
-                      description: UUID of the data centre hosting the endpoint
-                    port:
-                      type: array
-                      items:
-                        $ref: "#/components/schemas/endpoint-port"
-    endpointlistresponse:
-      description: Success
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              endpointlist:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    datacenteruuid:
-                      type: string
-                      example: "7d89a3e0-ea82-4970-82f3-359d15d364b2"
-                      description: UUID of the data centre hosting the endpoint
-                    endpointuuid:
-                      type: string
-                      example: "ebe5a688-2a87-40ba-8303-049b1855271c"
-                      description: UUID of the endpoint
-    datacentreresponse:
+
+    vnfdatacentreresponse:
       description: array of data center objects
       content:
         application/json:
@@ -2335,91 +2546,39 @@ components:
               datacenters:
                 type: array
                 items:
-                  type: object
-                  properties:
-                    cityname:
-                      type: string
-                      description: City the data centre is located in
-                      example: "Melbourne"
-                    countryname:
-                      type: string
-                      description: Country the data centre is located in
-                      example: "Australia"
-                    datacentername:
-                      type: string
-                      description: Name of the data centre
-                      example: "Melbourne (NextDC)"
-                    datacentercode:
-                      type: string
-                      description: Four-letter code unique to the data centre
-                      example: "AMLS"
-                    datacenteruuid:
-                      type: string
-                      description: UUID of the data centre
-                      example: "61f6522f-83e4-4c71-b638-63808240ef88"
-                    interfacetypes:
-                      type: array
-                      description: Currently unused (always empty)
-                      items:
-                        type: string
-                    operatorname:
-                      type: string
-                      description: Currently unused (always empty)
-    serviceresponse:
-      description: array of service names
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              type: object
-              properties:
-                endpointTypename:
-                  description: >-
-                    Name of the endpoint type this service is associated with
-                  type: string
-                  example: "IPVPN"
-                endpointTypeuuid:
-                  description: >-
-                    UUID of the endpoint type this service is associated with
-                  type: string
-                  example: "d630970e-f33c-11e6-be1f-000c293805b1"
-                name:
-                  description: name of this service
-                  type: string
-                  example: "IPVPN"
-                serviceuuid:
-                  description: UUID of this service
-                  type: string
-                  example: "1203379f-f35b-11e6-be1f-000c293805b1"
-    ipvpnfnnresponse:
-      description: >-
-        Array of Full National Numbers (FNNs).
-        In Telstra's Australian network, an 'FNN' refers to the
-        'Full National Number', which is a unique identifier for
-        the network service. If the required Next IP service is
-        not returned in this list, then the user is not able to
-        create connections to this Next IP service.
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              description: Full National Number (FNN)
-              type: string
-              example: "N1234567R"
-    getconsoleresponse:
-      description: >-
-        URL to access VNC console
+                  $ref: "#/components/schemas/pop"
+    datacentreresponse:
+      description: array of extended data center objects
       content:
         application/json:
           schema:
             type: object
             properties:
-              vnc_console:
-                type: string
-                example: >-
-                  "https://ap-north3.nfv.pn.telstra.com/vnc_auto.html?token=0b7507db-b475-420f-8eb0-9291b4cd2d7a"
+              datacenters:
+                type: array
+                items:
+                  allOf:
+                    - $ref: "#/components/schemas/pop"
+                    - type: object
+                      properties:
+                        cityname:
+                          type: string
+                          description: City the data centre is located in
+                          example: "Melbourne"
+                        countryname:
+                          type: string
+                          description: Country the data centre is located in
+                          example: "Australia"
+                        interfacetypes:
+                          type: array
+                          description: Currently unused (always empty)
+                          items:
+                            type: string
+                        operatorname:
+                          type: string
+                          description: Currently unused (always empty)
+
+
     unauthenticated:
       description: Missing Token
       content:
@@ -2485,7 +2644,7 @@ components:
           schema:
             $ref: "#/components/schemas/Error"
     statusconflict:
-      description: Status onflict
+      description: Status Conflict
       content:
         application/json:
           schema:
@@ -2502,8 +2661,10 @@ components:
         application/xml:
           schema:
             $ref: "#/components/schemas/Error"
+
 security:
   - oAuth2: []
+
 paths:
   /1.0.0/inventory/datacenters:
     get:
@@ -2531,6 +2692,27 @@ paths:
           $ref: "#/components/responses/validationerror"
         "500":
           $ref: "#/components/responses/internalerror"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl -X GET \
+              https://api.pn.telstra.com/1.0.0/inventory/datacenters \
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
+  /eis/1.0.0/datacenters/switchtypename/vnf:
+    get:
+      operationId: getDatacentresVNF
+      summary: Get data centres supporting VNFs
+      description: Get list of data centres which support running VNFs
+      tags:
+        - datacentres
+        - vnfs
+      responses:
+        "200":
+          $ref: "#/components/responses/vnfdatacentreresponse"
   /1.0.0/inventory/endpoints/customeruuid/{customeruuid}:
     parameters:
       - $ref: "#/components/parameters/customeruuid"
@@ -2543,6 +2725,16 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/endpointlistresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl -X GET \
+              https://api.pn.telstra.com/1.0.0/inventory/endpoints/customeruuid\d6e83f6c-c9a6-48c0-9b0f-9ab676897b27 \
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/endpoint/{endpointuuid}:
     parameters:
       - $ref: "#/components/parameters/endpointuuid"
@@ -2555,6 +2747,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/endpointresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /ims/1.0.0/{diauuid}:
     get:
       operationId: getInternet
@@ -2568,6 +2769,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/imsdetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /eis/1.0.0/service:
     get:
       operationId: getServices
@@ -2582,6 +2792,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/serviceresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/vnfendpoint:
     post:
       operationId: createVNF
@@ -2596,8 +2815,17 @@ paths:
             schema:
               $ref: "#/components/schemas/vnfendpointrequest"
       responses:
-        "200":
+        "202":
           $ref: "#/components/responses/vnfendpointresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /eis/1.0.0/vnfendpoint/vnfuuid/{vnfuuid}:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -2611,6 +2839,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/vnfdetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/regularendpoint:
     post:
       operationId: createPort
@@ -2626,6 +2863,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/regendpointresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /eis/1.0.0/endpoints/{endpointuuid}/assign_topology_tag:
     parameters:
       - $ref: "#/components/parameters/endpointuuid"
@@ -2634,8 +2880,8 @@ paths:
       summary: Assign Endpoint to Topology
       description: Assign an Endpoint to a Topology
       tags:
-        - endpoints
         - topologies
+        - endpoints
       requestBody:
         content:
           application/json:
@@ -2644,6 +2890,15 @@ paths:
       responses:
         "201":
           $ref: "#/components/responses/assigntopotagresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}/endpoint/{endpointuuid}:
     parameters:
       - $ref: "#/components/parameters/topotaguuid"
@@ -2653,11 +2908,20 @@ paths:
       summary: Unassign Endpoint from Topology
       description: Remove and Endpoint from a Topology
       tags:
-        - endpoints
         - topologies
+        - endpoints
       responses:
         "204":
           description: No Content
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /eis/1.0.0/endpoint/endpointuuid/{endpointuuid}:
     parameters:
@@ -2671,6 +2935,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/endpointstatusresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     put:
       operationId: updateEndpoint
       summary: Update Endpoint
@@ -2687,6 +2960,15 @@ paths:
           $ref: "#/components/responses/endpointupdateresponse"
         "400":
           $ref: "#/components/responses/invalidrequest"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/link:
     post:
       operationId: createLink
@@ -2702,6 +2984,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/createlinkresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links/customer/{customeruuid}:
     parameters:
       - $ref: "#/components/parameters/customeruuid"
@@ -2714,6 +3005,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/activelinksresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links/history/{linkid}:
     parameters:
       - $ref: "#/components/parameters/linkid"
@@ -2726,6 +3026,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/linkhistoryresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links/{linkid}/contract/{contractid}:
     parameters:
       - $ref: "#/components/parameters/linkid"
@@ -2739,6 +3048,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/activecontractresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     put:
       operationId: updateContract
       summary: Update Contract
@@ -2756,6 +3074,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/updatecontractresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links/{linkid}:
     parameters:
       - $ref: "#/components/parameters/linkid"
@@ -2768,6 +3095,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/linkdetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links/{linkid}/contract:
     parameters:
       - $ref: "#/components/parameters/linkid"
@@ -2785,14 +3121,23 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/createcontractresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/vnf/vport:
     post:
       operationId: createVNFPort
       summary: Create VNF VPort
       description: Create virtual interface (VPort) on Virtual Network Function.
       tags:
-        - vports
         - vnfs
+        - vports
       requestBody:
         content:
           application/json:
@@ -2801,6 +3146,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/vportresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /1.0.0/inventory/regularvport:
     post:
@@ -2808,8 +3162,8 @@ paths:
       summary: Create VLAN
       description: Create VPort representing a VLAN on a Physical Ethernet Port
       tags:
-        - vports
         - endpoints
+        - vports
       requestBody:
         content:
           application/json:
@@ -2818,6 +3172,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/regvportresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/vport/{vportuuid}:
     parameters:
       - $ref: "#/components/parameters/vportuuid"
@@ -2826,10 +3189,20 @@ paths:
       summary: Get VPort
       description: Get information about the specified VPort
       tags:
+        - endpoints
         - vports
       responses:
         "200":
           $ref: "#/components/responses/vportdetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/marketplace/image:
     get:
       operationId: getImages
@@ -2840,6 +3213,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/imageresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/marketplace/image/{imageid}:
     parameters:
       - $ref: "#/components/parameters/imageid"
@@ -2854,24 +3236,42 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/imagedetailresponse"
-  /1.0.0/marketplace/image/my_images/:
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
+  /mp/1.0.0/get_favorites/:
     get:
-      operationId: getMyImages
-      summary: Get MyImages
-      description: List images in "My Images. "Note that trailing / is required
+      operationId: getVNFFavorite
+      summary: Get VNF Favourites
+      description: List images in Favourites. Note that trailing / is required
       tags:
         - vnfs
       responses:
         "200":
-          $ref: "#/components/responses/my_imagesresponse"
-  /1.0.0/marketplace/image/{imageid}/add_to_my_images/:
+          $ref: "#/components/responses/favoritesresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
+  /mp/1.0.0/{imageid}/add_to_favorites/:
     parameters:
       - $ref: "#/components/parameters/imageid"
     post:
-      operationId: createMyImage
-      summary: Create MyImage
+      operationId: createVNFFavorite
+      summary: Create VNF Favourite
       description: >-
-        Add specified image to "My Images". 'Note that trailing /
+        Add specified image to "Favourites". 'Note that trailing /
         is required, body must be {}'
       tags:
         - vnfs
@@ -2880,19 +3280,29 @@ paths:
           application/json:
             schema:
               type: object
+              example: {}
       responses:
         "200":
           $ref: "#/components/responses/addimageresponse"
         "404":
           $ref: "#/components/responses/objectnotfound"
-  /1.0.0/marketplace/image/{imageid}/remove_from_my_images/:
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
+  /mp/1.0.0/{imageid}/remove_from_favorites/:
     parameters:
       - $ref: "#/components/parameters/imageid"
     post:
-      operationId: deleteMyImage
-      summary: Delete MyImage
+      operationId: deleteVNFFavorite
+      summary: Delete VNF Favourite
       description: >-
-        Remove specified image from "My Images". 'Note that trailing
+        Remove specified image from "Favourites". 'Note that trailing
         / is required, body must be {}'
       tags:
         - vnfs
@@ -2901,6 +3311,7 @@ paths:
           application/json:
             schema:
               type: object
+              example: {}
       responses:
         "200":
           $ref: "#/components/responses/removeimageresponse"
@@ -2908,6 +3319,15 @@ paths:
           $ref: "#/components/responses/objectnotfound"
         "422":
           $ref: "#/components/responses/validationerror"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /vnfds/1.0.0/vnf/{vnfuuid}/get_console:
     parameters:
@@ -2922,6 +3342,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/getconsoleresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /vnfds/1.0.0/vnf/{vnfuuid}/suspend:
     parameters:
@@ -2934,9 +3363,24 @@ paths:
         body must be {}'
       tags:
         - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
       responses:
         "200":
           description: Success
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /vnfds/1.0.0/vnf/{vnfuuid}/resume:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -2948,9 +3392,24 @@ paths:
         body must be {}'
       tags:
         - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
       responses:
         "200":
           description: Success
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /vnfds/1.0.0/vnf/{vnfuuid}/reboot:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -2972,6 +3431,15 @@ paths:
           description: Success
         "400":
           $ref: "#/components/responses/invalidrequest"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /vnfds/1.0.0/vnf/{vnfuuid}:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -2998,6 +3466,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/vnfstatusresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/exchange:
     get:
       operationId: getExchProviders
@@ -3008,6 +3485,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/exchangeresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/exchange/{exprovuuid}:
     parameters:
       - $ref: "#/components/parameters/exprovuuid"
@@ -3020,6 +3506,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/exprovresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/visitcard:
     get:
       operationId: getVisitCards
@@ -3030,6 +3525,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/visitcardresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/visitcard/{visitcarduuid}:
     parameters:
       - $ref: "#/components/parameters/visitcarduuid"
@@ -3042,6 +3546,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/visitcarddetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     put:
       operationId: updateVisitCard
       summary: Update Visit Card
@@ -3062,6 +3575,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/visitcardupdateresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/account/profile/exchange:
     get:
       operationId: getExchangeProfile
@@ -3072,6 +3594,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/profileresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /ttms/1.0.0/topology_tag:
     get:
@@ -3083,6 +3614,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/topotagresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     post:
       operationId: createTopoTag
       summary: Create Topology Tag
@@ -3097,6 +3637,15 @@ paths:
       responses:
         "201":
           $ref: "#/components/responses/topotagcreateresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /ttms/1.0.0/topology_tag/{topotaguuid}:
     parameters:
       - $ref: "#/components/parameters/topotaguuid"
@@ -3109,6 +3658,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/topotagdetailresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     put:
       operationId: updateTopoTag
       summary: Update topology tag
@@ -3123,6 +3681,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/topotagupdateresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     delete:
       operationId: deleteTopoTag
       summary: Delete Topology Tag
@@ -3132,6 +3699,15 @@ paths:
       responses:
         "204":
           description: No Content
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /ttms/1.0.0/topology_tag/{topotaguuid}/objects:
     parameters:
       - $ref: "#/components/parameters/topotaguuid"
@@ -3146,6 +3722,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/topotagobjectsresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /eis/1.0.0/endpoints/topology_tag_uuid/{topotaguuid}:
     parameters:
       - $ref: "#/components/parameters/topotaguuid"
@@ -3155,11 +3740,20 @@ paths:
       description: >-
         List all Endpoints associated with the topology tag.
       tags:
-        - endpoints
         - topologies
+        - endpoints
       responses:
         "200":
           $ref: "#/components/responses/topotaglistresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/auth/generatetoken:
     post:
       operationId: createToken
@@ -3176,14 +3770,20 @@ paths:
               properties:
                 grant_type:
                   type: string
+                  description: OAuth grant type to use for authentication
                   example: password
                   default: password
                 username:
                   type: string
+                  description: User name/email to authenticate with
+                  example: "user@company.com"
                 password:
                   type: string
+                  description: Password related to the user
+                  example: "pa55w0rd"
                 otp:
                   type: string
+                  description: Current one-time password from the authentication app
                   example: "385923"
               required:
                 - grant_type
@@ -3211,6 +3811,15 @@ paths:
                     example: "a8856a1a4e25b23d86fa9ae2ffce3b63"
         "412":
           description: Provided authorization grant is invalid
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/auth/validatetoken:
     get:
       operationId: validateToken
@@ -3223,6 +3832,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/validatetokenresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /is/1.0.0/customers:
     post:
       operationId: createCustomer
@@ -3238,27 +3856,61 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/createcustomerresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /is/1.0.0/customers/{customeruuid}:
     parameters:
       - $ref: "#/components/parameters/customeruuid"
     get:
       operationId: getCustomer
       summary: Get Customer
-      description: Get details of the specified customer
+      description: >-
+        Get details of the specified customer
       tags:
         - customers
       responses:
         "200":
-          $ref: "#/components/responses/customerdetails"
+          $ref: "#/components/responses/customerdetailsresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     put:
       operationId: updateCustomer
       summary: Update Customer
-      description: Update details of the specified customer
+      description: >-
+        Update details of the specified customer
       tags:
         - customers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/updatecustomerrequest"
       responses:
         "200":
-          $ref: "#/components/responses/customerdetails"
+          $ref: "#/components/responses/updatecustomerresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /is/1.0.0/customers/{customeruuid}/childcustomers:
     parameters:
       - $ref: "#/components/parameters/customeruuid"
@@ -3270,7 +3922,46 @@ paths:
         - customers
       responses:
         "200":
-          $ref: "#/components/responses/customerdetailsarray"
+          $ref: "#/components/responses/childcustomerresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "404":
+          $ref: "#/components/responses/objectnotfound"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
+  /is/1.0.0/customers/{customeruuid}/childcustomers/info:
+    parameters:
+      - $ref: '#/components/parameters/customeruuid'
+    get:
+      operationId: getChildCustomersDetail
+      summary: List child customers detail
+      description: >-
+        List all child customers of the specified customer (detail view)
+      tags:
+        - customers
+      responses:
+        "200":
+          $ref: "#/components/responses/childcustomerdetailsresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "404":
+          $ref: "#/components/responses/objectnotfound"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   /1.0.0/account/{customeruuid}:
     parameters:
@@ -3283,9 +3974,18 @@ paths:
         - customers
       responses:
         "200":
-          $ref: "#/components/responses/customerdetailresponse"
+          $ref: "#/components/responses/accountdetailsresponse"
         "401":
           $ref: "#/components/responses/forbidden"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/account/{customeruuid}/user:
     parameters:
       - $ref: "#/components/parameters/customeruuid"
@@ -3294,11 +3994,20 @@ paths:
       summary: List users
       description: List all users associated with the specified customer
       tags:
-        - customers
         - users
+        - customers
       responses:
         "200":
           $ref: "#/components/responses/userlistresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
   # yamllint disable-line rule:line-length
   /1.0.0/inventory/links-stats/endpoint/{endpointuuid}/{startdate}/{enddate}:
@@ -3316,6 +4025,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/linkstatsresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /1.0.0/inventory/links-stats/flow/{linkid}/{startdate}/{enddate}:
     parameters:
       - $ref: "#/components/parameters/linkid"
@@ -3331,6 +4049,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/flowstatsresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   # yamllint disable-line rule:line-length
   ? /1.0.0/inventory/links-stats/endpointstate/{endpointuuid}/{startdate}/{enddate}
   : parameters:
@@ -3348,6 +4075,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/endpointstatestatsresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /bms/1.0.0/backup:
     post:
       operationId: createVNFBackup
@@ -3356,7 +4092,8 @@ paths:
         'Note: if a second backup creation is attempted while one is
         already active, an error will be returned indicating that
         the VNF is invalid. If replace_backup_uuid is provided, this
-        backup is deleted once the new backup is successfully completed'
+        backup related to that UUID is deleted once the new backup
+        is successfully completed'
       tags:
         - vnfs
       requestBody:
@@ -3367,6 +4104,15 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/backupresponse"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /bms/1.0.0/backup/{backupuuid}:
     parameters:
       - $ref: "#/components/parameters/backupuuid"
@@ -3379,6 +4125,19 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/backupdetailresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "401":
+          $ref: "#/components/responses/unauthenticated"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
     delete:
       operationId: deleteVNFBackup
       summary: Delete backup
@@ -3388,6 +4147,19 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/backupdeleteresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "401":
+          $ref: "#/components/responses/unauthenticated"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /bms/1.0.0/backup/vnf/{vnfuuid}:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -3400,6 +4172,21 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/backuplistresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "401":
+          $ref: "#/components/responses/unauthenticated"
+        "404":
+          $ref: "#/components/responses/objectnotfound"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /bms/1.0.0/backup/vnf/{vnfuuid}/delete:
     parameters:
       - $ref: "#/components/parameters/vnfuuid"
@@ -3409,27 +4196,65 @@ paths:
       description: Delete all backups associated with specified VNF
       tags:
         - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: array of UUIDs of VNF backups to delete
+              type: array
+              items:
+                type: string
+                example: "8838dd50-158a-4920-9985-4c35cbed3d04"
       responses:
         "202":
           $ref: "#/components/responses/backupmultideleteresponse"
+        "400":
+          $ref: "#/components/responses/invalidrequest"
+        "401":
+          $ref: "#/components/responses/unauthenticated"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
   /bms/1.0.0/backup/{backupuuid}/restore:
     parameters:
       - $ref: "#/components/parameters/backupuuid"
     post:
       operationId: restoreVNFBackup
       summary: Restore VNF from backup
-      description: Restore VNF from specified backup
+      description: >-
+        Restore VNF from specified backup. Note that body must be {}
       tags:
         - vnfs
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example: {}
       responses:
         "202":
-          $ref: "#/components/responses/backuprestoreresponse"
+          $ref: "#/components/responses/backuprestore"
         "400":
           $ref: "#/components/responses/invalidrequest"
         "401":
           $ref: "#/components/responses/unauthenticated"
         "403":
           $ref: "#/components/responses/forbidden"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
 
   /ipvpn/1.0.0/{serviceuuid}/fnn:
@@ -3450,8 +4275,8 @@ paths:
         a service which you expected to be able to connect to, please
         email support@pn.telstra.com
       tags:
-        - nextip
         - endpoints
+        - nextip
       responses:
         "200":
           $ref: "#/components/responses/ipvpnfnnresponse"
@@ -3469,6 +4294,15 @@ paths:
           $ref: "#/components/responses/validationerror"
         "500":
           $ref: "#/components/responses/internalerror"
+      x-code-samples:
+        - lang: curl
+          source: |
+            ACCESS_TOKEN="<access token from the Authentication request>"
+
+            curl ... TO BE COMPLETED
+              -H "authorization: Bearer $ACCESS_TOKEN" \
+              -H "cache-control: no-cache" \
+              -H "content-type: application/json"
 
 tags:
   - name: authentication
